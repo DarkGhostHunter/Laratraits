@@ -2,6 +2,15 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+/**
+ * Interface RouteBound
+ * ---
+ * This interface obligates the developer to validate the incoming value from the frontend using an static
+ * method, and then instantiate the class using another. If the validation doesn't passes, the validator
+ * can either return `false`, or just throw a ValidationException, to protect the instancing itself.
+ *
+ * @package DarkGhostHunter\Laratraits
+ */
 interface RouteBound
 {
     /**
