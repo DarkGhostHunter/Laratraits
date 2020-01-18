@@ -17,6 +17,9 @@ Before installing, take a look into the list. If you're only using one, just cop
 * `RendersFromMarkdown`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
 * `DiscoverClasses`: Discovers classes inside a directory, optionally filtered by a method name.
 * `Multitapable`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
+* `SavesToSession`: Saves the object (or part of it) to the session.
+* `SavesToCache`: Saves the object (or part of it) to the cache.
+* `SavesToStorage`: Saves the object (or part of it) to the storage.
 
 ### Models
 
@@ -45,5 +48,3 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 This package is open-sourced software licensed under the MIT license.
 Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2020 Laravel LLC.
-
-
