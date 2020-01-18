@@ -12,9 +12,10 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 * `PipesThrough`: Allows a class to be sent itself through a pipeline.
 * `AuthorizesItself`: Allows to authorize an action on the object itself.
+* `ValidatesItself`: Validates an incoming data using self-contained rules.
+* `DispatchesItself`: Allows to dispatch the object instance to one of many Jobs previously set.
 * `RendersFromMarkdown`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
 * `DiscoverClasses`: Discovers classes inside a directory, optionally filtered by a method name.
-* `ValidatesItself`: Validates an incoming data using self-contained rules.
 * `Multitapable`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
 
 ### Models
@@ -24,6 +25,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 * `SelectsDefaultColumns`: Adds a `DefaultColumns` Global Scope to the Model that selects only given default columns, unless overrun manually in the query.
 * `SoftCacheAccessors`: Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
 * `DynamicallyMutates`: Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
+* `EncryptsAttributes`: Automatically encrypts and decrypts attributes using a random key that the User must issue.
 
 ### Global Scopes
 
@@ -32,7 +34,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 ### Controllers
 
 * `ThrottlesRequest`: A customizable request throttler.
-* `CacheKeysRequest`: Creates a digestible cache key based on a hash of the Controller Class, Request path and (optionally) the User authenticated.
+* `CacheKeysRequest`: Creates a digestible cache key based on a hash of the Controller Class, Request path and (optionally) the User authenticated. 
 
 ### Service Providers
 
