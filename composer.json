@@ -1,0 +1,46 @@
+{
+    "name": "darkghosthunter/laratraits",
+    "description": "Laratraits is a package containing useful traits to use along your Controllers, Service Providers, Commands and what not. Take a look!",
+    "keywords": [
+        "darkghosthunter",
+        "laratraits",
+        "laravel",
+        "helpers"
+    ],
+    "homepage": "https://github.com/darkghosthunter/laratraits",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Italo Israel Baeza Cabrera",
+            "email": "darkghosthunter@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "6.*",
+        "symfony/finder": "4.*|5.*"
+    },
+    "require-dev": {
+        "orchestra/testbench": "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "DarkGhostHunter\\Laratraits\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
