@@ -28,7 +28,6 @@ Before installing, take a look into the list. If you're only using one, just cop
 * `SelectsDefaultColumns`: Adds a `DefaultColumns` Global Scope to the Model that selects only given default columns, unless overrun manually in the query.
 * `SoftCacheAccessors`: Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
 * `DynamicallyMutates`: Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
-* `EncryptsAttributes`: Automatically encrypts and decrypts attributes using a random key that the User must issue.
 
 ### Global Scopes
 
