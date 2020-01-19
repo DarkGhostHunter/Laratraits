@@ -37,7 +37,13 @@ Before installing, take a look into the list. If you're only using one, just cop
 ### Controllers
 
 * `ThrottlesRequest`: A customizable request throttler.
-* `CacheKeysRequest`: Creates a digestible cache key based on a hash of the Controller Class, Request path and (optionally) the User authenticated. 
+* `CacheKeysRequest`: Creates a digestible cache key based on a hash of the Controller Class, Request path and (optionally) the User authenticated.
+
+### Middleware
+
+* `CacheStaticResponse`: Caches (hopefully) static responses, avoiding running the controller logic, for a given time.
+* `ShareVerifiedUser`: Shares the authenticated user across all views.
+* `ValidateConsumableSignature`: Makes signed routes work only one time except on client or server errors.
 
 ### Service Providers
 
