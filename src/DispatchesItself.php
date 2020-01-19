@@ -16,7 +16,18 @@ use LogicException;
 trait DispatchesItself
 {
     /**
-     * Dispatches the current instance to a job instance
+     * Dispatches the current instance to a default job.
+     *
+     * @param  mixed  ...$parameters  Parameteres passed down to the job instancing.
+     * @return \Illuminate\Foundation\Bus\PendingChain|\Illuminate\Foundation\Bus\PendingDispatch|mixed
+     */
+    public function dispatch(...$parameters)
+    {
+        return $this->dispatchTo('default', ...$parameters);
+    }
+
+    /**
+     * Dispatches the current instance to a job instance.
      *
      * @param  string  $job  The Job name
      * @param  array  $parameters Any optional parameters to pass to the Job instance
