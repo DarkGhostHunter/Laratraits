@@ -47,7 +47,7 @@ trait RouteBindsClasses
                     return $class::fromRouteBinding($value);
                 }
 
-                return null;
+                abort(404);
             });
         }
     }
