@@ -27,66 +27,62 @@ trait ValidatesItself
      * Creates a validator instance.
      *
      * @param  null|array  $data
-     * @param  null|array  $rules
+     * @param  null|callable|string  $after
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function validator(array $data = null, array $rules = null)
+    public function validator(array $data = null, $after = null)
     {
-        return app(Factory::class)->make(
+        $validator = app(Factory::class)->make(
             $data ?? $this->validationData(),
-            $rules ?? $this->validationRules(),
+            $this->validationRules(),
             $this->validationMessages(),
             $this->customAttributes()
         );
+
+        if ($after) {
+            $validator->after($after);
+        }
+
+        return $validator;
     }
 
     /**
-     * Run the validator's rules against its data.
+     * Run the validator's rules against its data and returns if it passes or not.
      *
      * @param  null|array  $data
-     * @param  null|array  $rules
      * @param  null|callable|string  $after
      * @return bool
      */
-    public function validates(array $data = null, array $rules = null, $after = null)
+    public function validates(array $data = null, $after = null)
     {
-        $validator = $this->validator($data, $rules);
+        $validator = $this->validator($data, $after);
 
-        if ($after) {
-            $validator->after($after);
+        if ($validator->fails()) {
+            return false;
         }
-
-        $result = $validator->fails();
 
         $this->validated = $validator->validated();
 
-        return $result;
+        return true;
     }
 
     /**
-     * Validates the class data through a Validator
+     * Validates the class and returns the validated data, or throws an exception.
      *
      * @param  null|array  $data
-     * @param  null|array  $rules
      * @param  null|callable|string  $after
      * @return array
-     *
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function validate(array $data = null, array $rules = null, $after = null)
+    public function validate(array $data = null, $after = null)
     {
-        $validator = $this->validator($data, $rules);
-
-        if ($after) {
-            $validator->after($after);
-        }
-
-        return $this->validated = $validator->validate();
+        return $this->validated = $this->validator($data, $after)->validate();
     }
 
     /**
-     * Returns the validated data.
+     * Returns the validated data. Will return null if no validated data is available.
      *
-     * @return array
+     * @return null|array
      */
     public function validated()
     {
@@ -94,24 +90,21 @@ trait ValidatesItself
     }
 
     /**
-     * Returns the data array to use against the Validator
+     * Returns the data array to use against the Validator.
      *
      * @return array
      */
-    protected function validationData()
+    public function validationData()
     {
-        throw new LogicException('Can\'t validate ' . class_basename($this) . ' without data.');
+        throw new LogicException('The class ' . class_basename($this) . ' has no data to validate.');
     }
 
     /**
-     * The array of rules
+     * The array of rules.
      *
      * @return array
      */
-    protected function validationRules()
-    {
-        throw new LogicException('The class ' . class_basename($this) . ' has no validation rules.');
-    }
+    abstract protected function validationRules() : array;
 
     /**
      * The array of custom error messages.
