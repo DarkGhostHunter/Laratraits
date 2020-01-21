@@ -20,9 +20,9 @@ trait DiscoverClasses
      * @param  string|null  $methodOrInterface The Method name or Interface to filter the classes.
      * @return \Illuminate\Support\Collection  A collection of filtered class names.
      */
-    protected function discover(string $path, string $methodOrInterface = null)
+    public function discover(string $path, string $methodOrInterface = null)
     {
-        $discoverer = (new ClassDiscoverer())->path($path);
+        $discoverer = app(ClassDiscoverer::class)->path($path);
 
         if ($methodOrInterface) {
             if (interface_exists($methodOrInterface)) {

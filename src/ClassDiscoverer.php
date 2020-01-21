@@ -9,14 +9,15 @@ use ReflectionException;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Contracts\Foundation\Application;
 use const DIRECTORY_SEPARATOR;
 
 /**
  * Class ClassDiscoverer
  * ---
- * This is the object-version of the DiscoverEvents class, but modified to handle only class names and filter
- * these classes by method or implementation. It needs
+ * This is the object-version of the DiscoverEvents class, but modified to handle only class names
+ * and filter these classes by method or implementation. It will discover classes recursively in
+ * the path you have set relative to a base path, and use the lookup directories as namespaces.
  *
  * @see \Illuminate\Foundation\Events\DiscoverEvents
  * @package DarkGhostHunter\Laratraits
@@ -24,18 +25,11 @@ use const DIRECTORY_SEPARATOR;
 class ClassDiscoverer
 {
     /**
-     * The Base Path as root namespace to look up.
+     * The Base Path that will be discarded from all file paths.
      *
      * @var string
      */
     protected $basePath;
-
-    /**
-     * Base Namespace for the classes to discover.
-     *
-     * @var string
-     */
-    protected $namespace;
 
     /**
      * Directory path to look inside.
@@ -45,30 +39,25 @@ class ClassDiscoverer
     protected $path;
 
     /**
-     * Filtering mechanism
+     * Filtering mechanisms
      *
-     * @var array[]
-     * @example [ 'filter' => 'interface', 'value' => \Illuminate\Contracts\Support\Jsonable::class ]
+     * @var array
      */
     protected $filter;
 
     /**
      * Creates a new ClassDiscoverer instance.
      *
-     * @param  string  $basePath
-     * @param  string|null  $namespace
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
      */
-    public function __construct(string $basePath = null, string $namespace = null)
+    public function __construct(Application $app)
     {
-        $app = app();
-
-        $this->basePath = trim($basePath ?? $app->basePath(), DIRECTORY_SEPARATOR);
-        $this->namespace = $namespace ?? $app->getNamespace();
         $this->path = $app->path();
+        $this->basePath = trim($app->basePath(), DIRECTORY_SEPARATOR);
     }
 
     /**
-     * Path to look for inside a directory.
+     * Path to look for inside a directory, relative to the base path.
      *
      * @param  string  $path
      * @return \DarkGhostHunter\Laratraits\ClassDiscoverer
@@ -89,7 +78,7 @@ class ClassDiscoverer
     public function filterByMethod(string $method)
     {
         $this->filter = [
-            'type'  => 'method',
+            'type'  => 'filterMethod',
             'value' => $method,
         ];
 
@@ -109,7 +98,7 @@ class ClassDiscoverer
         }
 
         $this->filter = [
-            'type'  => 'interface',
+            'type'  => 'filterInterface',
             'value' => $interface,
         ];
 
@@ -123,13 +112,15 @@ class ClassDiscoverer
      */
     public function discover()
     {
-        return collect($this->getFiles())
-            ->filter([$this, 'filterClasses'])
-            ->when($this->filter, function (Collection $classes, $filter) {
-                return $classes->filter([
-                    $this, $filter['type'] === 'interface' ? 'filterInterface' : 'filterMethod'
-                ]);
-            });
+        $classes = collect($this->getFiles())
+            ->map([$this, 'filterClasses'])
+            ->filter();
+
+        if ($this->filter) {
+            $classes = $classes->filter([$this, $this->filter['type']]);
+        }
+
+        return $classes->map->name;
     }
 
     /**
@@ -143,33 +134,17 @@ class ClassDiscoverer
     }
 
     /**
-     * Extract the class name from the given file path.
-     *
-     * @param  \SplFileInfo  $file
-     * @return string
-     */
-    protected function classFromFile(SplFileInfo $file)
-    {
-        $class = trim(Str::replaceFirst($this->basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR);
-
-        return str_replace(
-            [DIRECTORY_SEPARATOR, ucfirst(basename($this->path)) . '\\'],
-            ['\\', $this->namespace],
-            ucfirst(Str::replaceLast('.php', '', $class))
-        );
-    }
-
-    /**
      * Returns a Reflection Class from the SplFileInfo File
      *
      * @param  \SplFileInfo  $file
      * @return null|\ReflectionClass
      */
-    protected function filterClasses(SplFileInfo $file)
+    public function filterClasses(SplFileInfo $file)
     {
         try {
             $class = new ReflectionClass($this->classFromFile($file));
-        } catch (ReflectionException $e) {
+        }
+        catch (ReflectionException $e) {
             return null;
         }
 
@@ -181,34 +156,48 @@ class ClassDiscoverer
     }
 
     /**
+     * Extract the class name from the given file path.
+     *
+     * @param  \SplFileInfo  $file
+     * @return string
+     */
+    protected function classFromFile(SplFileInfo $file)
+    {
+        $class = trim(Str::replaceFirst($this->basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR);
+
+        return ucfirst(Str::replaceLast('.php', '', $class));
+    }
+
+    /**
      * Filter each class by a method name.
      *
      * @param  \ReflectionClass  $class
-     * @return null|\ReflectionClass
+     * @return bool
      */
-    protected function filterMethod(ReflectionClass $class)
+    public function filterMethod(ReflectionClass $class)
     {
+
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (Str::is($this->filter['value'] . '*', $method->name)) {
-                return $class;
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
 
     /**
      * Filter each class by a given implementation.
      *
      * @param  \ReflectionClass  $class
-     * @return null|\ReflectionClass
+     * @return bool
      */
-    protected function filterInterface(ReflectionClass $class)
+    public function filterInterface(ReflectionClass $class)
     {
         if (in_array($this->filter['value'], $class->getInterfaceNames(), true)) {
-            return $class;
+            return true;
         }
 
-        return null;
+        return false;
     }
 }

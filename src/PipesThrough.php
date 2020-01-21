@@ -3,6 +3,8 @@
 namespace DarkGhostHunter\Laratraits;
 
 use Closure;
+use Illuminate\Pipeline\Pipeline;
+use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
 
 /**
  * Trait PipesThrough
@@ -16,35 +18,35 @@ use Closure;
 trait PipesThrough
 {
     /**
-     * Pipeline to instantiate.
-     *
-     * @see \Illuminate\Contracts\Pipeline\Pipeline
-     * @var string The class to instantiate.
-     */
-    protected $pipeline = \Illuminate\Pipeline\Pipeline::class;
-
-    /**
      * Pipes the current instance into a pipeline.
      *
-     * @param  array  $pipes  The list of pipes (in order) to send this class instance
+     * @param  string|array  $pipes  The list of pipes (in order) to send this class instance
      * @param  \Closure|null  $destination  Optional closure that will receive the result
-     * @param  string|null  $via  Optional alternative common handling method for all the pipelines
      * @return $this|mixed
      */
-    public function pipe(array $pipes = [], Closure $destination = null, string $via = null)
+    public function pipe($pipes = null, Closure $destination = null)
     {
-        $pipeline = app($this->pipeline)->send($this);
+        $pipeline = $this->makePipeline()->send($this);
 
-        if (! $pipes === []) {
+        if ($pipes) {
             $pipeline->through($pipes);
-        }
-
-        if ($via) {
-            $pipeline->via($via);
         }
 
         return $destination
             ? $pipeline->then($destination)
             : $pipeline->thenReturn();
+    }
+
+    /**
+     * Instances the Pipeline
+     *
+     * @return \Illuminate\Contracts\Pipeline\Pipeline
+     */
+    protected function makePipeline() : PipelineContract
+    {
+        // By default we create the default Pipeline class, but if your pipes don't depend
+        // on a Service Container, you can just instance the pipeline with an empty one.
+        // If you need custom pipeline handling, you can extend the default pipeline.
+        return app(Pipeline::class);
     }
 }

@@ -10,13 +10,12 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 ### General
 
-* `PipesThrough`: Allows a class to be sent itself through a pipeline.
-* `AuthorizesItself`: Allows to authorize an action on the object itself.
-* `ValidatesItself`: Validates an incoming data using self-contained rules.
+* `DiscoverClasses`: Discovers classes inside a directory, optionally filtered by a method name or interface.
 * `DispatchesItself`: Allows to dispatch the object instance to one of many Jobs previously set.
-* `RendersFromMarkdown`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
-* `DiscoverClasses`: Discovers classes inside a directory, optionally filtered by a method name.
 * `Multitapable`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
+* `PipesThrough`: Allows a class to be sent itself through a pipeline.
+* `RendersFromMarkdown`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
+* `ValidatesItself`: Validates an incoming data using self-contained rules.
 * `SavesToSession`: Saves the object (or part of it) to the session.
 * `SavesToCache`: Saves the object (or part of it) to the cache.
 * `SavesToStorage`: Saves the object (or part of it) to the storage.

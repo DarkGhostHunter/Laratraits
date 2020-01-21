@@ -2,46 +2,40 @@
 
 namespace DarkGhostHunter\Laratraits;
 
-use LogicException;
+use Illuminate\Support\Str;
 
 /**
  * Trait DispatchesItself
  * ---
  * This trait dispatches the object through a job instantly, without having to manually instance the Job
  * separately and configure it every time. You can use a default Job, or have multiple jobs separated
- * by a name, allowing multiple jobs depending on what you want to dispatch to the application bus.
+ * by a {nameJob} to allow more than one Job depending on what you dispatch to the application bus.
  *
  * @package DarkGhostHunter\Laratraits
  */
 trait DispatchesItself
 {
     /**
-     * Dispatches the current instance to a default job.
+     * Dispatches the current instance to a default Job instance.
      *
-     * @param  mixed  ...$parameters  Parameteres passed down to the job instancing.
-     * @return \Illuminate\Foundation\Bus\PendingChain|\Illuminate\Foundation\Bus\PendingDispatch|mixed
+     * @param  string|array  $parameters
+     * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|mixed
      */
     public function dispatch(...$parameters)
     {
-        return $this->dispatchTo('default', ...$parameters);
+        return $this->defaultJob($parameters);
     }
 
     /**
-     * Dispatches the current instance to a job instance.
+     * Dispatches this object to a non-default Job.
      *
-     * @param  string  $job  The Job name
-     * @param  array  $parameters Any optional parameters to pass to the Job instance
+     * @param  string  $job
+     * @param  mixed  ...$parameters
      * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|mixed
-     *
-     * @throws \LogicException
      */
-    public function dispatchTo(string $job = 'default', ...$parameters)
+    public function dispatchTo(string $job, ...$parameters)
     {
-        if (method_exists($this, $method = $job . 'Job')) {
-            return $this->{$method}(...$parameters);
-        }
-
-        throw new LogicException("The method $method for the job $job does not exists");
+        return $this->{Str::camel($job . 'Job')}($parameters);
     }
 
     /**
@@ -50,8 +44,5 @@ trait DispatchesItself
      * @param  array  $parameters
      * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|object
      */
-    protected function defaultJob(...$parameters)
-    {
-        throw new LogicException('The class ' . class_basename($this) . ' has not set a default dispatchable Job.');
-    }
+    abstract protected function defaultJob(array $parameters);
 }

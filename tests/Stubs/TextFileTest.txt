@@ -1,0 +1,9 @@
+<?php
+
+namespace Tests\Stubs;
+
+class TestTextFile implements TestInterface {
+    public function bar() {
+        return 'bar';
+    }
+}

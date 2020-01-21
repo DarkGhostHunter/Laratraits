@@ -3,7 +3,11 @@
 namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
+use JsonSerializable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Htmlable;
 
 trait SavesToCache
 {
@@ -12,10 +16,11 @@ trait SavesToCache
      *
      * @param  string|null  $key
      * @param  \DateTimeInterface|\DateInterval|int|null  $ttl
+     * @return bool
      */
-    public function toCache(string $key = null, $ttl = 60)
+    public function saveToCache(string $key = null, $ttl = 60)
     {
-        $this->cacheStore()->put($key ?? $this->cacheKey(), $this->cacheValue(), $ttl);
+        return $this->defaultCache()->put($key ?? $this->defaultCacheKey(), $this->toCache(), $ttl);
     }
 
     /**
@@ -23,28 +28,44 @@ trait SavesToCache
      *
      * @return \Illuminate\Contracts\Cache\Repository
      */
-    protected function cacheStore()
+    protected function defaultCache() : Repository
     {
         return Cache::store();
     }
 
     /**
-     * The value to insert into the cache.
-     *
-     * @return $this
-     */
-    protected function cacheValue()
-    {
-        return $this;
-    }
-
-    /**
-     * The key name to use in the cache.
+     * The key name to use in the cache if not specified.
      *
      * @return string
      */
-    protected function cacheKey()
+    protected function defaultCacheKey()
     {
         throw new LogicException('The class ' . class_basename($this) . ' has no default cache key.');
+    }
+
+    /**
+     * The value to insert into the cache.
+     *
+     * @return string|$this
+     */
+    protected function toCache()
+    {
+        if ($this instanceof Jsonable) {
+            return $this->toJson();
+        }
+
+        if ($this instanceof JsonSerializable) {
+            return json_encode($this);
+        }
+
+        if ($this instanceof Htmlable) {
+            return $this->toHtml();
+        }
+
+        if (method_exists($this, '__toString')) {
+            return $this->__toString();
+        }
+
+        return $this;
     }
 }

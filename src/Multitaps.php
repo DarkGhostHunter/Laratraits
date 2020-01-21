@@ -3,7 +3,7 @@
 namespace DarkGhostHunter\Laratraits;
 
 /**
- * Trait Multitapable
+ * Trait Multitaps
  * ---
  * This is a hacky way to "tap" indefinitely the current class instance. To stop multitaping, you can use
  * the "$target" public property to access the underlying object, or append "AndUntap" to any method.
@@ -11,7 +11,7 @@ namespace DarkGhostHunter\Laratraits;
  *
  * @package DarkGhostHunter\Laratraits
  */
-trait Multitapable
+trait Multitaps
 {
     /**
      * Taps this current instance infinitely.

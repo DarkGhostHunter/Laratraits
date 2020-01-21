@@ -19,7 +19,7 @@ class InfiniteHigherOrderTapProxy extends HigherOrderTapProxy
         // If the method to calls ends with "AndUntap", we will redirect the method original
         // name to the target class, and return the result. Otherwise, we will keep pushing
         // each of the methods incoming to the underlying class instance and return this.
-        if (Str::endsWith('AndUntap', $method)) {
+        if (Str::endsWith($method, 'AndUntap')) {
             return $this->target->{substr($method, 0, -8)}(...$parameters);
         }
 

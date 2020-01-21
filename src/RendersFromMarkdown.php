@@ -43,33 +43,30 @@ trait RendersFromMarkdown
     /**
      * Returns the markdown text to parse.
      *
-     * @return string
+     * @return string|mixed
      */
-    protected function markdownText() : string
-    {
-        throw new \LogicException(
-            'The class '. class_basename($this) . ' must point the markdown text to parse.'
-        );
-    }
+    abstract protected function getMarkdown();
 
     /**
      * Returns an HTML String instance containing HTML from a markdown text.
      *
-     * @param  string|null  $location
      * @return \Illuminate\Support\HtmlString
      */
-    protected function parseMarkdown(string $location = null)
+    public function parseMarkdown()
     {
-        $value = data_get($this, $location ?? $this->markdownText());
-
-        if (empty($value)) {
+        if (empty($text = $this->getMarkdown())) {
             return new HtmlString('');
         }
 
-        if (is_array($value) || $value instanceof Collection) {
-            $value = implode(PHP_EOL, $value);
+        // If the data is an array, or a collection, we will treat each array item as a line.
+        if ($text instanceof Collection) {
+            $text = $text->toArray();
         }
 
-        return Markdown::parse($value);
+        if (is_array($text)) {
+            $text = implode(PHP_EOL, $text);
+        }
+
+        return Markdown::parse((string)$text);
     }
 }
