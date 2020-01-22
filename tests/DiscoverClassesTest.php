@@ -13,8 +13,8 @@ class DiscoverClassesTest extends TestCase
 {
     public function testDiscoverClasses()
     {
-        if (isset($_ENV['GITHUB_ACTIONS'])) {
-            return $this->assertTrue(true);
+        if (getenv('GITHUB_ACTIONS')) {
+            return $this->markTestSkipped('Github actions does not detect the stub directory');
         }
 
         $discovers = new class() {
@@ -57,8 +57,8 @@ class DiscoverClassesTest extends TestCase
 
     public function testExceptionWhenInterfaceDoesntExists()
     {
-        if (isset($_ENV['GITHUB_ACTIONS'])) {
-            return $this->assertTrue(true);
+        if (getenv('GITHUB_ACTIONS')) {
+            return $this->markTestSkipped('Github actions does not detect the stub directory');
         }
 
         $this->expectException(InvalidArgumentException::class);
