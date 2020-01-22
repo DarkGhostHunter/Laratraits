@@ -2,10 +2,10 @@
 
 namespace DarkGhostHunter\Laratraits\Models;
 
-use DarkGhostHunter\Laratraits\Scopes\DefaultColumns;
+use DarkGhostHunter\Laratraits\Scopes\DefaultColumns as DefaultColumnsScope;
 
 /**
- * Trait SelectsDefaultColumns
+ * Trait DefaultColumns
  * ---
  * This is a convenient way to make a Model only select certain columns by default. This may be handy to save
  * large chunks of memory when the retrieved record contains too much data that most of the time isn't used,
@@ -13,22 +13,25 @@ use DarkGhostHunter\Laratraits\Scopes\DefaultColumns;
  *
  * @package DarkGhostHunter\Laratraits\Models
  */
-trait SelectsDefaultColumns
+trait DefaultColumns
 {
-    /**
-     * Default Selectable columns
-     *
-     * @var array
-     */
-    protected static $defaultColumns = [];
-
     /**
      * Boot the SelectSomeColumns trait.
      *
      * @return void
      */
-    protected static function bootSelectsSomeColumns()
+    protected static function bootDefaultColumns()
     {
-        static::addGlobalScope(new DefaultColumns(static::$defaultColumns));
+        static::addGlobalScope(new DefaultColumnsScope(static::getDefaultColumns()));
+    }
+
+    /**
+     * Get the Default Columns to query.
+     *
+     * @return array
+     */
+    protected static function getDefaultColumns()
+    {
+        return static::$defaultColumns ?? [];
     }
 }

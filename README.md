@@ -1,24 +1,29 @@
 ![Paul Felberbauer - Unsplash #tM16SjCYy84](https://images.unsplash.com/photo-1526814895543-b5be7268dd1e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&h=400&q=80)
 
-# Laratraits [WIP]
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/darkghosthunter/laratraits.svg?style=flat-square)](https://packagist.org/packages/darkghosthunter/laratraits) [![License](https://poser.pugx.org/darkghosthunter/laratraits/license)](https://packagist.org/packages/darkghosthunter/laratraits)
+![](https://img.shields.io/packagist/php-v/darkghosthunter/laratraits.svg)
+ ![](https://github.com/DarkGhostHunter/Laratraits/workflows/PHP%20Composer/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/DarkGhostHunter/Laratraits/badge.svg?branch=master)](https://coveralls.io/github/DarkGhostHunter/Laratraits?branch=master)
+
+# Laratraits
 
 Laratraits is a Laravel package containing useful traits and some classes to use along your Controllers, Service Providers, Commands and what not. Take a look!
 
 ## What it includes
 
-Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem.
+Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, **as long you include the [LICENSE](LICENSE.md)**.
 
 ### General
 
-* `DiscoverClasses`: Discovers classes inside a directory, optionally filtered by a method name or interface.
-* `DispatchesItself`: Allows to dispatch the object instance to one of many Jobs previously set.
-* `Multitapable`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
-* `PipesThrough`: Allows a class to be sent itself through a pipeline.
-* `RendersFromMarkdown`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
-* `ValidatesItself`: Validates an incoming data using self-contained rules.
-* `SavesToSession`: Saves the object (or part of it) to the session.
-* `SavesToCache`: Saves the object (or part of it) to the cache.
-* `SavesToStorage`: Saves the object (or part of it) to the storage.
+* `[DiscoverClasses](src/DiscoverClasses.php)`: Discovers classes inside a directory, optionally filtered by a method name or interface.
+* `[DispatchesItself](src/DispatchesItself.php)`: Allows to dispatch the object instance to one of many Jobs previously set.
+* `[Multitapable](src/Multitapable.php)`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
+* `[PipesThrough](src/PipesThrough.php)`: Allows a class to be sent itself through a pipeline.
+* `[RendersFromMarkdown](src/RendersFromMarkdown.php)`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
+* `[ValidatesItself](src/ValidatesItself.php)`: Validates an incoming data using self-contained rules.
+* `[SavesToSession](src/SavesToSession.php)`: Saves the object (or part of it) to the session.
+* `[SavesToCache](src/SavesToCache.php)`: Saves the object (or part of it) to the cache.
+* `[SavesToStorage](src/SavesToStorage.php)`: Saves the object (or part of it) to the storage.
 
 ### Models
 
@@ -34,8 +39,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 ### Controllers
 
-* `ThrottlesRequest`: A customizable request throttler.
-* `CacheKeysRequest`: Creates a digestible cache key based on a hash of the Controller Class, Request path and (optionally) the User authenticated.
+* `ThrottlesRequests`: An automatic and customizable request throttler, much like the default `ThrottlesLogins` trait.
 
 ### Middleware
 
@@ -43,12 +47,23 @@ Before installing, take a look into the list. If you're only using one, just cop
 * `ShareVerifiedUser`: Shares the authenticated user across all views.
 * `ValidateConsumableSignature`: Makes signed routes work only one time except on client or server errors.
 
-### Service Providers
+## Intalling
 
-* `RouteBindsClasses`: Explicitly bind a list of classes to the Router, allowing them to be instantiated by their value or using `fromRouteBinding()`. Classes need to implement `RouteBound`.
-* `CallsDiscoveredClasses`: Loops through discovered classes from a path and runs a callable. 
+Just fire up composer and that's it.
+
+    composer require darkghosthunter/laratraits
+
+
+## Usage
+
+Just check any of these traits
+
+## Missing a trait?
+
+You can make an issue with your proposal. Consider the logic must be contained inside a trait. PRs have priority.
 
 ## License
 
 This package is open-sourced software licensed under the MIT license.
+
 Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2020 Laravel LLC.

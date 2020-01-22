@@ -2,7 +2,6 @@
 
 namespace DarkGhostHunter\Laratraits\Controllers;
 
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Cache\RateLimiter;
@@ -10,20 +9,16 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Trait ThrottlesRequest
+ * Trait ThrottlesRequests
  * ---
- * This trait allows your Controller to throttle a given Request with more control. It's recommended to use
- * `checkThrottling` and `incrementAttempts` for easy setup in your Controller method, and only one of
- * them being throttled, but you can still go wild and use this trait for fine grain throttling.
+ * This trait allows a controller action to be throttled. Basically, in your action, you use the `checkThrottle()`
+ * method with the response, and use the `incrementsAttempts()` along with the minutes to decay. Defaults are
+ * automatically set, but you can override them, allowing greater control on what and when to throttle.
  *
  * @package DarkGhostHunter\Laratraits\Controllers
- *
- * @see \Illuminate\Foundation\Auth\ThrottlesLogins
  */
-trait ThrottlesRequest
+trait ThrottlesRequests
 {
-    use CacheKeysRequest;
-
     /**
      * The Rate Limiter instance
      *
@@ -32,45 +27,37 @@ trait ThrottlesRequest
     protected $limiter;
 
     /**
-     * Check if the request should be throttled
+     * Execute an action on the controller.
      *
-     * @param $request
-     * @param  bool  $hit
-     * @param  int|null  $maxAttempts
-     * @param  int|null  $decayMinutes
-     * @return void
+     * @param  \Illuminate\Http\Request|null  $request
+     * @param  int  $attempts
+     * @return \Symfony\Component\HttpFoundation\Response|void
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function checkThrottling($request,
-                                       bool $hit = false,
-                                       int $maxAttempts = null,
-                                       int $decayMinutes = null)
+    public function checkThrottle(Request $request = null, int $attempts = null)
     {
-        if ($this->hasTooManyAttempts($request, $maxAttempts)) {
+        $request = $request ?? app('request');
 
+        if ($this->hasTooManyAttempts($request, $attempts)) {
             if (method_exists($this, 'fireThrottledEvent')) {
-                $this->fireThrottledEvent($request, $this->throttleKey($request));
+                $this->fireThrottledEvent($request);
             }
 
             $this->sendThrottledResponse($request);
-        }
-
-        if ($hit) {
-            $this->incrementAttempts($request, $decayMinutes);
         }
     }
 
     /**
      * Determine if the user has attempted too many times.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int|null $maxAttempts
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $attempts
      * @return bool
      */
-    protected function hasTooManyAttempts(Request $request, int $maxAttempts = null)
+    protected function hasTooManyAttempts(Request $request, int $attempts = null)
     {
         return $this->limiter()->tooManyAttempts(
-            $this->throttleKey($request), $maxAttempts ?? $this->maxAttempts()
+            $this->throttleKey($request), $attempts ?? $this->maxAttempts()
         );
     }
 
@@ -78,13 +65,13 @@ trait ThrottlesRequest
      * Increment the attempts for the user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int|null  $decayMinutes
+     * @param  int|null  $decay
      * @return void
      */
-    protected function incrementAttempts(Request $request, int $decayMinutes = null)
+    protected function incrementAttempts(Request $request, int $decay = null)
     {
         $this->limiter()->hit(
-            $this->throttleKey($request), ($decayMinutes ?? $this->decayMinutes()) * 60
+            $this->throttleKey($request), ($decay ?? $this->decayMinutes()) * 60
         );
     }
 
@@ -92,7 +79,7 @@ trait ThrottlesRequest
      * Redirect the user after determining he is throttled.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @return \Symfony\Component\HttpFoundation\Response|void
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -115,17 +102,6 @@ trait ThrottlesRequest
     }
 
     /**
-     * Clear the number of attempts for the given request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    protected function clearAttempts(Request $request)
-    {
-        $this->limiter()->clear($this->throttleKey($request));
-    }
-
-    /**
      * Get the throttle key for the given request.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -133,7 +109,7 @@ trait ThrottlesRequest
      */
     protected function throttleKey(Request $request)
     {
-        return $this->requestCacheKey($request);
+        return 'request|throttle|' . $request->fingerprint();
     }
 
     /**
@@ -151,7 +127,7 @@ trait ThrottlesRequest
      *
      * @return int
      */
-    public function maxAttempts()
+    protected function maxAttempts()
     {
         return $this->maxAttempts ?? 5;
     }

@@ -36,12 +36,12 @@ class UuidScope implements Scope
      */
     protected function macroFindUuid()
     {
-        return function($uuid, $columns = ['*']) {
+        return function(Builder $builder, $uuid, $columns = ['*']) {
             if (is_array($uuid) || $uuid instanceof Arrayable) {
-                return $this->findManyUuid($uuid, $columns);
+                return $builder->findManyUuid($uuid, $columns);
             }
 
-            return $this->whereUuid($uuid)->first($columns);
+            return $builder->whereUuid($uuid)->first($columns);
         };
     }
 
@@ -52,14 +52,14 @@ class UuidScope implements Scope
      */
     protected function macroFindManyUuid()
     {
-        return function($uuids, $columns = ['*']) {
+        return function(Builder $builder, $uuids, $columns = ['*']) {
             $uuids = $uuids instanceof Arrayable ? $uuids->toArray() : $uuids;
 
             if (empty($uuids)) {
-                return $this->model->newCollection();
+                return $builder->getModel()->newCollection();
             }
 
-            return $this->whereUuid($uuids)->get($columns);
+            return $builder->whereUuid($uuids)->get($columns);
         };
     }
 
@@ -70,8 +70,8 @@ class UuidScope implements Scope
      */
     protected function macroFindUuidOrFail()
     {
-        return function($uuid, $columns = ['*']) {
-            $result = $this->findUuid($uuid, $columns);
+        return function(Builder $builder, $uuid, $columns = ['*']) {
+            $result = $builder->findUuid($uuid, $columns);
 
             if (is_array($uuid)) {
                 if (count($result) === count(array_unique($uuid))) {
@@ -82,7 +82,7 @@ class UuidScope implements Scope
             }
 
             throw (new ModelNotFoundException)->setModel(
-                get_class($this->model), $uuid
+                get_class($builder->getModel()), $uuid
             );
         };
     }
@@ -94,12 +94,12 @@ class UuidScope implements Scope
      */
     protected function macroFindUuidOrNew()
     {
-        return function($uuid, $columns = ['*']) {
-            if (($model = $this->findUuid($uuid, $columns)) !== null) {
+        return function(Builder $builder, $uuid, $columns = ['*']) {
+            if (($model = $builder->findUuid($uuid, $columns)) !== null) {
                 return $model;
             }
 
-            return $this->newModelInstance();
+            return $builder->newModelInstance();
         };
     }
 
@@ -110,14 +110,16 @@ class UuidScope implements Scope
      */
     protected function macroWhereUuid()
     {
-        return function($uuid) {
+        return function(Builder $builder, $uuid) {
             if (is_array($uuid) || $uuid instanceof Arrayable) {
-                $this->query->whereIn($this->model->getQualifiedUuidColumn(), $uuid);
+                $builder->getQuery()->whereIn(
+                    $builder->getModel()->getQualifiedUuidColumn(), $uuid
+                );
 
-                return $this;
+                return $builder;
             }
 
-            return $this->where($this->model->getQualifiedUuidColumn(), '=', $uuid);
+            return $builder->where($builder->getModel()->getQualifiedUuidColumn(), '=', $uuid);
         };
     }
 
@@ -128,14 +130,16 @@ class UuidScope implements Scope
      */
     protected function macroWhereUuidNot()
     {
-        return function ($uuid) {
+        return function (Builder $builder, $uuid) {
             if (is_array($uuid) || $uuid instanceof Arrayable) {
-                $this->query->whereNotIn($this->model->getQualifiedUuidColumn(), $uuid);
+                $builder->getQuery()->whereNotIn(
+                    $builder->getModel()->getQualifiedUuidColumn(), $uuid
+                );
 
-                return $this;
+                return $builder;
             }
 
-            return $this->where($this->model->getQualifiedUuidColumn(), '!=', $uuid);
+            return $builder->where($builder->getModel()->getQualifiedUuidColumn(), '!=', $uuid);
         };
     }
 

@@ -22,8 +22,19 @@ trait AutoFill
      */
     protected function initializeAutoFill()
     {
-        foreach ($this->autoFillable() as $value) {
-            $this->{$key} = $this->{'fill' . Str::studly($value) . 'Attribute'}($value);
+        foreach ($this->autoFillable() ?? [] as $attribute) {
+            try {
+                $result = $this->{'fill' . Str::studly($attribute) . 'Attribute'}($attribute);
+            } catch (\BadMethodCallException $exception) {
+                $method = 'fill' . Str::studly($attribute) . 'Attribute';
+                throw new \BadMethodCallException(
+                    "The attribute [$attribute] doesn't have a filler method [$method]."
+                );
+            }
+
+            if (! isset($this->attributes[$attribute]) && $result) {
+                $this->attributes[$attribute] = $result;
+            }
         }
     }
 
@@ -34,6 +45,6 @@ trait AutoFill
      */
     protected function autoFillable()
     {
-        return [];
+        return $this->autoFillable ?? [];
     }
 }

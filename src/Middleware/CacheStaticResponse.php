@@ -4,8 +4,7 @@ namespace DarkGhostHunter\Laratraits\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Cache\Repository;
-use DarkGhostHunter\Laratraits\Controllers\CacheKeysRequest;
+use Illuminate\Contracts\Cache\Factory;
 
 /**
  * Class CacheStaticResponse
@@ -16,8 +15,6 @@ use DarkGhostHunter\Laratraits\Controllers\CacheKeysRequest;
  */
 class CacheStaticResponse
 {
-    use CacheKeysRequest;
-
     /**
      * Cache manager
      *
@@ -28,9 +25,9 @@ class CacheStaticResponse
     /**
      * Create a new ValidateSignature instance.
      *
-     * @param  \Illuminate\Contracts\Cache\Repository  $cache
+     * @param  \Illuminate\Contracts\Cache\Factory  $cache
      */
-    public function __construct(Repository $cache)
+    public function __construct(Factory $cache)
     {
         $this->cache = $cache;
     }
@@ -65,7 +62,7 @@ class CacheStaticResponse
      */
     public function cacheResponse($request, $response, $ttl, string $store = null)
     {
-        $this->cache->store($store)->put($this->requestCacheKey($request), $response, $ttl);
+        $this->cache->store($store)->put($this->cacheKey($request), $response, $ttl);
 
         return $response;
     }
@@ -80,6 +77,17 @@ class CacheStaticResponse
      */
     protected function hasResponseInCache(Request $request, string $store = null)
     {
-        return $this->cache->store($store)->get($this->requestCacheKey($request));
+        return $this->cache->store($store)->get($this->cacheKey($request));
+    }
+
+    /**
+     * Returns the key to use for caching the response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    protected function cacheKey(Request $request)
+    {
+        return 'response|cache_static|' . $request->fingerprint();
     }
 }

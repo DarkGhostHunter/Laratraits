@@ -16,13 +16,6 @@ use Closure;
 trait SoftCachesAccessors
 {
     /**
-     * The accessors to cache in the model
-     *
-     * @var array
-     */
-    protected $cachedAccessors = [];
-
-    /**
      * List of cached accessor values
      *
      * @var array
@@ -39,7 +32,7 @@ trait SoftCachesAccessors
      */
     protected function mutateAttribute($key, $value)
     {
-        if (!isset($this->cachedAccessor[$key])) {
+        if (! in_array($key, $this->cachedAccessors(), true)) {
             return parent::mutateAttribute($key, $value);
         }
 
@@ -87,5 +80,15 @@ trait SoftCachesAccessors
         $this->cachedAccessorsValues = $accessors;
 
         return $value;
+    }
+
+    /**
+     * The accessors to cache in the model
+     *
+     * @return array
+     */
+    protected function cachedAccessors()
+    {
+        return $this->cachedAccessors ?? [];
     }
 }

@@ -2,10 +2,6 @@
 
 namespace DarkGhostHunter\Laratraits\Models;
 
-use DateTime;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Collection as BaseCollection;
-
 /**
  * Trait DynamicallyMutates
  * ---
@@ -20,23 +16,25 @@ trait DynamicallyMutates
     /**
      * Dynamically mutates an attribute by the other attribute value as "type".
      *
-     * @param  string  $type
-     * @param $value
+     * @param  string  $value The attribute name to take.
+     * @param  string  $type The attribute that holds the type
      * @return mixed
      */
-    protected function castValueInto($value, string $type)
+    protected function castAttributeInto(string $value, string $type = null)
     {
-        // This is a hacky way to reuse the same casts array for our own bidding.
+        $type = $type ?? $value . '_type';
+
+        // We will save the original casted attributes, swap them, and then restore them.
         $original = $this->casts;
 
         $this->casts = [
-            'value' => $this->{$type}
+            $value => $this->attributes[$type],
         ];
 
-        $value = $this->castAttribute('value', $value);
+        $attribute = $this->castAttribute($value, $this->attributes[$value]);
 
         $this->casts = $original;
 
-        return $value;
+        return $attribute;
     }
 }

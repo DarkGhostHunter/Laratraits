@@ -2,7 +2,6 @@
 
 namespace DarkGhostHunter\Laratraits\Scopes;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -28,8 +27,8 @@ trait MacrosEloquent
         // add macros for only the methods who start with "macro" that return a Closure.
         // For example, the "macroAddOne()" method will be registered as "addOne()".
         foreach (get_class_methods($this) as $method) {
-            if (Str::startsWith('macro', $method)) {
-                $builder->macro(lcfirst(substr($method, 0, 5)), $this->{$method}($builder));
+            if (strpos($method, 'macro') === 0) {
+                $builder->macro(lcfirst(substr($method, 5)), $this->{$method}($builder));
             }
         }
     }

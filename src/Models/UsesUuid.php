@@ -60,7 +60,7 @@ trait UsesUuid
      *
      * @return string
      */
-    protected function getQualifiedUuidColumn()
+    public function getQualifiedUuidColumn()
     {
         return 'uuid';
     }

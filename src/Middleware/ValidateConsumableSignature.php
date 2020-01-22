@@ -66,7 +66,7 @@ class ValidateConsumableSignature
     }
 
     /**
-     * Checks if the signature was consumed
+     * Checks if the signature was consumed.
      *
      * @param  \Illuminate\Http\Request $request
      * @return bool
@@ -78,14 +78,15 @@ class ValidateConsumableSignature
     }
 
     /**
-     * Consumes the signature, marking it as unavailable
+     * Consumes the signature, marking it as unavailable.
      *
      * @param  \Illuminate\Http\Request $request
      * @return void
      */
     protected function consumeSignature(Request $request)
     {
-        $this->cache->put($this->cacheKey($request), null, Carbon::createFromTimestamp($request->query('expires')));
+        $this->cache->put($this->cacheKey($request), null,
+            Carbon::createFromTimestamp($request->query('expires')));
     }
 
     /**
@@ -96,6 +97,6 @@ class ValidateConsumableSignature
      */
     protected function cacheKey(Request $request)
     {
-        return 'consumed_route_signature|' . $request->query('signature');
+        return 'request|signature|' . $request->query('signature');
     }
 }
