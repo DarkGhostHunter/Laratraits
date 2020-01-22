@@ -15,15 +15,15 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 ### General
 
-* `[DiscoverClasses](src/DiscoverClasses.php)`: Discovers classes inside a directory, optionally filtered by a method name or interface.
-* `[DispatchesItself](src/DispatchesItself.php)`: Allows to dispatch the object instance to one of many Jobs previously set.
-* `[Multitapable](src/Multitapable.php)`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
-* `[PipesThrough](src/PipesThrough.php)`: Allows a class to be sent itself through a pipeline.
-* `[RendersFromMarkdown](src/RendersFromMarkdown.php)`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
-* `[ValidatesItself](src/ValidatesItself.php)`: Validates an incoming data using self-contained rules.
-* `[SavesToSession](src/SavesToSession.php)`: Saves the object (or part of it) to the session.
-* `[SavesToCache](src/SavesToCache.php)`: Saves the object (or part of it) to the cache.
-* `[SavesToStorage](src/SavesToStorage.php)`: Saves the object (or part of it) to the storage.
+* `DiscoverClasses`: Discovers classes inside a directory, optionally filtered by a method name or interface.
+* `DispatchesItself`: Allows to dispatch the object instance to one of many Jobs previously set.
+* `Multitapable`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
+* `PipesThrough`: Allows a class to be sent itself through a pipeline.
+* `RendersFromMarkdown`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
+* `ValidatesItself`: Validates an incoming data using self-contained rules.
+* `SavesToSession`: Saves the object (or part of it) to the session.
+* `SavesToCache`: Saves the object (or part of it) to the cache.
+* `SavesToStorage`: Saves the object (or part of it) to the storage.
 
 ### Models
 
