@@ -11,7 +11,7 @@ Laratraits is a Laravel package containing useful traits and some classes to use
 
 ## What it includes
 
-Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, **as long you include the [LICENSE](LICENSE.md)**.
+Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License.
 
 ### General
 
@@ -53,14 +53,37 @@ Just fire up composer and that's it.
 
     composer require darkghosthunter/laratraits
 
-
 ## Usage
 
-Just check any of these traits
+Just check any of these traits. Each trait and other classes contains an brief explanation on how to use in the first lines.
+
+If you want to use one, [just do it](https://www.php.net/manual/en/language.oop5.traits.php).
+
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use DarkGhostHunter\Laratraits\SavesToCache;
+use DarkGhostHunter\Laratraits\Models\UsesUuid;
+
+class Post extends Model
+{
+    use UsesUuid;
+    use SavesToCache;
+    
+    // ...
+}
+```
+
+Some traits may instance other classes for advanced logic if necessary, like the `DiscoverClasses` trait.
+
+> There is no application overhead since there is no Service Provider registered.
 
 ## Missing a trait?
 
-You can make an issue with your proposal. Consider the logic must be contained inside a trait. PRs have priority.
+You can make an issue with your proposal. Consider the logic must be contained inside a trait. PRs are preferred with tests.
 
 ## License
 
