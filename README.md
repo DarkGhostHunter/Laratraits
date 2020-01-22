@@ -15,37 +15,37 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 ### General
 
-* `DiscoverClasses`: Discovers classes inside a directory, optionally filtered by a method name or interface.
-* `DispatchesItself`: Allows to dispatch the object instance to one of many Jobs previously set.
-* `Multitapable`: Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
-* `PipesThrough`: Allows a class to be sent itself through a pipeline.
-* `RendersFromMarkdown`: Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
-* `ValidatesItself`: Validates an incoming data using self-contained rules.
-* `SavesToSession`: Saves the object (or part of it) to the session.
-* `SavesToCache`: Saves the object (or part of it) to the cache.
-* `SavesToStorage`: Saves the object (or part of it) to the storage.
+* [`DiscoverClasses`](src/DiscoverClasses.php): Discovers classes inside a directory, optionally filtered by a method name or interface.
+* [`DispatchesItself`](src/DispatchesItself.php): Allows to dispatch the object instance to one of many Jobs previously set.
+* [`Multitapable`](src/Multitapable.php): Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
+* [`PipesThrough`](src/PipesThrough.php): Allows a class to be sent itself through a pipeline.
+* [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
+* [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
+* [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
+* [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache..php
+* [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
 
 ### Models
 
-* `AutoFill`: Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
-* `UsesUuid`: Automatically fills the UUID on the Model. Comes with an optional Eloquent Query Builder local scopes. You can override the UUID generation.
-* `SelectsDefaultColumns`: Adds a `DefaultColumns` Global Scope to the Model that selects only given default columns, unless overrun manually in the query.
-* `SoftCacheAccessors`: Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
-* `DynamicallyMutates`: Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
+* [`AutoFill`](src/Models/AutoFill.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
+* [`UsesUuid`](src/Models/UsesUuid.php): Automatically fills the UUID on the Model. Comes with an optional Eloquent Query Builder local scopes. You can override the UUID generation.
+* [`SelectsDefaultColumns`](src/Models/SelectsDefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model that selects only given default columns, unless overrun manually in the query.
+* [`SoftCacheAccessors`](src/Models/SoftCacheAccessors.php): Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
+* [`DynamicallyMutates`](src/Models/DynamicallyMutates.php): Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
 
 ### Global Scopes
 
-* `MacrosEloquent`: Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append a method with "macro" and return a Closure to use as macro.
+* [`MacrosEloquent`](src/Scopes/MacrosEloquent.php): Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append a method with "macro" and return a Closure to use as macro.
 
 ### Controllers
 
-* `ThrottlesRequests`: An automatic and customizable request throttler, much like the default `ThrottlesLogins` trait.
+* [`ThrottlesRequests`](src/Controllers/ThrottlesRequests.php): An automatic and customizable request throttler, much like the default `ThrottlesLogins` trait.
 
 ### Middleware
 
-* `CacheStaticResponse`: Caches (hopefully) static responses, avoiding running the controller logic, for a given time.
-* `ShareVerifiedUser`: Shares the authenticated user across all views.
-* `ValidateConsumableSignature`: Makes signed routes work only one time except on client or server errors.
+* [`CacheStaticResponse`](src/Middleware/CacheStaticResponse.php): Caches (hopefully) static responses, avoiding running the controller logic, for a given time.
+* [`ShareVerifiedUser`](src/Middleware/ShareVerifiedUser.php): Shares the authenticated user across all views.
+* [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes signed routes work only one time except on client or server errors.
 
 ## Intalling
 
