@@ -1,4 +1,35 @@
 <?php
+/**
+ * Saves to Storage
+ *
+ * This trait allows an object to be saved to the application storage.
+ *
+ * MIT License
+ *
+ * Copyright (c) Italo Israel Baeza Cabrera
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ * Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2020 Laravel LLC.
+ *
+ * @link https://github.com/DarkGhostHunter/Laratraits
+ */
 
 namespace DarkGhostHunter\Laratraits;
 
@@ -8,15 +39,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Htmlable;
 
-/**
- * Trait SavesToStorage
- * ---
- * This trait allows an object to be saved into a storage disk with convenient methods. Since it's very
- * improbable to handle multiple storage disks, there is no "default" disk but only the one you set.
- * Remember to always ensure you set a string or anything serializable, along with a valid path.
- *
- * @package DarkGhostHunter\Laratraits
- */
 trait SavesToStorage
 {
     /**
