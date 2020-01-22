@@ -31,7 +31,7 @@ class DiscoverClassesTest extends TestCase
             });
 
         /** @var \Illuminate\Support\Collection $discovered */
-        $discovered = $discovers->discover('Tests/Stubs');
+        $discovered = $discovers->discover('tests/Stubs');
 
         $this->assertCount(3, $discovered);
         $this->assertTrue($discovered->contains('Tests\Stubs\TestDiscoverableClassFoo'));
