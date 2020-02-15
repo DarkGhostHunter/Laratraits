@@ -17,7 +17,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 * [`DiscoverClasses`](src/DiscoverClasses.php): Discovers classes inside a directory, optionally filtered by a method name or interface.
 * [`DispatchesItself`](src/DispatchesItself.php): Allows to dispatch the object instance to one of many Jobs previously set.
-* [`Multitapable`](src/Multitapable.php): Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
+* [`Multitaps`](src/Multitaps.php): Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
 * [`PipesThrough`](src/PipesThrough.php): Allows a class to be sent itself through a pipeline.
 * [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
 * [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
@@ -29,9 +29,10 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 * [`AutoFill`](src/Models/AutoFill.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`UsesUuid`](src/Models/UsesUuid.php): Automatically fills the UUID on the Model. Comes with an optional Eloquent Query Builder local scopes. You can override the UUID generation.
-* [`SelectsDefaultColumns`](src/Models/SelectsDefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model that selects only given default columns, unless overrun manually in the query.
-* [`SoftCacheAccessors`](src/Models/SoftCacheAccessors.php): Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
+* [`DefaultColumns`](src/Models/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model that selects only given default columns, unless overrun manually in the query.
+* [`SoftCachesAccessors`](src/Models/SoftCachesAccessors.php): Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
 * [`DynamicallyMutates`](src/Models/DynamicallyMutates.php): Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
+* [`NeighbourRecords`](src/Models/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
 
 ### Global Scopes
 
