@@ -33,6 +33,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`SoftCachesAccessors`](src/Models/SoftCachesAccessors.php): Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
 * [`DynamicallyMutates`](src/Models/DynamicallyMutates.php): Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
 * [`NeighbourRecords`](src/Models/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
+* [`HasSlug`](src/Models/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
 
 ### Global Scopes
 

@@ -3,8 +3,12 @@
  * Has Slug URL
  *
  * This trait is just a handy collection of methods to allow any models to be routed by the "slug" on requests.
- * You need to set what string from the model use as a base to convert to an slug and, in your table, add the
- * "slug" string column with an index for faster retrieval. The slug is generated automatically when saving.
+ * You'll need to set what text from the model use as a base to convert to an slug and, in your table, add the
+ * "slug" string column with an unique for faster retrieval. The slug is generated automatically when saving.
+ *
+ * If you want to copy-paste the migration needed to your sluggable table model, use this:
+ *
+ *     $table->string('slug')->unique();
  *
  * MIT License
  *
