@@ -42,7 +42,7 @@ use Illuminate\Database\Eloquent\Builder;
 class DefaultColumns implements Scope
 {
     /**
-     * The Columns to select by defaul.
+     * The Columns to select by default.
      *
      * @var array
      */
