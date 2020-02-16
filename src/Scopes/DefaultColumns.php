@@ -42,7 +42,7 @@ use Illuminate\Database\Eloquent\Builder;
 class DefaultColumns implements Scope
 {
     /**
-     * The Columns to select by defaul.
+     * The Columns to select by default.
      *
      * @var array
      */
@@ -63,8 +63,10 @@ class DefaultColumns implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        return $this->defaultColumns === []
-            ? $builder
-            : $builder->select($this->defaultColumns);
+        if ($this->defaultColumns === [] || $builder->getQuery()->columns) {
+            return $builder;
+        }
+
+        return $builder->select($this->defaultColumns);
     }
 }
