@@ -35,6 +35,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`NeighbourRecords`](src/Models/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
 * [`HasSlug`](src/Models/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
 * [`ModelType`](src/Models/ModelType.php): Useful for Models that share a single table but a different "column type".
+* [`HasFile`](src/Models/HasFile.php): Associates a single file to the Model. The File contents is automatically saved when model is persisted/updated. Hash checking is always done. 
 
 ### Global Scopes
 
