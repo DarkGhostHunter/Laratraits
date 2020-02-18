@@ -7,7 +7,7 @@
 
 # Laratraits
 
-Laratraits is a Laravel package containing useful traits and some classes to use along your Controllers, Service Providers, Commands and what not. Take a look!
+Laratraits is a Laravel package containing useful traits and some classes to use along your Models, Controllers, Service Providers and what not. Take a look!
 
 ## What it includes
 
@@ -34,6 +34,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`DynamicallyMutates`](src/Models/DynamicallyMutates.php): Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
 * [`NeighbourRecords`](src/Models/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
 * [`HasSlug`](src/Models/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
+* [`ModelType`](src/Models/ModelType.php): Useful for Models that share a single table but a different "column type".
 
 ### Global Scopes
 
@@ -49,7 +50,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`ShareVerifiedUser`](src/Middleware/ShareVerifiedUser.php): Shares the authenticated user across all views.
 * [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes signed routes work only one time except on client or server errors.
 
-## Intalling
+## Installing
 
 Just fire up composer and that's it.
 
