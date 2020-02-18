@@ -45,7 +45,7 @@ trait ModelType
      *
      * @return void
      */
-    protected static function bootExtendsByType()
+    protected static function bootModelType()
     {
         static::addGlobalScope(function (Builder $builder) {
             $model = $builder->getModel();
@@ -59,9 +59,8 @@ trait ModelType
      *
      * @return void
      */
-    protected function initializeExtendsByType()
+    protected function initializeModelType()
     {
-        // Adds the type automatically to the attributes array.
         $this->attributes[$this->getTypeQualifiedColumn()] = $this->getTypeName();
     }
 
