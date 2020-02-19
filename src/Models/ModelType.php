@@ -61,7 +61,7 @@ trait ModelType
      */
     protected function initializeModelType()
     {
-        $this->attributes[$this->getTypeQualifiedColumn()] = $this->getTypeName();
+        $this->attributes[$this->getQualifiedTypeColumn()] = $this->getTypeName();
     }
 
     /**
@@ -69,7 +69,7 @@ trait ModelType
      *
      * @return string
      */
-    protected function getTypeQualifiedColumn()
+    protected function getQualifiedTypeColumn()
     {
         return 'type';
     }
