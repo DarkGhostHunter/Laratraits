@@ -50,7 +50,7 @@ trait ModelType
         static::addGlobalScope(function (Builder $builder) {
             $model = $builder->getModel();
 
-            return $builder->where($model->getTypeQualifiedColumn(), $model->getTypeName());
+            return $builder->where($model->getQualifiedTypeColumn(), $model->getTypeName());
         });
     }
 
