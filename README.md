@@ -48,7 +48,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 ### Middleware
 
 * [`CacheStaticResponse`](src/Middleware/CacheStaticResponse.php): Caches (hopefully) static responses, avoiding running the controller logic, for a given time.
-* [`ShareVerifiedUser`](src/Middleware/ShareVerifiedUser.php): Shares the authenticated user across all views.
+* [`ShareAuthenticatedUser`](src/Middleware/ShareAuthenticatedUser.php): Shares the authenticated user across all views.
 * [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes signed routes work only one time except on client or server errors.
 
 ## Installing
