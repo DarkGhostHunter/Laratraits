@@ -37,6 +37,10 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`ModelType`](src/Models/ModelType.php): Useful for Models that share a single table but a different "column type".
 * [`HasFile`](src/Models/HasFile.php): Associates a single file to the Model. The File contents is automatically saved when model is persisted/updated. Hash checking is always done. 
 
+### Pipelines
+
+* [`QueuesPipeline`](src/Pipelines/DispatchesPipeline.php): Makes any class extending a Pipeline to be queueable, which is useful when pipelines have expensive logic.
+
 ### Global Scopes
 
 * [`MacrosEloquent`](src/Scopes/MacrosEloquent.php): Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append a method with "macro" and return a Closure to use as macro.
