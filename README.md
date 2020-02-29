@@ -18,7 +18,6 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`DiscoverClasses`](src/DiscoverClasses.php): Discovers classes inside a directory, optionally filtered by a method name or interface.
 * [`DispatchesItself`](src/DispatchesItself.php): Allows to dispatch the object instance to one of many Jobs previously set.
 * [`Multitaps`](src/Multitaps.php): Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
-* [`PipesThrough`](src/PipesThrough.php): Allows a class to be sent itself through a pipeline.
 * [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
 * [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
@@ -39,7 +38,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 
 ### Pipelines
 
-* [`QueuesPipeline`](src/Pipelines/DispatchesPipeline.php): Makes any class extending a Pipeline to be queueable, which is useful when pipelines have expensive logic.
+* [`PipesThrough`](src/PipesThrough.php): Allows any class to be sent itself through a pipeline or, alternatively, queue a Job to process the pipeline later. 
 
 ### Global Scopes
 
