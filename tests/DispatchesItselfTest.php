@@ -18,14 +18,14 @@ class DispatchesItselfTest extends TestCase
         $dispatchable = new class() {
             use DispatchesItself;
 
-            protected function testJob(array $parameters)
+            protected function testJob(...$parameters)
             {
                 return QueuedCommand::dispatchNow('test_job', $parameters);
             }
 
-            protected function defaultJob(array $parameters)
+            protected function defaultJob(...$parameters)
             {
-                return QueuedCommand::dispatchNow($parameters);
+                return QueuedCommand::dispatchNow(...$parameters);
             }
         };
 

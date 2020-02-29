@@ -1,10 +1,10 @@
 <?php
 /**
- * Model Type
+ * Dispatchable Pipeline
  *
- * Assume you have a table that holds different types of audio files: podcasts, songs, snippets, etc. With
- * this trait you can set a column that will hold the type, while these models extend the same base model
- * with common properties and methods. This trait will add the scope and the type automatically to each.
+ * This class is in charge of holding the Pipeline and the "passable" thing, and execute the pipeline once
+ * this Job is dispatched. This Job instance is used when you add the "DispatchesPipeline" trait in your
+ * custom pipelines. Like all Jobs in Laravel, this is will return void once handled by the dispatcher.
  *
  * MIT License
  *
@@ -33,54 +33,55 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Models;
+namespace DarkGhostHunter\Laratraits\Jobs;
 
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Builder;
 
-trait ModelType
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Pipeline\Pipeline;
+use Illuminate\Foundation\Bus\Dispatchable;
+
+class DispatchablePipeline implements ShouldQueue
 {
+    use Dispatchable, InteractsWithQueue, SerializesModels;
+
     /**
-     * Boot the current trait.
+     * Pipeline to execute.
+     *
+     * @var \Illuminate\Contracts\Pipeline\Pipeline
+     */
+    protected $pipeline;
+
+    /**
+     * Thing to send.
+     *
+     * @var mixed
+     */
+    protected $passable;
+
+    /**
+     * Create a new Queueable Pipeline instance.
+     *
+     * @param  \Illuminate\Contracts\Pipeline\Pipeline  $pipeline
+     * @param  mixed $passable
+     * @return void
+     */
+    public function __construct(Pipeline $pipeline, $passable)
+    {
+        $this->pipeline = $pipeline;
+        $this->passable = $passable;
+    }
+
+    /**
+     * Execute the job.
      *
      * @return void
      */
-    protected static function bootModelType()
+    public function handle()
     {
-        static::addGlobalScope(function (Builder $builder) {
-            $model = $builder->getModel();
-
-            return $builder->where($model->getQualifiedTypeColumn(), $model->getTypeName());
+        $this->pipeline->send($this->passable)->then(function ($passable) {
+            return $passable;
         });
-    }
-
-    /**
-     * Initialize the current trait.
-     *
-     * @return void
-     */
-    protected function initializeModelType()
-    {
-        $this->attributes[$this->getQualifiedTypeColumn()] = $this->getTypeName();
-    }
-
-    /**
-     * Returns the name of the column that defines the model Type.
-     *
-     * @return string
-     */
-    protected function getQualifiedTypeColumn()
-    {
-        return 'type';
-    }
-
-    /**
-     * Return the name of this class type.
-     *
-     * @return string
-     */
-    protected function getTypeName()
-    {
-        return Str::kebab(class_basename(static::class));
     }
 }

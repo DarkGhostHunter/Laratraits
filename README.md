@@ -18,7 +18,6 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`DiscoverClasses`](src/DiscoverClasses.php): Discovers classes inside a directory, optionally filtered by a method name or interface.
 * [`DispatchesItself`](src/DispatchesItself.php): Allows to dispatch the object instance to one of many Jobs previously set.
 * [`Multitaps`](src/Multitaps.php): Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
-* [`PipesThrough`](src/PipesThrough.php): Allows a class to be sent itself through a pipeline.
 * [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
 * [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
@@ -37,6 +36,10 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`ModelType`](src/Models/ModelType.php): Useful for Models that share a single table but a different "column type".
 * [`HasFile`](src/Models/HasFile.php): Associates a single file to the Model. The File contents is automatically saved when model is persisted/updated. Hash checking is always done. 
 
+### Pipelines
+
+* [`PipesThrough`](src/PipesThrough.php): Allows any class to be sent itself through a pipeline or, alternatively, queue a Job to process the pipeline later. 
+
 ### Global Scopes
 
 * [`MacrosEloquent`](src/Scopes/MacrosEloquent.php): Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append a method with "macro" and return a Closure to use as macro.
@@ -48,7 +51,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 ### Middleware
 
 * [`CacheStaticResponse`](src/Middleware/CacheStaticResponse.php): Caches (hopefully) static responses, avoiding running the controller logic, for a given time.
-* [`ShareVerifiedUser`](src/Middleware/ShareVerifiedUser.php): Shares the authenticated user across all views.
+* [`ShareAuthenticatedUser`](src/Middleware/ShareAuthenticatedUser.php): Shares the authenticated user across all views.
 * [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes signed routes work only one time except on client or server errors.
 
 ## Installing

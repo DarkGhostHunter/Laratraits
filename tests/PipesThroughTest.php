@@ -4,7 +4,10 @@ namespace Tests;
 
 use Illuminate\Pipeline\Pipeline;
 use Orchestra\Testbench\TestCase;
+use Illuminate\Support\Facades\Bus;
 use DarkGhostHunter\Laratraits\PipesThrough;
+use Illuminate\Contracts\Container\Container;
+use DarkGhostHunter\Laratraits\Jobs\DispatchablePipeline;
 
 class PipesThroughTest extends TestCase
 {
@@ -40,6 +43,7 @@ class PipesThroughTest extends TestCase
         $pipes = new class($pipeline)  {
             use PipesThrough;
             public $foo;
+            public $pipeline;
             public function __construct($pipeline)
             {
                 $this->pipeline = $pipeline;
@@ -71,5 +75,45 @@ class PipesThroughTest extends TestCase
         };
 
         $this->assertEquals('quz', $pipes->pipe($pipe, $destination)->foo);
+    }
+
+    public function testDispatchesToQueue()
+    {
+        $bus = Bus::fake();
+
+        $pipes = new class() {
+            use PipesThrough;
+            public $foo;
+        };
+
+        $pipes->dispatchPipeline();
+
+        $bus->assertDispatched(DispatchablePipeline::class);
+    }
+
+    public function testDispatchesToQueueWithPipes()
+    {
+        $bus = Bus::fake();
+
+        $pipes = new class() {
+            use PipesThrough;
+            public $foo;
+        };
+
+        $done = false;
+
+        $pipes->dispatchPipeline([
+            function ($thing, $next) use (&$done) {
+                $done = true;
+                return $next($thing);
+            }
+        ]);
+
+        $bus->assertDispatched(DispatchablePipeline::class, function ($job) {
+            $job->handle();
+            return true;
+        });
+
+        $this->assertTrue($done);
     }
 }

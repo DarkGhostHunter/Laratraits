@@ -37,6 +37,7 @@ namespace DarkGhostHunter\Laratraits;
 
 use Closure;
 use Illuminate\Pipeline\Pipeline;
+use DarkGhostHunter\Laratraits\Jobs\DispatchablePipeline;
 use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
 
 trait PipesThrough
@@ -72,5 +73,21 @@ trait PipesThrough
         // on a Service Container, you can just instance the pipeline with an empty one.
         // If you need custom pipeline handling, you can extend the default pipeline.
         return app(Pipeline::class);
+    }
+
+    /**
+     * Queues the pipeline to a Job.
+     *
+     * @return \Illuminate\Foundation\Bus\PendingDispatch
+     */
+    public function dispatchPipeline()
+    {
+        $pipeline = $this->makePipeline();
+
+        if (func_num_args()) {
+            $pipeline->through(...func_get_args());
+        }
+
+        return DispatchablePipeline::dispatch($pipeline, $this);
     }
 }

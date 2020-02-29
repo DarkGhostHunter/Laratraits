@@ -75,7 +75,7 @@ class CustomTypeTestModel extends BaseTestModel
 
     protected $table = 'bar';
 
-    protected function getTypeQualifiedColumn()
+    protected function getQualifiedTypeColumn()
     {
         return 'bar';
     }
