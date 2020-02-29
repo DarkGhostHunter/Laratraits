@@ -42,12 +42,11 @@ trait DispatchesItself
     /**
      * Dispatches the current instance to a default Job instance.
      *
-     * @param  string|array  $parameters
      * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|mixed
      */
-    public function dispatch(...$parameters)
+    public function dispatch()
     {
-        return $this->defaultJob($parameters);
+        return $this->defaultJob(...func_get_args());
     }
 
     /**
@@ -59,14 +58,13 @@ trait DispatchesItself
      */
     public function dispatchTo(string $job, ...$parameters)
     {
-        return $this->{Str::camel($job . 'Job')}($parameters);
+        return $this->{Str::camel($job . 'Job')}(...$parameters);
     }
 
     /**
      * Creates a Job instance with this object injected to it and some parameters.
      *
-     * @param  array  $parameters
      * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|object
      */
-    abstract protected function defaultJob(array $parameters);
+    abstract protected function defaultJob();
 }
