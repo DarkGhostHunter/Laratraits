@@ -6,9 +6,9 @@ use Orchestra\Testbench\TestCase;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\View\Factory;
-use DarkGhostHunter\Laratraits\Middleware\ShareVerifiedUser;
+use DarkGhostHunter\Laratraits\Middleware\ShareAuthenticatedUser;
 
-class ShareVerifiedUserTest extends TestCase
+class ShareAuthenticatedUserTest extends TestCase
 {
     public function testSharesVerifiedUserInViews()
     {
@@ -27,11 +27,11 @@ class ShareVerifiedUserTest extends TestCase
         $this->app->instance('test-controller', $controller);
 
         Route::get('test', 'test-controller@show')->middleware(
-            ShareVerifiedUser::class
+            ShareAuthenticatedUser::class
         );
 
         Route::get('test-foo', 'test-controller@show')->middleware(
-            ShareVerifiedUser::class . ':foo'
+            ShareAuthenticatedUser::class . ':foo'
         );
 
         $view = app(Factory::class);

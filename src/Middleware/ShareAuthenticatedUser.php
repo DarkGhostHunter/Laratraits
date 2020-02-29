@@ -1,6 +1,6 @@
 <?php
 /**
- * Share Verified User Middleware
+ * Share Authenticated User Middleware
  *
  * This allows to share in all your views the "authenticated" variable containing the authenticated user, if any.
  *
@@ -37,7 +37,7 @@ use Closure;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Auth\Authenticatable;
 
-class ShareVerifiedUser
+class ShareAuthenticatedUser
 {
     /**
      * The View Factory.
