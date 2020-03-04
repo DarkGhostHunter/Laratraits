@@ -5,9 +5,8 @@ namespace Tests\Middleware;
 use Illuminate\Http\Request;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\HtmlString;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\Cache\Factory;
-use Illuminate\Contracts\Cache\Repository;
 use DarkGhostHunter\Laratraits\Middleware\CacheStaticResponse;
 
 class CacheStaticResponseTest extends TestCase
@@ -55,8 +54,8 @@ class CacheStaticResponseTest extends TestCase
             }
         };
 
-        $cache = $this->mock(Factory::class);
-        $store = $this->mock(Repository::class);
+        $cache = $this->mock(CacheManager::class);
+        $store = $this->mock(\Illuminate\Cache\Repository::class);
 
         $cache->shouldReceive('store')
             ->twice()
