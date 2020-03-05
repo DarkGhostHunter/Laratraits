@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use DarkGhostHunter\Laratraits\Models\HasSlug;
@@ -51,13 +52,23 @@ class HasSlugTest extends TestCase
             return $foo;
         })->middleware('bindings');
 
-        $this->get('foo/this-is-a-test')->assertExactJson([
-            'id' => 1,
-            'name' => $fooName,
-            'slug' => Str::slug($fooName),
-            'created_at' => $now->toDateTimeString(),
-            'updated_at' => $now->toDateTimeString(),
-        ]);
+        if (Str::startsWith('7.', Application::VERSION)) {
+            $this->get('foo/this-is-a-test')->assertExactJson([
+                'id' => 1,
+                'name' => $fooName,
+                'slug' => Str::slug($fooName),
+                'created_at' => $now->toIso8601ZuluString('microseconds'),
+                'updated_at' => $now->toIso8601ZuluString('microseconds'),
+            ]);
+        } else {
+            $this->get('foo/this-is-a-test')->assertExactJson([
+                'id' => 1,
+                'name' => $fooName,
+                'slug' => Str::slug($fooName),
+                'created_at' => $now->toDateTimeString(),
+                'updated_at' => $now->toDateTimeString(),
+            ]);
+        }
 
         $this->get('foo/notfound')->assertNotFound();
     }
@@ -74,13 +85,25 @@ class HasSlugTest extends TestCase
             return $bar;
         })->middleware('bindings');
 
-        $this->get('bar/what-happened')->assertExactJson([
-            'id' => 1,
-            'quz' => $barName,
-            'qux' => Str::slug($barName),
-            'created_at' => $now->toDateTimeString(),
-            'updated_at' => $now->toDateTimeString(),
-        ]);
+        if (Str::startsWith('7.', Application::VERSION)) {
+
+
+            $this->get('bar/what-happened')->assertExactJson([
+                'id' => 1,
+                'quz' => $barName,
+                'qux' => Str::slug($barName),
+                'created_at' => $now->toIso8601ZuluString('microseconds'),
+                'updated_at' => $now->toIso8601ZuluString('microseconds'),
+            ]);
+        } else {
+            $this->get('bar/what-happened')->assertExactJson([
+                'id' => 1,
+                'quz' => $barName,
+                'qux' => Str::slug($barName),
+                'created_at' => $now->toDateTimeString(),
+                'updated_at' => $now->toDateTimeString(),
+            ]);
+        }
 
         $this->get('bar/notfound')->assertNotFound();
     }
