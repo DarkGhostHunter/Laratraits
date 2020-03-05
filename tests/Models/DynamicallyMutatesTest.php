@@ -43,10 +43,10 @@ class DynamicallyMutatesTest extends TestCase
 
                     'date' => '2020-09-30',
 
-                    'datetime' => '2020-09-30 14:52:63',
-                    'custom_datetime' => '2020-09-31 14:52:63',
+                    'datetime' => '2020-09-30 14:53:03',
+                    'custom_datetime' => '2020-09-31 14:53:03',
 
-                    'timestamp' => '2020-09-31 14:52:63',
+                    'timestamp' => '2020-09-31 14:53:03',
 
                     'null' => null,
 
