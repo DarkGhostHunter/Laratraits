@@ -125,7 +125,7 @@ class SavesToSessionTest extends TestCase
             public function setRequestOnHandler($request){}
         };
 
-        $session = $this->instance(SessionContract::class, $session);
+        $session = $this->app->instance(SessionContract::class, $session);
 
         $sessionable = new class() {
             use SavesToSession;
