@@ -2,13 +2,16 @@
 
 namespace Tests\Middleware;
 
+use Mockery;
 use Illuminate\Http\Request;
+use Illuminate\Cache\Repository;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\HtmlString;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Cache\Factory;
-use Illuminate\Contracts\Cache\Repository;
 use DarkGhostHunter\Laratraits\Middleware\CacheStaticResponse;
+use Illuminate\Contracts\Cache\Repository as RepositoryContract;
 
 class CacheStaticResponseTest extends TestCase
 {
@@ -55,8 +58,8 @@ class CacheStaticResponseTest extends TestCase
             }
         };
 
-        $cache = $this->instance(Factory::class, \Mockery::mock(Factory::class));
-        $store = $this->instance(Repository::class, \Mockery::mock(Repository::class));
+        $cache = $this->instance(Factory::class, Mockery::mock(CacheManager::class));
+        $store = $this->instance(RepositoryContract::class, Mockery::mock(Repository::class));
 
         $cache->shouldReceive('store')
             ->twice()
@@ -64,11 +67,11 @@ class CacheStaticResponseTest extends TestCase
             ->andReturn($store);
 
         $store->shouldReceive('get')
-            ->with(\Mockery::type('string'))
+            ->with(Mockery::type('string'))
             ->andReturnFalse();
 
         $store->shouldReceive('put')
-            ->with(\Mockery::type('string'), 'foo', 99*60);
+            ->with(Mockery::type('string'), 'foo', 99*60);
 
         $this->app->instance('test-controller', $controller);
 
