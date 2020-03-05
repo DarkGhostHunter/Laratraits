@@ -22,11 +22,11 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "illuminate/support": "6.*",
+        "illuminate/support": "6.*|7.*",
         "symfony/finder": "4.*|5.*"
     },
     "require-dev": {
-        "orchestra/testbench": "4.*"
+        "orchestra/testbench": "~4.1|5.*"
     },
     "autoload": {
         "psr-4": {
