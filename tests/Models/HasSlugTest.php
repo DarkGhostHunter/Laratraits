@@ -52,7 +52,7 @@ class HasSlugTest extends TestCase
             return $foo;
         })->middleware('bindings');
 
-        if (Str::startsWith('7.', Application::VERSION)) {
+        if (Str::startsWith(Application::VERSION, '7')) {
             $this->get('foo/this-is-a-test')->assertExactJson([
                 'id' => 1,
                 'name' => $fooName,
@@ -85,7 +85,7 @@ class HasSlugTest extends TestCase
             return $bar;
         })->middleware('bindings');
 
-        if (Str::startsWith('7.', Application::VERSION)) {
+        if (Str::startsWith(Application::VERSION, '7')) {
             $this->get('bar/what-happened')->assertExactJson([
                 'id' => 1,
                 'quz' => $barName,
