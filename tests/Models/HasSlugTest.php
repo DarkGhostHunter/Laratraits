@@ -52,19 +52,19 @@ class HasSlugTest extends TestCase
             return $foo;
         })->middleware('bindings');
 
-        if (Str::startsWith(Application::VERSION, '7.')) {
+        if (Str::startsWith(Application::VERSION, '7')) {
             $this->get('foo/this-is-a-test')->assertExactJson([
-                'id'         => 1,
-                'name'       => $fooName,
-                'slug'       => Str::slug($fooName),
-                'created_at' => $now->toIso8601ZuluString('microsecond'),
-                'updated_at' => $now->toIso8601ZuluString('microsecond'),
+                'id' => 1,
+                'name' => $fooName,
+                'slug' => Str::slug($fooName),
+                'created_at' => $now->toIso8601ZuluString('microseconds'),
+                'updated_at' => $now->toIso8601ZuluString('microseconds'),
             ]);
         } else {
             $this->get('foo/this-is-a-test')->assertExactJson([
-                'id'         => 1,
-                'name'       => $fooName,
-                'slug'       => Str::slug($fooName),
+                'id' => 1,
+                'name' => $fooName,
+                'slug' => Str::slug($fooName),
                 'created_at' => $now->toDateTimeString(),
                 'updated_at' => $now->toDateTimeString(),
             ]);
@@ -85,14 +85,13 @@ class HasSlugTest extends TestCase
             return $bar;
         })->middleware('bindings');
 
-
-        if (Str::startsWith(Application::VERSION, '7.')) {
+        if (Str::startsWith(Application::VERSION, '7')) {
             $this->get('bar/what-happened')->assertExactJson([
                 'id' => 1,
                 'quz' => $barName,
                 'qux' => Str::slug($barName),
-                'created_at' => $now->toIso8601ZuluString('microsecond'),
-                'updated_at' => $now->toIso8601ZuluString('microsecond'),
+                'created_at' => $now->toIso8601ZuluString('microseconds'),
+                'updated_at' => $now->toIso8601ZuluString('microseconds'),
             ]);
         } else {
             $this->get('bar/what-happened')->assertExactJson([

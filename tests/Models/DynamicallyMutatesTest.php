@@ -43,10 +43,10 @@ class DynamicallyMutatesTest extends TestCase
 
                     'date' => '2020-09-30',
 
-                    'datetime' => '2020-09-30 14:52:53',
-                    'custom_datetime' => '2020-09-31 14:52:53',
+                    'datetime' => '2020-09-30 14:53:03',
+                    'custom_datetime' => '2020-09-31 14:53:03',
 
-                    'timestamp' => '2020-09-31 14:52:53',
+                    'timestamp' => '2020-09-31 14:53:03',
 
                     'null' => null,
 
@@ -109,12 +109,12 @@ class DynamicallyMutatesTest extends TestCase
         $this->assertEquals('2020-09-30', $model->castTo('date')->toDateString());
 
         $this->assertInstanceOf(Carbon::class, $model->castTo('datetime'));
-        $this->assertEquals('2020-09-30 14:52:53', $model->castTo('datetime')->toDateTimeString());
+        $this->assertEquals('2020-09-30 14:53:03', $model->castTo('datetime')->toDateTimeString());
         $this->assertInstanceOf(Carbon::class, $model->castTo('custom_datetime'));
-        $this->assertEquals('2020-10-01 14:52:53', $model->castTo('custom_datetime')->toDateTimeString());
+        $this->assertEquals('2020-10-01 14:53:03', $model->castTo('custom_datetime')->toDateTimeString());
 
         $this->assertIsInt($model->castTo('timestamp'));
-        $this->assertEquals(1601563973, $model->castTo('timestamp'));
+        $this->assertEquals(1601563983, $model->castTo('timestamp'));
 
         $this->assertNull($model->castTo('null'));
 
