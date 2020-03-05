@@ -2,14 +2,16 @@
 
 namespace DarkGhostHunter\Laratraits\Tests;
 
+use Mockery;
 use LogicException;
 use JsonSerializable;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Filesystem\FilesystemAdapter;
 use DarkGhostHunter\Laratraits\SavesToStorage;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 class SavesToStorageTest extends TestCase
 {
@@ -112,7 +114,7 @@ class SavesToStorageTest extends TestCase
 
     public function testSavesObjectInstance()
     {
-        $storage = $this->mock(Filesystem::class);
+        $storage = $this->instance(FilesystemContract::class, Mockery::mock(FilesystemAdapter::class));
 
         $storable = new class() {
             use SavesToStorage;

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Htmlable;
 use DarkGhostHunter\Laratraits\SavesToSession;
+use Illuminate\Contracts\Session\Session as SessionContract;
 
 class SavesToSessionTest extends TestCase
 {
@@ -97,17 +98,42 @@ class SavesToSessionTest extends TestCase
 
     public function testSavesObjectInstance()
     {
-        $session = $this->mock(\Illuminate\Contracts\Session\Session::class);
+        $session = new class implements SessionContract {
+            public static $used = false;
+            public function getName(){}
+            public function getId(){}
+            public function setId($id){}
+            public function start(){}
+            public function save(){}
+            public function all(){}
+            public function exists($key){}
+            public function has($key){}
+            public function get($key, $default = null){}
+            public function put($key, $value = null){
+                self::$used = true;
+            }
+            public function token(){}
+            public function remove($key){}
+            public function forget($keys){}
+            public function flush(){}
+            public function migrate($destroy = false){}
+            public function isStarted(){}
+            public function previousUrl(){}
+            public function setPreviousUrl($url){}
+            public function getHandler(){}
+            public function handlerNeedsRequest(){}
+            public function setRequestOnHandler($request){}
+        };
+
+        $session = $this->app->instance(SessionContract::class, $session);
 
         $sessionable = new class() {
             use SavesToSession;
         };
 
-        $session->shouldReceive('put')
-            ->with('foo', $sessionable)
-            ->andReturnUndefined();
-
         $sessionable->saveToSession('foo');
+
+        $this->assertTrue($session::$used);
     }
 
     public function testSavesWithDefaultSessionKey()

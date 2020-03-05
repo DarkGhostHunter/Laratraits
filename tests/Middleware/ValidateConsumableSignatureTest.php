@@ -2,11 +2,13 @@
 
 namespace Tests\Middleware;
 
+use Mockery;
 use Illuminate\Support\Carbon;
+use Illuminate\Cache\Repository;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Cache\Repository as RepositoryContract;
 use DarkGhostHunter\Laratraits\Middleware\ValidateConsumableSignature;
 
 class ValidateConsumableSignatureTest extends TestCase
@@ -27,16 +29,16 @@ class ValidateConsumableSignatureTest extends TestCase
 
         $this->app->instance('test-controller', $controller);
 
-        $cache = $this->mock(Repository::class);
+        $cache = $this->instance(RepositoryContract::class, Mockery::mock(Repository::class));
 
         $cache->shouldReceive('has')
             ->once()
-            ->with(\Mockery::type('string'))
+            ->with(Mockery::type('string'))
             ->andReturnFalse();
 
         $cache->shouldReceive('put')
             ->once()
-            ->with(\Mockery::type('string'), null, \Mockery::type(Carbon::class))
+            ->with(Mockery::type('string'), null, Mockery::type(Carbon::class))
             ->andReturnTrue();
 
         Route::get('test', 'test-controller@show')->middleware(
@@ -52,7 +54,7 @@ class ValidateConsumableSignatureTest extends TestCase
 
         $cache->shouldReceive('has')
             ->once()
-            ->with(\Mockery::type('string'))
+            ->with(Mockery::type('string'))
             ->andReturnTrue();
 
         $this->get($signature)->assertForbidden();
