@@ -2,13 +2,16 @@
 
 namespace DarkGhostHunter\Laratraits\Tests;
 
+use Mockery;
 use LogicException;
 use JsonSerializable;
+use Illuminate\Session\Store;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Htmlable;
 use DarkGhostHunter\Laratraits\SavesToSession;
+use Illuminate\Contracts\Session\Session as SessionContract;
 
 class SavesToSessionTest extends TestCase
 {
@@ -97,7 +100,7 @@ class SavesToSessionTest extends TestCase
 
     public function testSavesObjectInstance()
     {
-        $session = $this->mock(\Illuminate\Contracts\Session\Session::class);
+        $session = $this->instance(SessionContract::class, Mockery::mock(Store::class));
 
         $sessionable = new class() {
             use SavesToSession;
