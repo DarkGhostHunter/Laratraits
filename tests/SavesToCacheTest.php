@@ -2,14 +2,16 @@
 
 namespace Tests;
 
+use Mockery;
 use LogicException;
 use JsonSerializable;
+use Illuminate\Cache\Repository;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Htmlable;
 use DarkGhostHunter\Laratraits\SavesToCache;
+use Illuminate\Contracts\Cache\Repository as RepositoryContract;
 
 class SavesToCacheTest extends TestCase
 {
@@ -52,7 +54,7 @@ class SavesToCacheTest extends TestCase
 
     public function testSavesWithDefaultTtl()
     {
-        $store = $this->mock(Repository::class);
+        $store = $this->instance(RepositoryContract::class, Mockery::mock(Repository::class));
 
         Cache::shouldReceive('store')
             ->withNoArgs()
@@ -143,7 +145,7 @@ class SavesToCacheTest extends TestCase
 
     public function testSavesObjectInstance()
     {
-        $store = $this->mock(Repository::class);
+        $store = $this->instance(RepositoryContract::class, Mockery::mock(Repository::class));
 
         Cache::shouldReceive('store')
             ->withNoArgs()

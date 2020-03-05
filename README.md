@@ -9,6 +9,17 @@
 
 Laratraits is a Laravel package containing useful traits and some classes to use along your Models, Controllers, Service Providers and what not. Take a look!
 
+## Requirements
+
+* Laravel 6, or Laravel 7.
+* PHP 7.2.15 or later.
+
+## Installation
+
+Fire up Composer and that's it.
+
+    composer require darkghosthunter/laratraits
+
 ## What it includes
 
 Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License.
