@@ -145,7 +145,7 @@ class SavesToCacheTest extends TestCase
 
     public function testSavesObjectInstance()
     {
-        $store = $this->mock(RepositoryContract::class);
+        $store = $this->instance(RepositoryContract::class, Mockery::mock(Repository::class));
 
         Cache::shouldReceive('store')
             ->withNoArgs()
