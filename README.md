@@ -34,6 +34,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
 * [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache..php
 * [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
+* [`EnumerableStates`](src/EnumerableStates.php): Allows a class to have one of an strict list of possible states. You can also use the [`Enumerate`](src/Enumerate.php) class separately.
 
 ### Models
 
@@ -73,7 +74,7 @@ Just fire up composer and that's it.
 
 ## Usage
 
-Just check any of these traits. Each trait and other classes contains an brief explanation on how to use in the first lines.
+Just check any of these traits. Each one and other classes contains an brief explanation on how to use in the first lines.
 
 If you want to use one, [just do it](https://www.php.net/manual/en/language.oop5.traits.php).
 
