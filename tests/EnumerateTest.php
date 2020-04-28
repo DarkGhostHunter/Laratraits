@@ -13,6 +13,11 @@ class EnumerateTest extends TestCase
         $this->assertInstanceOf(Enumerate::class, Enumerate::from(['foo', 'bar']));
     }
 
+    public function test_creates_enumerate_from_traversable()
+    {
+
+    }
+
     public function test_creates_enumerate_with_initial_value()
     {
         $enum = Enumerate::from(['foo', 'bar'], 'foo');

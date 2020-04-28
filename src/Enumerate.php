@@ -59,12 +59,14 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Create a new Enumerated instance with a list of available states.
      *
-     * @param  array|\ArrayAccess  $states
+     * @param  array|\Traversable  $states
      */
-    public function __construct($states = [])
+    public function __construct($states = null)
     {
-        if (! empty($states)) {
-            $this->states = $states;
+        if ($states) {
+            foreach ($states as $key => $state) {
+                $this->states[$key] = $state;
+            }
         }
 
         if ($this->current) {
@@ -87,23 +89,35 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Returns if the state exists.
      *
-     * @param  string  $state
+     * @param  string|array|\Traversable  $state
      * @return bool
      */
-    public function has(string $state)
+    public function has($state)
     {
-        return array_key_exists($state, $this->states) || in_array($state, $this->states, true);
+        foreach ((array)$state as $value) {
+            if (array_key_exists($value, $this->states) || in_array($value, $this->states, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Returns if the current state is equal to the issued state.
      *
-     * @param  string  $state
+     * @param  string|array|\Traversable  $state
      * @return bool
      */
-    public function is(string $state)
+    public function is($state)
     {
-        return $this->current === $state;
+        foreach ((array)$state as $value) {
+            if ($this->current === $value) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -143,9 +157,9 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
             return $this;
         }
 
-        throw new BadMethodCallException(sprintf(
-            'Call to undefined method %s::%s()', static::class, $name
-        ));
+        throw new BadMethodCallException(
+            "The state [$name] doesn't exists in this Enumerate instance."
+        );
     }
 
     /**
@@ -185,11 +199,11 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Creates a new Enumerate instance.
      *
-     * @param  array  $states
+     * @param  array|\Traversable  $states
      * @param  string|null  $initial
      * @return mixed
      */
-    public static function from(array $states, string $initial = null) : self
+    public static function from($states, string $initial = null) : self
     {
         $instance = (new static($states));
 
