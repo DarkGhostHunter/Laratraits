@@ -89,7 +89,12 @@ class ClassDiscoverer
      */
     public function path(string $path)
     {
-        $this->path = realpath($this->basePath . DS . trim(str_replace(['\\', '/'], DS, $path), DS));
+        $this->path = $this->basePath . DS . trim(str_replace(['\\', '/'], DS, $path), DS);
+
+        // Fix the path root if its linux and the initial slash is not present.
+        if (ctype_lower($this->path[0])) {
+            $this->path = Str::start($this->path, DS);
+        }
 
         return $this;
     }
