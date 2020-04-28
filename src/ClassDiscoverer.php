@@ -89,7 +89,7 @@ class ClassDiscoverer
      */
     public function path(string $path)
     {
-        $this->path = realpath($this->basePath . DS . trim(str_replace(['\\', '/'], DS, $path), DS));
+        $this->path = $this->basePath . DS . trim(str_replace(['\\', '/'], DS, $path), DS);
 
         return $this;
     }
