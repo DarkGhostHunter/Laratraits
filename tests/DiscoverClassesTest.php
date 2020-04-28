@@ -26,9 +26,9 @@ class DiscoverClassesTest extends TestCase
         $app = Mockery::spy(Application::class);
 
         $app->shouldReceive('path')
-            ->andReturn(__DIR__);
+            ->andReturn(realpath(__DIR__));
         $app->shouldReceive('basePath')
-            ->andReturn(Str::beforeLast(__DIR__, DS));
+            ->andReturn(realpath(Str::beforeLast(__DIR__, DS)));
 
         $this->app->when(ClassDiscoverer::class)
             ->needs(Application::class)
