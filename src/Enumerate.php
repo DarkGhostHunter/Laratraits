@@ -36,6 +36,7 @@
 namespace DarkGhostHunter\Laratraits;
 
 use Countable;
+use Traversable;
 use JsonSerializable;
 use BadMethodCallException;
 use Illuminate\Contracts\Support\Jsonable;
@@ -59,11 +60,16 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Create a new Enumerated instance with a list of available states.
      *
-     * @param  array|\Traversable  $states
+     * @param  array|iterable  $states
      */
     public function __construct($states = null)
     {
         if ($states) {
+
+            $states = $states instanceof Traversable
+                ? iterator_to_array($states)
+                : (array)$states;
+
             foreach ($states as $key => $state) {
                 $this->states[$key] = $state;
             }
@@ -89,7 +95,7 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Returns if the state exists.
      *
-     * @param  string|array|\Traversable  $state
+     * @param  string|array  $state
      * @return bool
      */
     public function has($state)
@@ -106,7 +112,7 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Returns if the current state is equal to the issued state.
      *
-     * @param  string|array|\Traversable  $state
+     * @param  string|array  $state
      * @return bool
      */
     public function is($state)
@@ -199,7 +205,7 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Creates a new Enumerate instance.
      *
-     * @param  array|\Traversable  $states
+     * @param  array|iterable  $states
      * @param  string|null  $initial
      * @return mixed
      */
