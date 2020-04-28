@@ -14,9 +14,9 @@ class DiscoverClassesTest extends TestCase
 {
     public function testDiscoverClasses()
     {
-//        if (getenv('GITHUB_ACTIONS')) {
-//            return $this->markTestSkipped('Github actions does not detect the stub directory');
-//        }
+        if (getenv('GITHUB_ACTIONS')) {
+            return $this->markTestSkipped('Github actions does not detect the stub directory');
+        }
 
         $discovers = new class() {
             use DiscoverClasses;
@@ -58,9 +58,9 @@ class DiscoverClassesTest extends TestCase
 
     public function testExceptionWhenInterfaceDoesntExists()
     {
-//        if (getenv('GITHUB_ACTIONS')) {
-//            return $this->markTestSkipped('Github actions does not detect the stub directory');
-//        }
+        if (getenv('GITHUB_ACTIONS')) {
+            return $this->markTestSkipped('Github actions does not detect the stub directory');
+        }
 
         $this->expectException(InvalidArgumentException::class);
         $discoverer = app(ClassDiscoverer::class)->path('tests');
