@@ -42,6 +42,9 @@ use JsonSerializable;
 use BadMethodCallException;
 use Illuminate\Contracts\Support\Jsonable;
 
+/**
+ * @deprecated Use \DarkGhostHunter\Laratraits\Enumerable instead
+ */
 class Enumerate implements Countable, JsonSerializable, Jsonable
 {
     /**
