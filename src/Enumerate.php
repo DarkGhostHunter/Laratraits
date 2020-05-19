@@ -37,6 +37,7 @@ namespace DarkGhostHunter\Laratraits;
 
 use Countable;
 use Traversable;
+use LogicException;
 use JsonSerializable;
 use BadMethodCallException;
 use Illuminate\Contracts\Support\Jsonable;
@@ -76,7 +77,7 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
         }
 
         if ($this->current) {
-            $this->__call($this->current, []);
+            $this->set($this->current);
         }
     }
 
@@ -127,6 +128,18 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     }
 
     /**
+     * Returns if the current state is not equal to the issued state.
+     *
+     * @param $state
+     * @return bool
+     */
+    public function isNot($state)
+    {
+        return ! $this->is($state);
+    }
+
+
+    /**
      * Return the current state.
      *
      * @return string|null
@@ -147,6 +160,24 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     }
 
     /**
+     * Sets a state.
+     *
+     * @param $name
+     * @return $this
+     */
+    public function set($name)
+    {
+        if ($this->has($name)) {
+            $this->current = $name;
+
+            return $this;
+        }
+
+        throw new LogicException("The state [$name] doesn't exists in this Enumerate instance.");
+    }
+
+
+    /**
      * Handle dynamically setting the state.
      *
      * @param  string  $name
@@ -157,15 +188,11 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
      */
     public function __call($name, $arguments)
     {
-        if ($this->has($name)) {
-            $this->current = $name;
-
-            return $this;
+        try {
+            return $this->set($name);
+        } catch (LogicException $exception) {
+            throw new BadMethodCallException('Call to undefined method ' . static::class . '::' . $name);
         }
-
-        throw new BadMethodCallException(
-            "The state [$name] doesn't exists in this Enumerate instance."
-        );
     }
 
     /**
@@ -214,7 +241,7 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
         $instance = (new static($states));
 
         if ($initial) {
-            $instance->{$initial}();
+            $instance->set($initial);
         }
 
         return $instance;

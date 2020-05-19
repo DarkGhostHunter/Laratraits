@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use LogicException;
 use BadMethodCallException;
 use Orchestra\Testbench\TestCase;
 use DarkGhostHunter\Laratraits\Enumerate;
@@ -163,11 +164,36 @@ class EnumerateTest extends TestCase
 
     public function test_exception_when_initial_state_is_invalid()
     {
-        $this->expectException(BadMethodCallException::class);
+        $this->expectException(LogicException::class);
 
         new class extends Enumerate {
             protected $current = 'invalid';
             protected $states = ['foo', 'bar'];
         };
+    }
+
+    public function test_sets_state()
+    {
+        $class = new class extends Enumerate {
+            protected $current = 'foo';
+            protected $states = ['foo', 'bar'];
+        };
+
+        $class->set('bar');
+
+        $this->assertEquals('bar', $class->current());
+    }
+
+    public function test_exception_when_sets_invalid_state()
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage("The state [quz] doesn't exists in this Enumerate instance.");
+
+        $class = new class extends Enumerate {
+            protected $current = 'foo';
+            protected $states = ['foo', 'bar'];
+        };
+
+        $class->set('quz');
     }
 }
