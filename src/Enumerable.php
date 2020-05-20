@@ -54,11 +54,9 @@ use Closure;
 use Countable;
 use Traversable;
 use LogicException;
-use JsonSerializable;
 use BadMethodCallException;
-use Illuminate\Contracts\Support\Jsonable;
 
-class Enumerable implements Countable, JsonSerializable, Jsonable
+class Enumerable implements Countable
 {
     /**
      * Current state of the enumerated object.
@@ -81,7 +79,13 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
      */
     public function __construct($states = null)
     {
-        $this->setStates($states);
+        foreach ($this->statesToArray($states) as $state) {
+            $this->states[] = $state;
+        }
+
+        if (empty($this->states)) {
+            throw new LogicException('The ' . static::class . ' does not have states to set.');
+        }
 
         if ($this->current) {
             $this->set($this->current);
@@ -89,26 +93,9 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
     }
 
     /**
-     * Returns if one or many states exists.
-     *
-     * @param  string|array|iterable  $state
-     * @return bool
-     */
-    public function has($state)
-    {
-        foreach ($this->statesToArray($state) as $value) {
-            if (in_array($value, $this->states, true)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Normalize the states to an array of states.
      *
-     * @param string|array|iterable $states
+     * @param  string|array|iterable  $states
      * @return array
      */
     protected function statesToArray($states)
@@ -121,7 +108,24 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
             return explode(',', $states);
         }
 
-        return $states;
+        return (array)$states;
+    }
+
+    /**
+     * Returns if one or all states exists.
+     *
+     * @param  string|array|iterable  $state
+     * @return bool
+     */
+    public function has($state)
+    {
+        foreach ($this->statesToArray($state) as $value) {
+            if (! in_array($value, $this->states, true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -145,21 +149,9 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
     }
 
     /**
-     * Set enumerated states
-     *
-     * @param string|array|iterable $states
-     */
-    public function setStates($states)
-    {
-        foreach ($this->statesToArray($states) as $state) {
-            $this->states[] = $state;
-        }
-    }
-
-    /**
      * Sets a state.
      *
-     * @param  string $name
+     * @param  string  $name
      * @return $this
      */
     public function set(string $name)
@@ -179,8 +171,8 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
     /**
      * Sets an state when a given condition evaluates to true.
      *
-     * @param  bool|Closure $condition
-     * @param  string $state
+     * @param  bool|Closure  $condition
+     * @param  string  $state
      * @return $this
      */
     public function when($condition, string $state)
@@ -199,7 +191,7 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
     /**
      * Sets an state when a given condition evaluates to false.
      *
-     * @param  bool|\Closure $condition
+     * @param  bool|\Closure  $condition
      * @param  string  $state
      * @return $this
      */
@@ -211,7 +203,6 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
 
         return $this->when(! $condition, $state);
     }
-
 
     /**
      * Returns if the current state is equal to at least one of the issued states.
@@ -233,7 +224,7 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
     /**
      * Returns if the current state is not equal to the issued state.
      *
-     * @param  string|array|iterable $state
+     * @param  string|array|iterable  $state
      * @return bool
      */
     public function isNot($state)
@@ -247,22 +238,6 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
     public function count()
     {
         return count($this->states);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function toJson($options = 0)
-    {
-        return json_encode($this->jsonSerialize());
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function jsonSerialize()
-    {
-        return $this->current();
     }
 
     /**
@@ -287,8 +262,9 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
     {
         try {
             return $this->set($name);
-        } catch (LogicException $exception) {
-            throw new BadMethodCallException('Call to undefined method ' . static::class . '::' . $name);
+        }
+        catch (LogicException $exception) {
+            throw new BadMethodCallException('Call to undefined method ' . static::class . '::' . $name . '()');
         }
     }
 
@@ -318,12 +294,6 @@ class Enumerable implements Countable, JsonSerializable, Jsonable
      */
     public static function as(string $initial) : self
     {
-        $instance = new static;
-
-        if (empty($instance->states())) {
-            throw new LogicException('The ' . static::class . ' does not have states to set.');
-        }
-
-        return $instance->set($initial);
+        return (new static)->set($initial);
     }
 }
