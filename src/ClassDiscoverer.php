@@ -45,7 +45,7 @@ use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Symfony\Component\Finder\Finder;
 use Illuminate\Contracts\Foundation\Application;
-use const DIRECTORY_SEPARATOR;
+use const DIRECTORY_SEPARATOR as DS;
 
 class ClassDiscoverer
 {
@@ -78,7 +78,7 @@ class ClassDiscoverer
     public function __construct(Application $app)
     {
         $this->path = $app->path();
-        $this->basePath = trim($app->basePath(), DIRECTORY_SEPARATOR);
+        $this->basePath = trim($app->basePath(), DS);
     }
 
     /**
@@ -89,7 +89,12 @@ class ClassDiscoverer
      */
     public function path(string $path)
     {
-        $this->path = $this->basePath . DIRECTORY_SEPARATOR . trim($path, DIRECTORY_SEPARATOR);
+        $this->path = $this->basePath . DS . trim(str_replace(['\\', '/'], DS, $path), DS);
+
+        // Fix the path root if its linux and the initial slash is not present.
+        if (ctype_lower($this->path[0])) {
+            $this->path = Str::start($this->path, DS);
+        }
 
         return $this;
     }
@@ -188,7 +193,7 @@ class ClassDiscoverer
      */
     protected function classFromFile(SplFileInfo $file)
     {
-        $class = trim(Str::replaceFirst($this->basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR);
+        $class = trim(Str::replaceFirst($this->basePath, '', $file->getRealPath()), DS);
 
         return ucfirst(Str::replaceLast('.php', '', $class));
     }

@@ -36,10 +36,15 @@
 namespace DarkGhostHunter\Laratraits;
 
 use Countable;
+use Traversable;
+use LogicException;
 use JsonSerializable;
 use BadMethodCallException;
 use Illuminate\Contracts\Support\Jsonable;
 
+/**
+ * @deprecated Use \DarkGhostHunter\Laratraits\Enumerable instead
+ */
 class Enumerate implements Countable, JsonSerializable, Jsonable
 {
     /**
@@ -59,16 +64,23 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Create a new Enumerated instance with a list of available states.
      *
-     * @param  array|\ArrayAccess  $states
+     * @param  array|iterable  $states
      */
-    public function __construct($states = [])
+    public function __construct($states = null)
     {
-        if (! empty($states)) {
-            $this->states = $states;
+        if ($states) {
+
+            $states = $states instanceof Traversable
+                ? iterator_to_array($states)
+                : (array)$states;
+
+            foreach ($states as $key => $state) {
+                $this->states[$key] = $state;
+            }
         }
 
         if ($this->current) {
-            $this->__call($this->current, []);
+            $this->set($this->current);
         }
     }
 
@@ -87,24 +99,48 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Returns if the state exists.
      *
-     * @param  string  $state
+     * @param  string|array  $state
      * @return bool
      */
-    public function has(string $state)
+    public function has($state)
     {
-        return array_key_exists($state, $this->states) || in_array($state, $this->states, true);
+        foreach ((array)$state as $value) {
+            if (array_key_exists($value, $this->states) || in_array($value, $this->states, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Returns if the current state is equal to the issued state.
      *
-     * @param  string  $state
+     * @param  string|array  $state
      * @return bool
      */
-    public function is(string $state)
+    public function is($state)
     {
-        return $this->current === $state;
+        foreach ((array)$state as $value) {
+            if ($this->current === $value) {
+                return true;
+            }
+        }
+
+        return false;
     }
+
+    /**
+     * Returns if the current state is not equal to the issued state.
+     *
+     * @param $state
+     * @return bool
+     */
+    public function isNot($state)
+    {
+        return ! $this->is($state);
+    }
+
 
     /**
      * Return the current state.
@@ -127,6 +163,24 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     }
 
     /**
+     * Sets a state.
+     *
+     * @param $name
+     * @return $this
+     */
+    public function set($name)
+    {
+        if ($this->has($name)) {
+            $this->current = $name;
+
+            return $this;
+        }
+
+        throw new LogicException("The state [$name] doesn't exists in this Enumerate instance.");
+    }
+
+
+    /**
      * Handle dynamically setting the state.
      *
      * @param  string  $name
@@ -137,15 +191,11 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
      */
     public function __call($name, $arguments)
     {
-        if ($this->has($name)) {
-            $this->current = $name;
-
-            return $this;
+        try {
+            return $this->set($name);
+        } catch (LogicException $exception) {
+            throw new BadMethodCallException('Call to undefined method ' . static::class . '::' . $name);
         }
-
-        throw new BadMethodCallException(sprintf(
-            'Call to undefined method %s::%s()', static::class, $name
-        ));
     }
 
     /**
@@ -185,16 +235,16 @@ class Enumerate implements Countable, JsonSerializable, Jsonable
     /**
      * Creates a new Enumerate instance.
      *
-     * @param  array  $states
+     * @param  array|iterable  $states
      * @param  string|null  $initial
      * @return mixed
      */
-    public static function from(array $states, string $initial = null) : self
+    public static function from($states, string $initial = null) : self
     {
         $instance = (new static($states));
 
         if ($initial) {
-            $instance->{$initial}();
+            $instance->set($initial);
         }
 
         return $instance;

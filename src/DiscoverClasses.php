@@ -41,7 +41,7 @@ trait DiscoverClasses
      * Discover instantiable classes from a given path.
      *
      * @param  string  $path  The Path to discover. Defaults to the
-     * @param  string|null  $methodOrInterface The Method name or Interface to filter the classes.
+     * @param  string|null  $methodOrInterface  The Method name or Interface to filter the classes.
      * @return \Illuminate\Support\Collection  A collection of filtered class names.
      */
     public function discover(string $path, string $methodOrInterface = null)
@@ -51,7 +51,8 @@ trait DiscoverClasses
         if ($methodOrInterface) {
             if (interface_exists($methodOrInterface)) {
                 $discoverer->filterByInterface($methodOrInterface);
-            } else {
+            }
+            else {
                 $discoverer->filterByMethod($methodOrInterface);
             }
         }

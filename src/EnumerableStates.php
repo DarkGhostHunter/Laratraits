@@ -34,6 +34,8 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+use LogicException;
+
 trait EnumerableStates
 {
     /**
@@ -85,7 +87,7 @@ trait EnumerableStates
         }
         else {
             $class = static::class;
-            throw new \LogicException("The current {$class} has no states defined.");
+            throw new LogicException("The current {$class} has no states defined.");
         }
 
         if (defined('static::STATE_INITIAL')) {
