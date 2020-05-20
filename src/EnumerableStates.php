@@ -41,7 +41,7 @@ trait EnumerableStates
     /**
      * The Enumerate instance.
      *
-     * @var \DarkGhostHunter\Laratraits\Enumerate
+     * @var \DarkGhostHunter\Laratraits\Enumerable
      */
     protected $enumerate;
 
@@ -97,6 +97,6 @@ trait EnumerableStates
             $initial = $this->initial();
         }
 
-        return $this->enumerate = Enumerate::from($states, $initial ?? null);
+        return $this->enumerate = Enumerable::from($states, $initial ?? null);
     }
 }
