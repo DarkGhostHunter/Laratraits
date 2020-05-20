@@ -22,7 +22,7 @@ Fire up Composer and that's it.
 
 ## What it includes
 
-Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License.
+Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License. Just remember to change the namespace.
 
 ### General
 
@@ -34,7 +34,7 @@ Before installing, take a look into the list. If you're only using one, just cop
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
 * [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache..php
 * [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
-* [`EnumerableStates`](src/EnumerableStates.php): Allows a class to have one of an strict list of possible states. You can also use the [`Enumerate`](src/Enumerate.php) class separately.
+* [`EnumerableStates`](src/EnumerableStates.php): Allows a class to have one of an strict list of possible states. You can also use the [`Enumerable`](src/Enumerable.php) class separately. Useful for [casting enums](https://laravel.com/docs/eloquent-mutators#custom-casts).
 
 ### Models
 
