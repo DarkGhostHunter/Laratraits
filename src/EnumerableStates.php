@@ -71,7 +71,7 @@ trait EnumerableStates
     /**
      * Create an Enumerate instance.
      *
-     * @return \DarkGhostHunter\Laratraits\Enumerate|mixed
+     * @return \DarkGhostHunter\Laratraits\Enumerable
      */
     protected function getEnumerate()
     {
