@@ -4,6 +4,14 @@
  *
  * This traits allows a given class to have one of an strictly enumerated list of states.
  *
+ * You can override the Enumerable instance with your own custom class:
+ *
+ *     protected makeEnumerableInstance()
+ *     {
+ *         return new WeatherEnumerable;
+ *     }
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -31,7 +39,6 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-
 namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
@@ -43,60 +50,74 @@ trait EnumerableStates
      *
      * @var \DarkGhostHunter\Laratraits\Enumerable
      */
-    protected $enumerate;
+    protected $enumerable;
 
     /**
      * Set the state for this current instance.
      *
-     * @param $state
+     * @param  string  $state
      * @return $this
      */
-    public function state(string $state = null)
+    public function assign(string $state)
     {
-        $this->getEnumerate()->{$state}();
+        $this->getEnumerable()->assign($state);
 
         return $this;
     }
 
     /**
-     * Returns the current state.
+     * Returns the current state, or null if uninitialized.
      *
-     * @return string
+     * @return string|null
      */
     public function current()
     {
-        return $this->getEnumerate()->current();
+        return $this->getEnumerable()->current();
     }
 
     /**
      * Create an Enumerate instance.
      *
-     * @return \DarkGhostHunter\Laratraits\Enumerate|mixed
+     * @return \DarkGhostHunter\Laratraits\Enumerable|mixed
      */
-    protected function getEnumerate()
+    public function getEnumerable()
     {
-        if ($this->enumerate) {
-            return $this->enumerate;
-        }
+        return $this->enumerable = $this->enumerable ?? $this->makeEnumerableInstance();
+    }
 
+    /**
+     * Creates a new Enumerable instance.
+     *
+     * @return \DarkGhostHunter\Laratraits\Enumerable
+     */
+    protected function makeEnumerableInstance()
+    {
+        return Enumerable::from($this->getEnumerableStates(), $this->getEnumerableInitialState());
+    }
+
+    /**
+     * Return the enumerable states for the current instance.
+     *
+     * @return array|iterable
+     */
+    protected function getEnumerableStates() : iterable
+    {
         if (defined('static::STATES')) {
-            $states = static::STATES;
-        }
-        elseif (method_exists($this, 'states')) {
-            $states = $this->states();
-        }
-        else {
-            $class = static::class;
-            throw new LogicException("The current {$class} has no states defined.");
+            return static::STATES;
         }
 
+        throw new LogicException('The current ' . static::class . ' instance has no states defined.');
+    }
+
+    /**
+     * Return the initial state, if any.
+     *
+     * @return string|void
+     */
+    protected function getEnumerableInitialState()
+    {
         if (defined('static::STATE_INITIAL')) {
-            $initial = static::STATE_INITIAL;
+            return static::STATE_INITIAL;
         }
-        elseif (method_exists($this, 'initial')) {
-            $initial = $this->initial();
-        }
-
-        return $this->enumerate = Enumerable::from($states, $initial ?? null);
     }
 }

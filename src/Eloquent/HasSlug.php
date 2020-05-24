@@ -1,6 +1,6 @@
 <?php
 /**
- * Has Slug URL
+ * HasSlug
  *
  * This trait is just a handy collection of methods to allow any models to be routed by the "slug" on requests.
  * You'll need to set what text from the model use as a base to convert to an slug and, in your table, add the
@@ -10,6 +10,12 @@
  *
  *     $table->string('slug')->unique();
  *
+ * To disable routing the model by the slug property, you can disable it using `routeBySlug`:
+ *
+ *    protected $routeBySlug = false;
+ *
+ * The above will use the parent Eloquent Model default routing key.
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -37,10 +43,9 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Models;
+namespace DarkGhostHunter\Laratraits\Eloquent;
 
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 
 trait HasSlug
 {
@@ -51,34 +56,34 @@ trait HasSlug
      */
     protected static function bootHasSlug()
     {
-        static::saving(function (Model $model) {
-            if (! $model->getAttribute('slug')) {
-                $model->slug = $model->{$model->attributeToSlug()};
+        static::saving(function ($model) {
+            if ($model->isDirty($model->attributeToSlug())) {
+                $model->setSlug();
             }
         });
     }
 
     /**
-     * Initialize the current trait.
+     * Sets the URL slug from a given string.
      *
      * @return void
      */
-    protected function initializeHasSlug()
+    public function setSlug()
     {
-        if (! in_array('slug', $this->fillable, true)) {
-            $this->fillable[] = 'slug';
-        }
+        $value = $this->getAttribute($this->sluggableAttribute());
+
+        $this->setAttribute($this->getSlugKey(), $this->slugValue($value));
     }
 
     /**
-     * Sets the URL slug from a given string.
+     * Transforms a given string to a slugged string.
      *
      * @param  string  $value
-     * @return void
+     * @return string
      */
-    public function setSlugAttribute(string $value)
+    protected function slugValue(string $value)
     {
-        $this->attributes[$this->getSlugKey()] = Str::slug($value);
+        return Str::slug($value);
     }
 
     /**
@@ -86,9 +91,9 @@ trait HasSlug
      *
      * @return string
      */
-    public function attributeToSlug()
+    public function sluggableAttribute()
     {
-        return 'name';
+        return 'title';
     }
 
     /**
@@ -108,7 +113,6 @@ trait HasSlug
      */
     public function getRouteKeyName()
     {
-        return $this->getSlugKey();
+        return $this->routeBySlug ?? true ? $this->getSlugKey() : parent::getRouteKeyName();
     }
-
 }

@@ -6,6 +6,7 @@
  * this Job is dispatched. This Job instance is used when you add the "DispatchesPipeline" trait in your
  * custom pipelines. Like all Jobs in Laravel, this is will return void once handled by the dispatcher.
  *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera

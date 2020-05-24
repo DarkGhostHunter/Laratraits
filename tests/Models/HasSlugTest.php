@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
-use DarkGhostHunter\Laratraits\Models\HasSlug;
+use DarkGhostHunter\Laratraits\Eloquent\HasSlug;
 
 class HasSlugTest extends TestCase
 {
@@ -124,7 +124,7 @@ class TestSlugableBarModel extends Model
 
     protected $fillable = ['quz'];
 
-    public function attributeToSlug()
+    public function sluggableAttribute()
     {
         return 'quz';
     }

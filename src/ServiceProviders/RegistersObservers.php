@@ -1,11 +1,23 @@
 <?php
 /**
- * Dispatches Itself
+ * RegistersObservers
  *
- * This trait dispatches the object through a job instantly, without having to manually instance the Job
- * separately and configure it every time. You can use a default Job, or have multiple jobs separated
- * by a {nameJob} to allow more than one Job depending on what you dispatch to the application bus.
+ * This traits allows you to register multiple eloquent events by just issuing an array
+ * into your EventServiceProvider, that your boot method should hook up manually:
  *
+ *     protected $observers = [
+ *         'App\User' => 'App\Observers\UserObserver',
+ *         'App\Post' => ['App\Observers\PublicationObserver', 'App\Observers\HomeObserver']
+ *     ]
+ *
+ *     public function boot()
+ *     {
+ *         $this->registerObservers();
+ *
+ *         // ...
+ *     }
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -33,38 +45,21 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits;
+namespace DarkGhostHunter\Laratraits\ServiceProviders;
 
-use Illuminate\Support\Str;
-
-trait DispatchesItself
+trait RegistersObservers
 {
     /**
-     * Dispatches the current instance to a default Job instance.
+     * Registers an array of handlers for a Eloquent event.
      *
-     * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|mixed
+     * @return void
      */
-    public function dispatch()
+    protected function registerObservers()
     {
-        return $this->defaultJob(...func_get_args());
+        foreach ($this->observers ?? [] as $model => $handlers) {
+            foreach ((array)$handlers as $handler) {
+                $model::observe($handler);
+            }
+        }
     }
-
-    /**
-     * Dispatches this object to a non-default Job.
-     *
-     * @param  string  $job
-     * @param  mixed  ...$parameters
-     * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|mixed
-     */
-    public function dispatchTo(string $job, ...$parameters)
-    {
-        return $this->{Str::camel($job . 'Job')}(...$parameters);
-    }
-
-    /**
-     * Creates a Job instance with this object injected to it and some parameters.
-     *
-     * @return \Illuminate\Foundation\Bus\PendingDispatch|\Illuminate\Foundation\Bus\PendingChain|object
-     */
-    abstract protected function defaultJob();
 }

@@ -1,11 +1,15 @@
 <?php
 /**
- * Default Columns
+ * FiresItself
  *
- * This is a convenient way to make a Model only select certain columns by default. This may be handy to save
- * large chunks of memory when the retrieved record contains too much data that most of the time isn't used,
- * like walls of text, giant chunks of binary data, raw files encoded as base64 or a large list of columns.
+ * This trait allows an Event to be fired using a static method than rather a helper.
  *
+ *     NewSubscriptionEvent::fire($subscription, $client);
+ *
+ * You can also fire the event and halt when a listener returns a response.
+ *
+ *     NewSubscriptionEvent::fireHalted($subscription, $client);
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -33,29 +37,29 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Models;
+namespace DarkGhostHunter\Laratraits;
 
-use DarkGhostHunter\Laratraits\Scopes\DefaultColumns as DefaultColumnsScope;
-
-trait DefaultColumns
+trait FiresItself
 {
     /**
-     * Boot the SelectSomeColumns trait.
+     * Fires this event.
      *
-     * @return void
+     * @param  mixed  ...$args
+     * @return null|array
      */
-    protected static function bootDefaultColumns()
+    public static function fire(...$args)
     {
-        static::addGlobalScope(new DefaultColumnsScope(static::getDefaultColumns()));
+        return app('events')->dispatch(static::class, new static(...$args));
     }
 
     /**
-     * Get the Default Columns to query.
+     * Fires this event and halts
      *
-     * @return array
+     * @param  mixed  ...$args
+     * @return null|array
      */
-    protected static function getDefaultColumns()
+    public static function fireHalted(...$args)
     {
-        return static::$defaultColumns ?? [];
+        return app('events')->dispatch(static::class, new static(...$args), true);
     }
 }

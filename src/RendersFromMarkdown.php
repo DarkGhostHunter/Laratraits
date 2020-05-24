@@ -7,7 +7,7 @@
  * fail if the text to parse is empty; you should validate the data of the class beforehand.
  *
  * @see \Illuminate\Contracts\Support\Htmlable
- *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -39,7 +39,6 @@ namespace DarkGhostHunter\Laratraits;
 
 use Illuminate\Mail\Markdown;
 use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
 use const PHP_EOL;
 
 trait RendersFromMarkdown
@@ -67,7 +66,7 @@ trait RendersFromMarkdown
     /**
      * Returns the markdown text to parse.
      *
-     * @return string|mixed
+     * @return string|array|string[]|\Illuminate\Support\Stringable|\Illuminate\Support\Stringable[]
      */
     abstract protected function getMarkdown();
 
@@ -78,9 +77,7 @@ trait RendersFromMarkdown
      */
     public function parseMarkdown()
     {
-        if (empty($text = $this->getMarkdown())) {
-            return new HtmlString('');
-        }
+        $text = $this->getMarkdown();
 
         // If the data is an array, or a collection, we will treat each array item as a line.
         if ($text instanceof Collection) {

@@ -6,7 +6,7 @@ use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
-use DarkGhostHunter\Laratraits\Models\ModelType;
+use DarkGhostHunter\Laratraits\Eloquent\ModelType;
 
 class ModelTypeTest extends TestCase
 {
@@ -75,12 +75,12 @@ class CustomTypeTestModel extends BaseTestModel
 
     protected $table = 'bar';
 
-    protected function getQualifiedTypeColumn()
+    public function getModelTypeColumn()
     {
         return 'bar';
     }
 
-    protected function getTypeName()
+    public function getModelType()
     {
         return 'quz';
     }

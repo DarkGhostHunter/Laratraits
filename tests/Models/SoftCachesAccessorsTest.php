@@ -5,7 +5,7 @@ namespace Tests\Models;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use DarkGhostHunter\Laratraits\Models\SoftCachesAccessors;
+use DarkGhostHunter\Laratraits\Eloquent\SoftCachesAccessors;
 
 class SoftCachesAccessorsTest extends TestCase
 {
@@ -56,7 +56,7 @@ class SoftCachesAccessorsTest extends TestCase
         );
         $this->assertEquals(3, $model::$hits);
 
-        $model->withoutAccessorCache(function ($model) {
+        $model->withoutMutatorCache(function ($model) {
             $model->json;
         });
         $this->assertEquals(4, $model::$hits);

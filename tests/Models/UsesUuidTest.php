@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Eloquent\Collection;
-use DarkGhostHunter\Laratraits\Models\UsesUuid;
+use DarkGhostHunter\Laratraits\Eloquent\UsesUuid;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UsesUuidTest extends TestCase

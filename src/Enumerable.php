@@ -21,6 +21,7 @@
  *         // ...
  *      }
  *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -50,7 +51,6 @@
 
 namespace DarkGhostHunter\Laratraits;
 
-use Closure;
 use Countable;
 use Traversable;
 use LogicException;
@@ -83,12 +83,12 @@ class Enumerable implements Countable
             $this->states[] = $state;
         }
 
-        if (empty($this->states)) {
+        if (empty($this->states())) {
             throw new LogicException('The ' . static::class . ' does not have states to set.');
         }
 
         if ($this->current) {
-            $this->set($this->current);
+            $this->assign($this->current);
         }
     }
 
@@ -103,29 +103,11 @@ class Enumerable implements Countable
         if ($states instanceof Traversable) {
             $states = iterator_to_array($states);
         }
-
-        if (is_string($states)) {
+        elseif (is_string($states)) {
             return explode(',', $states);
         }
 
         return (array)$states;
-    }
-
-    /**
-     * Returns if one or all states exists.
-     *
-     * @param  string|array|iterable  $state
-     * @return bool
-     */
-    public function has($state)
-    {
-        foreach ($this->statesToArray($state) as $value) {
-            if (! in_array($value, $this->states, true)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -149,40 +131,36 @@ class Enumerable implements Countable
     }
 
     /**
-     * Sets a state.
+     * Assigns a state.
      *
      * @param  string  $name
      * @return $this
      */
-    public function set(string $name)
+    public function assign(string $name)
     {
         // We won't normalize the name here since we can only set one state at a time. We will
         // hard-check if the state exists in the array, and if it is, we will properly set it.
         // Otherwise, we'll throw an exception telling the developer this value is incorrect.
-        if (in_array($name, $this->states)) {
+        if (in_array($name, $this->states())) {
             $this->current = $name;
 
             return $this;
         }
 
-        throw new LogicException("The state [$name] doesn't exists in this Enumerate instance.");
+        throw new LogicException("The state '{$name}' doesn't exists in this Enumerate instance.");
     }
 
     /**
      * Sets an state when a given condition evaluates to true.
      *
-     * @param  bool|Closure  $condition
+     * @param  bool|\Closure  $condition
      * @param  string  $state
      * @return $this
      */
     public function when($condition, string $state)
     {
-        if ($condition instanceof Closure) {
-            $condition = $condition();
-        }
-
-        if ($condition) {
-            return $this->set($state);
+        if (value($condition)) {
+            return $this->assign($state);
         }
 
         return $this;
@@ -197,11 +175,7 @@ class Enumerable implements Countable
      */
     public function unless($condition, string $state)
     {
-        if ($condition instanceof Closure) {
-            $condition = $condition();
-        }
-
-        return $this->when(! $condition, $state);
+        return $this->when(! value($condition), $state);
     }
 
     /**
@@ -237,7 +211,7 @@ class Enumerable implements Countable
      */
     public function count()
     {
-        return count($this->states);
+        return count($this->states());
     }
 
     /**
@@ -256,12 +230,11 @@ class Enumerable implements Countable
      * @param  string  $name
      * @param  array  $arguments
      * @return \DarkGhostHunter\Laratraits\Enumerable
-     *
      */
     public function __call($name, $arguments)
     {
         try {
-            return $this->set($name);
+            return $this->assign($name);
         }
         catch (LogicException $exception) {
             throw new BadMethodCallException('Call to undefined method ' . static::class . '::' . $name . '()');
@@ -280,7 +253,7 @@ class Enumerable implements Countable
         $instance = (new static($states));
 
         if ($initial) {
-            $instance->set($initial);
+            $instance->assign($initial);
         }
 
         return $instance;
@@ -294,6 +267,6 @@ class Enumerable implements Countable
      */
     public static function as(string $initial) : self
     {
-        return (new static)->set($initial);
+        return (new static)->assign($initial);
     }
 }

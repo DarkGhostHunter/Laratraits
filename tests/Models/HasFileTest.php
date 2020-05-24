@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Schema\Blueprint;
-use DarkGhostHunter\Laratraits\Models\HasFile;
+use DarkGhostHunter\Laratraits\Eloquent\HasFile;
 
 class HasFileTest extends TestCase
 {

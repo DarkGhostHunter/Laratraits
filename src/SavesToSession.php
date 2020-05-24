@@ -4,6 +4,7 @@
  *
  * This trait allows an object to be saved into the session.
  *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -34,10 +35,6 @@
 namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
-use JsonSerializable;
-use Illuminate\Contracts\Session\Session;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Htmlable;
 
 trait SavesToSession
 {
@@ -49,7 +46,7 @@ trait SavesToSession
      */
     public function saveToSession(string $key = null)
     {
-        app(Session::class)->put($key ?? $this->defaultSessionKey(), $this->toSession());
+        session()->put($key ?? $this->defaultSessionKey(), $this->toSession());
     }
 
     /**
@@ -57,34 +54,18 @@ trait SavesToSession
      *
      * @return string
      */
-    protected function defaultSessionKey()
+    protected function defaultSessionKey() : string
     {
-        throw new LogicException('The class ' . class_basename($this) . ' has no default session key.');
+        throw new LogicException('The class ' . get_class($this) . ' has no default session key.');
     }
 
     /**
      * The value to insert into the Session.
      *
-     * @return string|$this
+     * @return $this
      */
     protected function toSession()
     {
-        if ($this instanceof Jsonable) {
-            return $this->toJson();
-        }
-
-        if ($this instanceof JsonSerializable) {
-            return json_encode($this);
-        }
-
-        if ($this instanceof Htmlable) {
-            return $this->toHtml();
-        }
-
-        if (method_exists($this, '__toString')) {
-            return $this->__toString();
-        }
-
         return $this;
     }
 }

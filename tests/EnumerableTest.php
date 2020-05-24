@@ -101,7 +101,7 @@ class EnumerableTest extends TestCase
         $states = ['foo', 'bar', 'quz'];
         $enum = new Enumerable($states);
 
-        $enum->set('foo');
+        $enum->assign('foo');
 
         $this->assertTrue($enum->is('foo'));
         $this->assertFalse($enum->isNot('foo'));
@@ -132,7 +132,7 @@ class EnumerableTest extends TestCase
 
         $enum = new Enumerable(['foo', 'bar', 'quz']);
 
-        $enum->set('qux');
+        $enum->assign('qux');
     }
 
     public function test_sets_state_programmatically_when_true()
@@ -166,7 +166,7 @@ class EnumerableTest extends TestCase
     {
         $enum = new Enumerable(['foo', 'bar', 'quz']);
 
-        $enum->set('foo');
+        $enum->assign('foo');
 
         $enum->unless(true, 'bar');
 

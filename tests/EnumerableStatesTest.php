@@ -19,7 +19,7 @@ class EnumerableStatesTest extends TestCase
         };
 
         $this->assertNull($class->current());
-        $this->assertInstanceOf(get_class($class), $class->state('foo'));
+        $this->assertInstanceOf(get_class($class), $class->assign('foo'));
         $this->assertEquals('foo', $class->current());
     }
 
@@ -32,7 +32,7 @@ class EnumerableStatesTest extends TestCase
         };
 
         $this->assertNull($class->current());
-        $this->assertInstanceOf(get_class($class), $class->state('foo'));
+        $this->assertInstanceOf(get_class($class), $class->assign('foo'));
         $this->assertEquals('foo', $class->current());
     }
 
@@ -46,7 +46,7 @@ class EnumerableStatesTest extends TestCase
             protected const STATES = ['foo', 'bar'];
         };
 
-        $class->state('invalid');
+        $class->assign('invalid');
     }
 
     public function test_initial_const_method()
@@ -86,6 +86,6 @@ class EnumerableStatesTest extends TestCase
             use EnumerableStates;
         };
 
-        $class->state('foo');
+        $class->assign('foo');
     }
 }

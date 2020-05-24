@@ -7,7 +7,7 @@ use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
-use DarkGhostHunter\Laratraits\Models\NeighbourRecords;
+use DarkGhostHunter\Laratraits\Eloquent\NeighbourRecords;
 
 class NeighbourRecordsTest extends TestCase
 {

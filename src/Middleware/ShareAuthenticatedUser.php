@@ -2,8 +2,27 @@
 /**
  * Share Authenticated User Middleware
  *
- * This allows to share in all your views the "authenticated" variable containing the authenticated user, if any.
+ * This allows to share in all your views the "authenticated" variable containing the
+ * authenticated user, if any.
  *
+ * It's recommended to add it in your HTTP Kernel as part of the 'web' stack of middleware:
+ *
+ *     protected $middlewareGroups = [
+ *         'web' => [
+ *             // ...
+ *
+ *             \DarkGhostHunter\Laratraits\Middleware\ShareAuthenticatedUser::class
+ *         ];
+ *     ];
+ *
+ * Then, in your views, you can use the "$authenticated" variable anywhere, which can be "null"
+ * if not authenticated.
+ *
+ *     @auth
+ *         <h2>Welcome, {{ $authenticated->name }}</h2>
+ *     @endauth
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera

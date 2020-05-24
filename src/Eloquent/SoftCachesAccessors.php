@@ -3,9 +3,21 @@
  * SoftCaches Mutator
  *
  * This trait overrides the "mutateAttribute" from the Eloquent Model class and adds a logic to "cache" the
- * accessors used into the model instance. You may want to use this to avoid calling the logic every time
- * the accessor is used, specially if its logic is costly, like iterating a large set of data or else.
+ * mutators used into the model instance. You may want to use this to avoid calling the logic every time
+ * the mutator is used, specially if its logic is costly, like iterating a large set of data or else.
  *
+ * For example, let's say you use an mutator that returns a random number. The next time you use it, the
+ * same number will be returned:
+ *
+ *    protected function getRandomNumberAttribute()
+ *    {
+ *        return rand(1, 100);
+ *    }
+ *
+ *    echo $model->random_number; // 63
+ *    echo $model->random_number; // 63
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -33,7 +45,7 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Models;
+namespace DarkGhostHunter\Laratraits\Eloquent;
 
 use Closure;
 
@@ -44,7 +56,7 @@ trait SoftCachesAccessors
      *
      * @var array
      */
-    protected $cachedAccessorsValues = [];
+    protected $cachedMutators = [];
 
     /**
      * Returns the value of an attribute using its cached accessor.
@@ -56,11 +68,11 @@ trait SoftCachesAccessors
      */
     protected function mutateAttribute($key, $value)
     {
-        if (! in_array($key, $this->cachedAccessors(), true)) {
+        if (! in_array($key, $this->cachedMutators(), true)) {
             return parent::mutateAttribute($key, $value);
         }
 
-        return $this->cachedAccessorsValues[$key] = $this->cachedAccessorsValues[$key]
+        return $this->cachedMutators[$key] = $this->cachedMutators[$key]
             ?? parent::mutateAttribute($key, $value);
     }
 
@@ -71,7 +83,7 @@ trait SoftCachesAccessors
      */
     public function flushAccessorsCache()
     {
-        $this->cachedAccessorsValues = [];
+        $this->cachedMutators = [];
 
         return $this;
     }
@@ -93,15 +105,15 @@ trait SoftCachesAccessors
      * @param  \Closure  $callback
      * @return mixed
      */
-    public function withoutAccessorCache(Closure $callback)
+    public function withoutMutatorCache(Closure $callback)
     {
-        $accessors = $this->cachedAccessorsValues;
+        $accessors = $this->cachedMutators;
 
         $this->flushAccessorsCache();
 
         $value = $callback($this);
 
-        $this->cachedAccessorsValues = $accessors;
+        $this->cachedMutators = $accessors;
 
         return $value;
     }
@@ -111,8 +123,8 @@ trait SoftCachesAccessors
      *
      * @return array
      */
-    protected function cachedAccessors()
+    protected function cachedMutators()
     {
-        return $this->cachedAccessors ?? [];
+        return $this->cachedMutators;
     }
 }

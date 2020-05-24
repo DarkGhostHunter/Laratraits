@@ -1,11 +1,27 @@
 <?php
 /**
- * Dynamically Mutates
+ * CastEnumerable
  *
- * This trait allows a column to be mutated dynamically depending on a given value. For example, column "foo"
- * may contain a value that can be a boolean, array or string, while column "bar" contains its type. With
- * this, you can create an mutator/accessor to dynamically cast the value into its native data type.
+ * This class allows a Model to cast an "enum" property into a Enumerable instance with its own
+ * list of available states. Because this class needs the possible states declared beforehand
+ * this is made an abstract class you will need to extend with the states you want to have.
  *
+ *     class WeatherEnumerable extends CastEnumerable
+ *     {
+ *         protected $current = 'sunny';
+ *
+ *         protected $states = ['sunny', 'cloudy', 'rainy', 'windy', 'stormy', 'snowy'];
+ *
+ *         // ...
+ *      }
+ *
+ * Then, you can create a custom casting your Model attributes:
+ *
+ *     protected $casts = [
+ *         'weather' => WeatherEnumerable::class,
+ *     ];
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -33,32 +49,26 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Models;
+namespace DarkGhostHunter\Laratraits\Eloquent\Casts;
 
-trait DynamicallyMutates
+use DarkGhostHunter\Laratraits\Enumerable;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
+abstract class CastEnumerable extends Enumerable implements CastsAttributes
 {
     /**
-     * Dynamically mutates an attribute by the other attribute value as "type".
-     *
-     * @param  string  $value The attribute name to take.
-     * @param  string  $type The attribute that holds the type
-     * @return mixed
+     * @inheritDoc
      */
-    protected function castAttributeInto(string $value, string $type = null)
+    public function get($model, string $key, $value, array $attributes)
     {
-        $type = $type ?? $value . '_type';
+        return static::as($value);
+    }
 
-        // We will save the original casted attributes, swap them, and then restore them.
-        $original = $this->casts;
-
-        $this->casts = [
-            $value => $this->attributes[$type],
-        ];
-
-        $attribute = $this->castAttribute($value, $this->attributes[$value]);
-
-        $this->casts = $original;
-
-        return $attribute;
+    /**
+     * @inheritDoc
+     */
+    public function set($model, string $key, $value, array $attributes)
+    {
+        return (is_string($value) ? static::as($value) : $value)->current();
     }
 }

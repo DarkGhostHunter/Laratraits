@@ -1,11 +1,24 @@
 <?php
 /**
- * Discover Classes
+ * RegisterGates
  *
- * This class allows to spy inside a directory and check all PHP files containing classes a-la PSR-4.
- * You will receive a Collection made of all the instantiable classes, optionally filtered by a
- * method name or implementation interface. You will receive a collection of the classes.
+ * This trait will register user-defined gates in your AuthServiceProvider automatically:
  *
+ *     protected $gates = [
+ *         'view-dashboard' => 'App\Auth\Gates\Admin@viewDashboard',
+ *         'create-users' => 'App\Auth\Gates\Admin@createUsers',
+ *     ];
+ *
+ *     public function boot()
+ *     {
+ *         $this->registerPolicies();
+ *
+ *         $this->registerGates();
+ *
+ *         // ...
+ *     }
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -33,30 +46,24 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits;
+namespace DarkGhostHunter\Laratraits\ServiceProviders;
 
-trait DiscoverClasses
+use Illuminate\Support\Facades\Gate;
+
+trait RegisterGates
 {
     /**
-     * Discover instantiable classes from a given path.
+     * Registers gates.
      *
-     * @param  string  $path  The Path to discover. Defaults to the
-     * @param  string|null  $methodOrInterface  The Method name or Interface to filter the classes.
-     * @return \Illuminate\Support\Collection  A collection of filtered class names.
+     * @return void
      */
-    public function discover(string $path, string $methodOrInterface = null)
+    public function registerGates()
     {
-        $discoverer = app(ClassDiscoverer::class)->path($path);
+        /** @var \Illuminate\Contracts\Auth\Access\Gate $gate */
+        $gate = Gate::getFacadeRoot();
 
-        if ($methodOrInterface) {
-            if (interface_exists($methodOrInterface)) {
-                $discoverer->filterByInterface($methodOrInterface);
-            }
-            else {
-                $discoverer->filterByMethod($methodOrInterface);
-            }
+        foreach ($this->gates ?? [] as $action => $handler) {
+            $gate->define($action, $handler);
         }
-
-        return $discoverer->discover();
     }
 }

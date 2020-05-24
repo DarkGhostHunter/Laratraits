@@ -5,7 +5,7 @@ namespace Tests\Models;
 use BadMethodCallException;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Database\Eloquent\Model;
-use DarkGhostHunter\Laratraits\Models\AutoFill;
+use DarkGhostHunter\Laratraits\Eloquent\AutoFill;
 
 class AutoFillTest extends TestCase
 {

@@ -6,6 +6,41 @@
  * this trait you can set a column that will hold the type, while these models extend the same base model
  * with common properties and methods. This trait will add the scope and the type automatically to each.
  *
+ *     class Color extends Model
+ *     {
+ *         protected $table = 'colors';
+ *
+ *         // ..
+ *     }
+ *
+ *     class Red extends Color
+ *     {
+ *         use ModelType;
+ *     }
+ *
+ *     class Blue extends Color
+ *     {
+ *         use ModelType;
+ *     }
+ *
+ * When you save "Red" or "Blue", your table would look like this:
+ *
+ *     | colors                              |
+ *     | id | type | created_at | updated_at |
+ *     |----|------|------------|------------|
+ *     | 1  | red  | 2020-04-01 | 2020-04-01 |
+ *     | 2  | blue | 2020-04-01 | 2020-04-01 |
+ *
+ * If you constantly query the column type, is recommended to (at least) create an index for it.
+ *
+ *     $table->index('type');
+ *
+ * You can also go wild with compound primary keys, if necessary.
+ *
+ *     $table->dropPrimary('id');
+ *     $table->primary(['id', 'type']);
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -33,7 +68,7 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Models;
+namespace DarkGhostHunter\Laratraits\Eloquent;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,7 +85,7 @@ trait ModelType
         static::addGlobalScope(function (Builder $builder) {
             $model = $builder->getModel();
 
-            return $builder->where($model->getQualifiedTypeColumn(), $model->getTypeName());
+            return $builder->where($model->getModelTypeColumn(), $model->getModelType());
         });
     }
 
@@ -61,7 +96,7 @@ trait ModelType
      */
     protected function initializeModelType()
     {
-        $this->attributes[$this->getQualifiedTypeColumn()] = $this->getTypeName();
+        $this->attributes[$this->getModelTypeColumn()] = $this->getModelType();
     }
 
     /**
@@ -69,7 +104,7 @@ trait ModelType
      *
      * @return string
      */
-    protected function getQualifiedTypeColumn()
+    public function getModelTypeColumn()
     {
         return 'type';
     }
@@ -79,8 +114,8 @@ trait ModelType
      *
      * @return string
      */
-    protected function getTypeName()
+    public function getModelType()
     {
-        return Str::kebab(class_basename(static::class));
+        return Str::snake(class_basename(static::class));
     }
 }

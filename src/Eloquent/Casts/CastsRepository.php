@@ -1,10 +1,18 @@
 <?php
 /**
- * Throttles Requests
+ * CastRepository
  *
- * This trait allows you to extend the Eloquent Builder instance using local macros, which are macros but
- * only valid for the instance itself instance of globally. This cycles through all the scope methods,
- * filters only those that starts with "macro", executes them receiving a Closure, and adds them.
+ * This Cast allows a column on the model with complex arrayable data to ve a Repository.
+ * This allows the property to be accessed like a config-style set of values.
+ *
+ *     protected $casts = [
+ *         'config' => CastRepository::class,
+ *     ];
+ *
+ * Then, in your code, you can use the Repository methods.
+ *
+ *     $model->config->get('schedule.days');
+ *
  * ---
  * MIT License
  *
@@ -33,33 +41,30 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Scopes;
+namespace DarkGhostHunter\Laratraits\Eloquent\Casts;
 
-use ReflectionClass;
-use ReflectionMethod;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Config\Repository;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-trait MacrosEloquent
+class CastsRepository implements CastsAttributes
 {
     /**
-     * Extend the Eloquent Query Builder instance.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @return void
-     * @throws \ReflectionException
+     * @inheritDoc
      */
-    public function extend(Builder $builder)
+    public function get($model, string $key, $value, array $attributes)
     {
-        // We will cycle through all the public static methods in the present Scope instance
-        // and add macros to the Builder instance by filtering those starting with "macro".
-        // To say an example, the "macroAddOne()" method will be registered as "addOne()".
-        $methods = (new ReflectionClass($this))
-            ->getMethods(ReflectionMethod::IS_PUBLIC + ReflectionMethod::IS_STATIC);
+        return new Repository($value);
+    }
 
-        foreach ($methods as $method) {
-            if (strpos($method->getName(), 'macro') === 0) {
-                $builder->macro(lcfirst(substr($method, 5)), static::class . '::' . $method);
-            }
+    /**
+     * @inheritDoc
+     */
+    public function set($model, string $key, $value, array $attributes)
+    {
+        if ($value instanceof Repository) {
+            return $value->all();
         }
+
+        return (array)$value;
     }
 }

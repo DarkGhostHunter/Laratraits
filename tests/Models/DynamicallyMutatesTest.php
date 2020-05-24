@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use DarkGhostHunter\Laratraits\Models\DynamicallyMutates;
+use DarkGhostHunter\Laratraits\Eloquent\DynamicallyMutates;
 
 class DynamicallyMutatesTest extends TestCase
 {

@@ -6,6 +6,14 @@
  * methods must follow the "fillValueAttribute". For example, to fill the `foo` attribute, the method
  * `fillFooAttribute` must exists and return the value needed. Otherwise, try to use $attributes.
  *
+ *     protected $autoFillable = ['foo'];
+ *
+ *     protected function fillFooAttribute($value)
+ *     {
+ *         $this->attributes['foo'] = $value;
+ *     }
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -33,9 +41,10 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits\Models;
+namespace DarkGhostHunter\Laratraits\Eloquent;
 
 use Illuminate\Support\Str;
+use BadMethodCallException;
 
 trait AutoFill
 {
@@ -46,19 +55,21 @@ trait AutoFill
      */
     protected function initializeAutoFill()
     {
-        foreach ($this->autoFillable() ?? [] as $attribute) {
+        foreach ($this->autoFillable() as $attribute) {
+
+            if (isset($this->attributes[$attribute])) {
+                continue;
+            }
+
             try {
                 $result = $this->{'fill' . Str::studly($attribute) . 'Attribute'}($attribute);
-            } catch (\BadMethodCallException $exception) {
-                $method = 'fill' . Str::studly($attribute) . 'Attribute';
-                throw new \BadMethodCallException(
-                    "The attribute [$attribute] doesn't have a filler method [$method]."
+            } catch (BadMethodCallException $exception) {
+                throw new BadMethodCallException(
+                    "The attribute [$attribute] has no a filler method [fill".Str::studly($attribute)."Attribute]."
                 );
             }
 
-            if (! isset($this->attributes[$attribute]) && $result) {
-                $this->attributes[$attribute] = $result;
-            }
+            $this->setAttribute($attribute, $result);
         }
     }
 

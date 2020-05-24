@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
-use DarkGhostHunter\Laratraits\Models\DefaultColumns;
+use DarkGhostHunter\Laratraits\Eloquent\DefaultColumns;
 
 class DefaultColumnsTest extends TestCase
 {

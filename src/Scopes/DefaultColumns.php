@@ -5,7 +5,7 @@
  * This scopes injects a "select" into the Eloquent Query Builder with a given list of columns, which can be later
  * be overridden by the query itself. This allows the queried record to only select some columns instead of all,
  * which without can become problematic when tidying up memory consumption and data retrieved for each Model.
- *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -63,10 +63,10 @@ class DefaultColumns implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if ($this->defaultColumns === [] || $builder->getQuery()->columns) {
-            return $builder;
+        if ($this->defaultColumns === [] && empty($builder->getQuery()->columns)) {
+            return $builder->select($this->defaultColumns);
         }
 
-        return $builder->select($this->defaultColumns);
+        return $builder;
     }
 }

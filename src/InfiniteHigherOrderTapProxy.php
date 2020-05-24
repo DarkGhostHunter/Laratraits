@@ -3,7 +3,7 @@
  * Infinite Higher Order Tap Proxy
  *
  * This class extends the original "Tapable" class but changes the call to always return this object.
- *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
