@@ -1,10 +1,11 @@
 <?php
 /**
- * Validate Consumable Signature Middleware
+ * ValidateConsumableSignature
  *
  * Makes the signed request valid only for one time, except on client (4xx) or server errors (5xx).
  *
- * You can set
+ * This is useful when you need to issue signed URL that can only be reachable once, avoiding
+ * writing logic to disable further requests processes once the first is successfully handled.
  *
  * ---
  * MIT License
@@ -105,8 +106,7 @@ class ValidateConsumableSignature
      */
     protected function consumeSignature(Request $request)
     {
-        $this->cache->put($this->cacheKey($request), null,
-            Carbon::createFromTimestamp($request->query('expires')));
+        $this->cache->put($this->cacheKey($request), null, Carbon::createFromTimestamp($request->query('expires')));
     }
 
     /**

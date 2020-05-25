@@ -2,6 +2,7 @@
 
 namespace Tests\Eloquent;
 
+use LogicException;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Eloquent\Model;
@@ -56,6 +57,14 @@ class ModelTypeTest extends TestCase
         $this->assertEquals('foo', $models->first()->name);
         $this->assertEquals('quz', $models->first()->bar);
     }
+
+    public function test_exception_if_model_has_no_table_set()
+    {
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The Tests\Eloquent\ExceptionCustomTypeTestModel model must set a common table name for all extending models.');
+
+        new ExceptionCustomTypeTestModel;
+    }
 }
 
 
@@ -84,4 +93,24 @@ class CustomTypeTestModel extends BaseTestModel
     {
         return 'quz';
     }
+}
+
+class ExceptionBaseTestModel extends Model
+{
+    use ModelType;
+
+    public function getModelTypeColumn()
+    {
+        return 'bar';
+    }
+
+    public function getModelType()
+    {
+        return 'quz';
+    }
+}
+
+class ExceptionCustomTypeTestModel extends ExceptionBaseTestModel
+{
+
 }

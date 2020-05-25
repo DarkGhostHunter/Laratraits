@@ -1,6 +1,6 @@
 <?php
 /**
- * Neighbour Records trait
+ * NeighbourRecords
  *
  * This trait will allow you to conveniently get the previous and next record in a performing-way. This only
  * returns the primary key of these neighbour records, but you can override the way the list is queried to
@@ -15,9 +15,15 @@
  *
  *     if ($next) {
  *         echo 'The next podcast is ' . $next->id;
+ *     }
  *
  * By default, it only selects the column used for routing, which is mostly the primary key. You can
  * override this in the `queryColumns()` method.
+ *
+ *     protected function queryColumns()
+ *     {
+ *         return ['id', 'title', 'user'];
+ *     }
  *
  * ---
  * MIT License

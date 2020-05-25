@@ -42,7 +42,7 @@ use Illuminate\Database\Eloquent\Builder;
 trait MacrosEloquent
 {
     /**
-     * Extend the Eloquent Query Builder instance.
+     * Extend the Eloquent Query Builder instance with macros.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
@@ -53,11 +53,8 @@ trait MacrosEloquent
         // We will cycle through all the public static methods in the present Scope instance
         // and add macros to the Builder instance by filtering those starting with "macro".
         // To say an example, the "macroAddOne()" method will be registered as "addOne()".
-        $methods = (new ReflectionClass($this))
-            ->getMethods(ReflectionMethod::IS_PUBLIC + ReflectionMethod::IS_STATIC);
-
-        foreach ($methods as $method) {
-
+        foreach ((new ReflectionClass($this))
+            ->getMethods(ReflectionMethod::IS_PUBLIC + ReflectionMethod::IS_STATIC) as $method) {
             if (strpos($name = $method->getName(), 'macro') === 0) {
                 $builder->macro(lcfirst(substr($name, 5)), [static::class, $name]);
             }

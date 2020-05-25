@@ -54,7 +54,7 @@ class UuidScope implements Scope
     }
 
     /**
-     * Return a Closure that find a model by its UUID.
+     * Find a model by its UUID.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
@@ -71,7 +71,7 @@ class UuidScope implements Scope
     }
 
     /**
-     * Return a Closure that find multiple models by their UUID.
+     * Find multiple models by their UUID.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuids
@@ -90,7 +90,7 @@ class UuidScope implements Scope
     }
 
     /**
-     * Return a Closure that find a model by its UUID or throw an exception.
+     * Find a model by its UUID or throw an exception.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
@@ -116,7 +116,7 @@ class UuidScope implements Scope
     }
 
     /**
-     * Return a Closure that find a model by its UUID or return fresh model instance.
+     * Find a model by its UUID or return fresh model instance.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  mixed  $uuid
@@ -133,7 +133,7 @@ class UuidScope implements Scope
     }
 
     /**
-     * Return a Closure that adds a where clause on the UUID column to the query.
+     * Add a where clause on the UUID column to the query.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
@@ -153,7 +153,7 @@ class UuidScope implements Scope
     }
 
     /**
-     * Return a Closure that add a where clause on the primary key to the query.
+     * Add a where clause on the UUID column key to the query.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable $uuid

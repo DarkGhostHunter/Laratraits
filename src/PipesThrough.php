@@ -1,16 +1,19 @@
 <?php
 /**
- * Pipes Through
+ * PipesThrough
  *
- * This trait is fairly simple: takes the instance and sends it through a given Pipeline, instantiated by
- * the Service Container, and returns a result (hopefully the same instance). You can change the pipes,
- * the Closure to receive the result, the default methods to use, and even the Pipeline class itself.
+ * This trait is fairly simple: takes the object and sends it through a Pipeline and returns a
+ * result. You can include the pipes as an array of classes or callables. You can also create
+ * a custom Pipeline class with your own pipes for most simplicity and override the methods.
  *
  *     // Pipe the class immediately.
  *     $result = $class->pipe();
  *
  *     // Pipe the class asynchronously.
- *     $class->dispatchPipeline();
+ *     $class->dispatchPipeline([
+ *         PipeFoo::class,
+ *         PipeBar::class,
+ *     ]);
  *
  * ---
  * MIT License
@@ -61,12 +64,15 @@ trait PipesThrough
         $pipeline = $this->makePipeline()->send($this);
 
         if ($pipes) {
-            $pipeline->through((array)$pipes);
+            $pipeline->through($pipes);
         }
 
-        return $destination
-            ? $pipeline->then($destination)
-            : $pipeline->thenReturn();
+        // If the developer didn't include a destination, we will use a default one.
+        $destination = $destination ?? function ($passable) {
+            return $passable;
+        };
+
+        return $pipeline->then($destination);
     }
 
     /**
@@ -86,9 +92,10 @@ trait PipesThrough
     }
 
     /**
-     * Queues the pipeline to a Job.
+     * Queues the pipeline to an asynchronous Job.
      *
-     * @param  mixed|string[] ...$pipes
+     * @see https://laravel.com/docs/queues#delayed-dispatching
+     * @param  string[] ...$pipes
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
     public function dispatchPipeline(...$pipes)

@@ -43,7 +43,7 @@ use Illuminate\Http\Client\PendingRequest;
 trait SendsToHttp
 {
     /**
-     * Sends the current instance via HTTP.
+     * Sends the current instance via an HTTP Request.
      *
      * @param  string|null  $url
      * @return \Illuminate\Http\Client\Response
@@ -56,7 +56,7 @@ trait SendsToHttp
     }
 
     /**
-     * Sends the current instance via HTTP.
+     * Performs the HTTP Request.
      *
      * @param  \Illuminate\Http\Client\PendingRequest  $request
      * @param  string  $url
@@ -69,7 +69,7 @@ trait SendsToHttp
     }
 
     /**
-     * Prepares the HTTP Request to be sent.
+     * Creates a HTTP Request object ready to be sent.
      *
      * @return \Illuminate\Http\Client\PendingRequest
      */
@@ -79,7 +79,7 @@ trait SendsToHttp
     }
 
     /**
-     * Return the HTTP endpoint to send this object.
+     * Return the HTTP endpoint where to send this object.
      *
      * @return string
      */

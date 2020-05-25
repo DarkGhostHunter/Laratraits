@@ -1,6 +1,6 @@
 <?php
 /**
- * Dispatchable Pipeline
+ * DispatchablePipeline
  *
  * This class is in charge of holding the Pipeline and the "passable" thing, and execute the pipeline once
  * this Job is dispatched. This Job instance is used when you add the "DispatchesPipeline" trait in your

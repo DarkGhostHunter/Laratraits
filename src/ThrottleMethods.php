@@ -53,7 +53,7 @@ namespace DarkGhostHunter\Laratraits;
 trait ThrottleMethods
 {
     /**
-     * Limits the next method call by a given window of time.
+     * Limits the next method call by a tries inside a window of minutes.
      *
      * @param  int  $tries
      * @param  int  $minutes
@@ -66,7 +66,7 @@ trait ThrottleMethods
     }
 
     /**
-     * Clear the throttler method.
+     * Clears the rate limiter for the method being throttled.
      *
      * @param  string  $method
      * @return \DarkGhostHunter\Laratraits\ThrottleMethods

@@ -151,7 +151,7 @@ class Enumerable implements Countable
     }
 
     /**
-     * Sets an state when a given condition evaluates to true.
+     * Sets a state when a given condition evaluates to true.
      *
      * @param  bool|\Closure  $condition
      * @param  string|null  $state
@@ -167,7 +167,7 @@ class Enumerable implements Countable
     }
 
     /**
-     * Sets an state when a given condition evaluates to false.
+     * Sets a state when a given condition evaluates to false.
      *
      * @param  bool|\Closure  $condition
      * @param  string  $state
@@ -215,13 +215,13 @@ class Enumerable implements Countable
     }
 
     /**
-     * Transform the class instance into a string.
+     * Transform the object into a string.
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->current() ?? '';
+        return (string)$this->current();
     }
 
     /**
@@ -260,7 +260,7 @@ class Enumerable implements Countable
     }
 
     /**
-     * Creates a new Enumerate instance using an initial state.
+     * Creates a new Enumerate instance, using an initial state if not null.
      *
      * @param  string|null  $initial
      * @return mixed

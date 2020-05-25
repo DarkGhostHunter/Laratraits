@@ -48,7 +48,7 @@ class ClassMethodThrottler
     protected $target;
 
     /**
-     * Rate Limiter
+     * Rate Limiter instance.
      *
      * @var \Illuminate\Cache\RateLimiter
      */
@@ -116,7 +116,7 @@ class ClassMethodThrottler
     }
 
     /**
-     * Clear the throttler.
+     * Clear the throttler for a given method.
      *
      * @param  string  $method
      * @return void
