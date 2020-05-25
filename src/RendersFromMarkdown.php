@@ -79,11 +79,11 @@ trait RendersFromMarkdown
     {
         $text = $this->getMarkdown();
 
-        // If the data is an array, or a collection, we will treat each array item as a line.
         if ($text instanceof Collection) {
             $text = $text->toArray();
         }
 
+        // If the data is an array, or a collection, we will treat each array item as a line.
         if (is_array($text)) {
             $text = implode(PHP_EOL, $text);
         }

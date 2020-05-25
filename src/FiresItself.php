@@ -53,7 +53,7 @@ trait FiresItself
     }
 
     /**
-     * Fires this event and halts
+     * Fires this event and halts if a listener returns a response.
      *
      * @param  mixed  ...$args
      * @return null|array

@@ -1,6 +1,6 @@
 <?php
 /**
- * Cache Static Response
+ * CacheStaticResponse
  *
  * Caches a (hopefully static) Response for the given minutes, and other store apart of the default.
  *
@@ -12,6 +12,9 @@
  *
  *     Route::get('post', 'PostController@show')
  *          ->middleware('cache.static:1440,redis');
+ *
+ * This caches the request for the requester fingerprint (including the IP). If you need to cache
+ * the response for all requests, you should manage that behaviour in your controller instead.
  *
  * ---
  * MIT License
@@ -50,14 +53,14 @@ use Illuminate\Contracts\Cache\Factory;
 class CacheStaticResponse
 {
     /**
-     * Cache manager
+     * Cache manager instance.
      *
      * @var \Illuminate\Cache\CacheManager
      */
     protected $cache;
 
     /**
-     * Create a new ValidateSignature instance.
+     * Create a new middleware instance.
      *
      * @param  \Illuminate\Contracts\Cache\Factory  $cache
      */
@@ -102,7 +105,7 @@ class CacheStaticResponse
     }
 
     /**
-     * Returns the response if it exists in the cache
+     * Check if the response exists in the cache
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string|null  $store

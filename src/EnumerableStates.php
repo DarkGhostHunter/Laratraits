@@ -46,14 +46,14 @@ use LogicException;
 trait EnumerableStates
 {
     /**
-     * The Enumerate instance.
+     * The Enumerable instance.
      *
      * @var \DarkGhostHunter\Laratraits\Enumerable
      */
     protected $enumerable;
 
     /**
-     * Set the state for this current instance.
+     * Set a state for this current instance.
      *
      * @param  string  $state
      * @return $this
@@ -76,7 +76,7 @@ trait EnumerableStates
     }
 
     /**
-     * Create an Enumerate instance.
+     * Returns the current Enumerable instance.
      *
      * @return \DarkGhostHunter\Laratraits\Enumerable|mixed
      */
@@ -96,7 +96,7 @@ trait EnumerableStates
     }
 
     /**
-     * Return the enumerable states for the current instance.
+     * Return the states for the current instance.
      *
      * @return array|iterable
      */

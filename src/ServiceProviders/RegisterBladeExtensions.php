@@ -72,7 +72,6 @@ trait RegisterBladeExtensions
      */
     protected function registerBladeExtensions()
     {
-        /** @var \Illuminate\View\Compilers\BladeCompiler $compiler */
         $compiler = Blade::getFacadeRoot();
 
         foreach ($this->directives ?? [] as $name => $handler) {

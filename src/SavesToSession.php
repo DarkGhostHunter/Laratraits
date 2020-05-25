@@ -39,7 +39,7 @@ use LogicException;
 trait SavesToSession
 {
     /**
-     * Saves the current object (or a part of it) to session.
+     * Saves the current object to the session.
      *
      * @param  string|null  $key
      * @return void
@@ -56,7 +56,7 @@ trait SavesToSession
      */
     protected function defaultSessionKey() : string
     {
-        throw new LogicException('The class ' . get_class($this) . ' has no default session key.');
+        throw new LogicException('The class ' . static::class . ' has no default session key.');
     }
 
     /**

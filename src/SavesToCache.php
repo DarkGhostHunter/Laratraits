@@ -51,7 +51,7 @@ trait SavesToCache
     }
 
     /**
-     * The Cache Store to use
+     * The Cache Store to use to store this object.
      *
      * @return \Illuminate\Contracts\Cache\Repository
      */
@@ -61,17 +61,17 @@ trait SavesToCache
     }
 
     /**
-     * The key name to use in the cache if not specified.
+     * The cache key name to use by default.
      *
      * @return string
      */
     protected function defaultCacheKey() : string
     {
-        throw new LogicException('The class ' . get_class($this) . ' has no default cache key.');
+        throw new LogicException('The class ' . static::class . ' has no default cache key.');
     }
 
     /**
-     * The value to insert into the cache.
+     * The data to insert into the cache.
      *
      * @return $this
      */

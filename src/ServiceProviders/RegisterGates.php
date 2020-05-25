@@ -53,13 +53,12 @@ use Illuminate\Support\Facades\Gate;
 trait RegisterGates
 {
     /**
-     * Registers gates.
+     * Registers an array of Authorization Gates.
      *
      * @return void
      */
     public function registerGates()
     {
-        /** @var \Illuminate\Contracts\Auth\Access\Gate $gate */
         $gate = Gate::getFacadeRoot();
 
         foreach ($this->gates ?? [] as $action => $handler) {
