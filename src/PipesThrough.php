@@ -6,6 +6,13 @@
  * the Service Container, and returns a result (hopefully the same instance). You can change the pipes,
  * the Closure to receive the result, the default methods to use, and even the Pipeline class itself.
  *
+ *     // Pipe the class immediately.
+ *     $result = $class->pipe();
+ *
+ *     // Pipe the class asynchronously.
+ *     $class->dispatchPipeline();
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -54,7 +61,7 @@ trait PipesThrough
         $pipeline = $this->makePipeline()->send($this);
 
         if ($pipes) {
-            $pipeline->through($pipes);
+            $pipeline->through((array)$pipes);
         }
 
         return $destination
@@ -72,20 +79,24 @@ trait PipesThrough
         // By default we create the default Pipeline class, but if your pipes don't depend
         // on a Service Container, you can just instance the pipeline with an empty one.
         // If you need custom pipeline handling, you can extend the default pipeline.
-        return app(Pipeline::class);
+        //
+        // return new Pipeline(new \Illuminate\Container\Container);
+
+        return app($this->pipeline ?? Pipeline::class);
     }
 
     /**
      * Queues the pipeline to a Job.
      *
+     * @param  mixed|string[] ...$pipes
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function dispatchPipeline()
+    public function dispatchPipeline(...$pipes)
     {
         $pipeline = $this->makePipeline();
 
-        if (func_num_args()) {
-            $pipeline->through(...func_get_args());
+        if (! empty($pipes)) {
+            $pipeline->through($pipes);
         }
 
         return DispatchablePipeline::dispatch($pipeline, $this);

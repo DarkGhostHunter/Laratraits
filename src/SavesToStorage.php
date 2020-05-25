@@ -4,6 +4,7 @@
  *
  * This trait allows an object to be saved to the application storage.
  *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -34,10 +35,7 @@
 namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
-use JsonSerializable;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Htmlable;
 
 trait SavesToStorage
 {
@@ -68,32 +66,16 @@ trait SavesToStorage
      */
     protected function defaultStoragePath() : string
     {
-        throw new LogicException('The class ' . class_basename($this) . ' has no default storage path.');
+        throw new LogicException('The class ' . get_class($this) . ' has no default path to store.');
     }
 
     /**
      * Get content that should be persisted into the Storage.
      *
-     * @return string|$this
+     * @return $this
      */
     protected function toStore()
     {
-        if ($this instanceof Jsonable) {
-            return $this->toJson();
-        }
-
-        if ($this instanceof JsonSerializable) {
-            return json_encode($this);
-        }
-
-        if ($this instanceof Htmlable) {
-            return $this->toHtml();
-        }
-
-        if (method_exists($this, '__toString')) {
-            return $this->__toString();
-        }
-
         return $this;
     }
 }

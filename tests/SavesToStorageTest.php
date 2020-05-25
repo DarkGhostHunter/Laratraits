@@ -4,18 +4,15 @@ namespace DarkGhostHunter\Laratraits\Tests;
 
 use Mockery;
 use LogicException;
-use JsonSerializable;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Filesystem\FilesystemAdapter;
 use DarkGhostHunter\Laratraits\SavesToStorage;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
 class SavesToStorageTest extends TestCase
 {
-    public function testSavesToStorage()
+    public function test_saves_to_storage()
     {
         $storage = Storage::fake();
 
@@ -33,67 +30,7 @@ class SavesToStorageTest extends TestCase
         $this->assertTrue($storage->exists('test_path.json'));
     }
 
-    public function testSavesJsonable()
-    {
-        $storage = Storage::fake();
-
-        $storable = new class() implements Jsonable {
-            use SavesToStorage;
-
-            /**
-             * @inheritDoc
-             */
-            public function toJson($options = 0)
-            {
-                return '{"foo": "bar"}';
-            }
-        };
-
-        $storable->saveToStore('test_path.json');
-
-        $this->assertTrue($storage->exists('test_path.json'));
-        $this->assertJson($storage->get('test_path.json'));
-    }
-
-    public function testSavesJsonSerializable()
-    {
-        $storage = Storage::fake();
-
-        $storable = new class() implements JsonSerializable {
-            use SavesToStorage;
-
-            public function jsonSerialize()
-            {
-                return ['foo' => 'bar'];
-            }
-        };
-
-        $storable->saveToStore('test_path.json');
-
-        $this->assertTrue($storage->exists('test_path.json'));
-        $this->assertJson($storage->get('test_path.json'));
-    }
-
-    public function testSavesHtmlable()
-    {
-        $storage = Storage::fake();
-
-        $storable = new class() implements Htmlable {
-            use SavesToStorage;
-
-            public function toHtml()
-            {
-                return 'foo';
-            }
-        };
-
-        $storable->saveToStore('test_path.json');
-
-        $this->assertTrue($storage->exists('test_path.json'));
-        $this->assertEquals('foo', $storage->get('test_path.json'));
-    }
-
-    public function testSavesStringable()
+    public function test_saves_stringable()
     {
         $storage = Storage::fake();
 
@@ -112,7 +49,7 @@ class SavesToStorageTest extends TestCase
         $this->assertEquals('foo', $storage->get('test_path.json'));
     }
 
-    public function testSavesObjectInstance()
+    public function test_saves_object_instance()
     {
         $storage = $this->instance(FilesystemContract::class, Mockery::mock(FilesystemAdapter::class));
 
@@ -127,7 +64,7 @@ class SavesToStorageTest extends TestCase
         $storable->saveToStore('test_path.json');
     }
 
-    public function testSavesWithDefaultStoragePath()
+    public function test_saves_with_default_storage_path()
     {
         $storage = Storage::fake();
 
@@ -151,7 +88,7 @@ class SavesToStorageTest extends TestCase
         $this->assertEquals('foo', $storage->get('test_path.json'));
     }
 
-    public function testExceptionWhenNoDefaultPath()
+    public function test_exception_when_no_default_path()
     {
         $this->expectException(LogicException::class);
 

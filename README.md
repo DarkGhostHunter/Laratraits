@@ -11,8 +11,10 @@ Laratraits is a Laravel package containing useful traits and some classes to use
 
 ## Requirements
 
-* Laravel 6, or Laravel 7.
+* Laravel 7.
 * PHP 7.2.15 or later.
+
+## [Upgrade Guide from 1.x to 2.x](UPGRADE.md)
 
 ## Installation
 
@@ -20,57 +22,7 @@ Fire up Composer and that's it.
 
     composer require darkghosthunter/laratraits
 
-## What it includes
-
-Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License. Just remember to change the namespace.
-
-### General
-
-* [`DiscoverClasses`](src/DiscoverClasses.php): Discovers classes inside a directory, optionally filtered by a method name or interface.
-* [`DispatchesItself`](src/DispatchesItself.php): Allows to dispatch the object instance to one of many Jobs previously set.
-* [`Multitaps`](src/Multitaps.php): Makes a class infinitely tap-able. You can exit the tap using `->target` or a method name appended with `AndUntap`.
-* [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
-* [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
-* [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
-* [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache..php
-* [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
-* [`EnumerableStates`](src/EnumerableStates.php): Allows a class to have one of an strict list of possible states. You can also use the [`Enumerable`](src/Enumerable.php) class separately. Useful for [casting enums](https://laravel.com/docs/eloquent-mutators#custom-casts).
-
-### Models
-
-* [`AutoFill`](src/Models/AutoFill.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
-* [`UsesUuid`](src/Models/UsesUuid.php): Automatically fills the UUID on the Model. Comes with an optional Eloquent Query Builder local scopes. You can override the UUID generation.
-* [`DefaultColumns`](src/Models/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model that selects only given default columns, unless overrun manually in the query.
-* [`SoftCachesAccessors`](src/Models/SoftCachesAccessors.php): Saves the result of a accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
-* [`DynamicallyMutates`](src/Models/DynamicallyMutates.php): Cast an attribute based on what other attribute type says. Useful for columns that hols the data type, and other the raw data value.
-* [`NeighbourRecords`](src/Models/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
-* [`HasSlug`](src/Models/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
-* [`ModelType`](src/Models/ModelType.php): Useful for Models that share a single table but a different "column type".
-* [`HasFile`](src/Models/HasFile.php): Associates a single file to the Model. The File contents is automatically saved when model is persisted/updated. Hash checking is always done. 
-
-### Pipelines
-
-* [`PipesThrough`](src/PipesThrough.php): Allows any class to be sent itself through a pipeline or, alternatively, queue a Job to process the pipeline later. 
-
-### Global Scopes
-
-* [`MacrosEloquent`](src/Scopes/MacrosEloquent.php): Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append a method with "macro" and return a Closure to use as macro.
-
-### Controllers
-
-* [`ThrottlesRequests`](src/Controllers/ThrottlesRequests.php): An automatic and customizable request throttler, much like the default `ThrottlesLogins` trait.
-
-### Middleware
-
-* [`CacheStaticResponse`](src/Middleware/CacheStaticResponse.php): Caches (hopefully) static responses, avoiding running the controller logic, for a given time.
-* [`ShareAuthenticatedUser`](src/Middleware/ShareAuthenticatedUser.php): Shares the authenticated user across all views.
-* [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes signed routes work only one time except on client or server errors.
-
-## Installing
-
-Just fire up composer and that's it.
-
-    composer require darkghosthunter/laratraits
+This package doesn't uses a Service Provider.
 
 ## Usage
 
@@ -85,7 +37,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DarkGhostHunter\Laratraits\SavesToCache;
-use DarkGhostHunter\Laratraits\Models\UsesUuid;
+use DarkGhostHunter\Laratraits\Eloquent\UsesUuid;
 
 class Post extends Model
 {
@@ -96,9 +48,54 @@ class Post extends Model
 }
 ```
 
-Some traits may instance other classes for advanced logic if necessary, like the `DiscoverClasses` trait.
 
-> There is no application overhead since there is no Service Provider registered.
+## What it includes
+
+Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License. .
+
+Just remember to **change the namespace** if you're copy-pasting them!
+
+### Traits for everything
+
+* [`EnumerableStates`](src/EnumerableStates.php): Allows a class instance to have a single allowed state.
+* [`FiresItself`](src/FiresItself.php): Allows an Event to be fired conveniently.
+* [`Multitaps`](src/Multitaps.php): Makes all class methods _chainable_, like using `tap()` but forever. You can exit the tap using `->target` or a method name appended with `AndUntap`.
+* [`PipesThrough`](src/PipesThrough.php): Allows a class to be piped through a pipeline immediately or to a queue.
+* [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
+* [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache.
+* [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
+* [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
+* [`SendsToHttp`](src/SendsToHttp.php): Sends the object (or part of it) through an HTTP Request.
+* [`ThrottleMethods`](src/ThrottleMethods.php): Throttles a given method in a class transparently.
+* [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
+
+### Useful classes
+
+* [`Enumerable`](src/Enumerable.php): Lists and controls a state from a list. Useful for [casting enums](https://laravel.com/docs/eloquent-mutators#custom-casts).
+
+### Models
+
+* [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
+* [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
+* [`HasSlug`](src/Eloquent/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
+* [`ModelType`](src/Eloquent/ModelType.php): Useful for Models that share a single table but have different "types", like Publications: Article, Post, Note, etc.
+* [`NeighbourRecords`](src/Eloquent/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
+* [`UsesUuid`](src/Eloquent/UsesUuid.php): Automatically fills the UUID on the Model. Comes with an optional Eloquent Query Builder local scopes. You can override the UUID generation.
+
+#### Casts
+
+* [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows a string or integer column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as Enumerable inside a model.
+* [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows an json column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as a Repository (like a config tree).
+
+### Global Scopes
+
+* [`MacrosEloquent`](src/Scopes/MacrosEloquent.php): Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append `macro` to a public static method and that's it, done.
+
+### Middleware
+
+* [`CacheStaticResponse`](src/Middleware/CacheStaticResponse.php): Caches static responses, avoiding running the controller logic, for a given time.
+* [`ShareAuthenticatedUser`](src/Middleware/ShareAuthenticatedUser.php): Shares the authenticated user across all views.
+* [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes [signed routes](https://laravel.com/docs/urls#signed-urls) work only one time, except on client or server errors.
 
 ## Missing a trait?
 

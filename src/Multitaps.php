@@ -5,7 +5,7 @@
  * This is a hacky way to "tap" indefinitely the current class instance. To stop multitaping, you can use
  * the "$target" public property to access the underlying object, or append "AndUntap" to any method.
  * This also allows for an optional callable to be used when starting the multitaping in here.
- *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera

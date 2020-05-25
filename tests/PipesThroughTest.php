@@ -11,7 +11,7 @@ use DarkGhostHunter\Laratraits\Jobs\DispatchablePipeline;
 
 class PipesThroughTest extends TestCase
 {
-    public function testPipesThroughDefaultPipelines()
+    public function test_pipes_through_default_pipelines()
     {
         $pipes = new class() {
             use PipesThrough;
@@ -26,7 +26,7 @@ class PipesThroughTest extends TestCase
         $this->assertEquals('bar', $pipes->pipe($pipe)->foo);
     }
 
-    public function testPipesCustomPipeline()
+    public function test_pipes_custom_pipeline()
     {
         $pipeline = new class() extends Pipeline {
             public function __construct(Container $container = null)
@@ -57,7 +57,7 @@ class PipesThroughTest extends TestCase
         $this->assertEquals('bar', $pipes->pipe()->foo);
     }
 
-    public function testPipesToClosureDestination()
+    public function test_pipes_to_closure_destination()
     {
         $pipes = new class() {
             use PipesThrough;
@@ -77,7 +77,7 @@ class PipesThroughTest extends TestCase
         $this->assertEquals('quz', $pipes->pipe($pipe, $destination)->foo);
     }
 
-    public function testDispatchesToQueue()
+    public function test_dispatches_to_queue()
     {
         $bus = Bus::fake();
 
@@ -91,7 +91,7 @@ class PipesThroughTest extends TestCase
         $bus->assertDispatched(DispatchablePipeline::class);
     }
 
-    public function testDispatchesToQueueWithPipes()
+    public function test_dispatches_to_queue_with_pipes()
     {
         $bus = Bus::fake();
 
@@ -102,12 +102,12 @@ class PipesThroughTest extends TestCase
 
         $done = false;
 
-        $pipes->dispatchPipeline([
+        $pipes->dispatchPipeline(
             function ($thing, $next) use (&$done) {
                 $done = true;
                 return $next($thing);
             }
-        ]);
+        );
 
         $bus->assertDispatched(DispatchablePipeline::class, function ($job) {
             $job->handle();

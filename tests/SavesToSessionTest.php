@@ -3,17 +3,14 @@
 namespace DarkGhostHunter\Laratraits\Tests;
 
 use LogicException;
-use JsonSerializable;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Htmlable;
 use DarkGhostHunter\Laratraits\SavesToSession;
 use Illuminate\Contracts\Session\Session as SessionContract;
 
 class SavesToSessionTest extends TestCase
 {
-    public function testSavesToSession()
+    public function test_saves_to_session()
     {
         $sessionable = new class() {
             use SavesToSession;
@@ -29,58 +26,7 @@ class SavesToSessionTest extends TestCase
         $this->assertEquals('bar', Session::get('foo'));
     }
 
-    public function testSavesJsonable()
-    {
-        $sessionable = new class() implements Jsonable {
-            use SavesToSession;
-
-            /**
-             * @inheritDoc
-             */
-            public function toJson($options = 0)
-            {
-                return '{"foo":"bar"}';
-            }
-        };
-
-        $sessionable->saveToSession('foo');
-
-        $this->assertEquals('{"foo":"bar"}', Session::get('foo'));
-    }
-
-    public function testSavesJsonSerializable()
-    {
-        $sessionable = new class() implements JsonSerializable {
-            use SavesToSession;
-
-            public function jsonSerialize()
-            {
-                return ['foo' => 'bar'];
-            }
-        };
-
-        $sessionable->saveToSession('foo');
-
-        $this->assertEquals('{"foo":"bar"}', Session::get('foo'));
-    }
-
-    public function testSavesHtmlable()
-    {
-        $sessionable = new class() implements Htmlable {
-            use SavesToSession;
-
-            public function toHtml()
-            {
-                return 'bar';
-            }
-        };
-
-        $sessionable->saveToSession('foo');
-
-        $this->assertEquals('bar', Session::get('foo'));
-    }
-
-    public function testSavesStringable()
+    public function test_saves_stringable()
     {
         $sessionable = new class() {
             use SavesToSession;
@@ -96,7 +42,7 @@ class SavesToSessionTest extends TestCase
         $this->assertEquals('bar', Session::get('foo'));
     }
 
-    public function testSavesObjectInstance()
+    public function test_saves_object_instance()
     {
         $session = new class implements SessionContract {
             public static $used = false;
@@ -125,7 +71,7 @@ class SavesToSessionTest extends TestCase
             public function setRequestOnHandler($request){}
         };
 
-        $session = $this->app->instance(SessionContract::class, $session);
+        $session = $this->app->instance('session', $session);
 
         $sessionable = new class() {
             use SavesToSession;
@@ -136,7 +82,7 @@ class SavesToSessionTest extends TestCase
         $this->assertTrue($session::$used);
     }
 
-    public function testSavesWithDefaultSessionKey()
+    public function test_saves_with_default_session_key()
     {
         $sessionable = new class() {
             use SavesToSession;
@@ -157,7 +103,7 @@ class SavesToSessionTest extends TestCase
         $this->assertEquals('bar', Session::get('foo'));
     }
 
-    public function testExceptionWhenNoSessionKey()
+    public function test_exception_when_no_session_key()
     {
         $this->expectException(LogicException::class);
 

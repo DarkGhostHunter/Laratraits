@@ -4,6 +4,9 @@
  *
  * Makes the signed request valid only for one time, except on client (4xx) or server errors (5xx).
  *
+ * You can set
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -69,24 +72,17 @@ class ValidateConsumableSignature
     public function handle($request, Closure $next)
     {
         if ($this->signatureNotConsumed($request) && $request->hasValidSignature()) {
-            return $next($request);
+
+            $response = $next($request);
+
+            if (! $response->isServerError() && ! $response->isClientError()) {
+                $this->consumeSignature($request);
+            }
+
+            return $response;
         }
 
         throw new InvalidSignatureException;
-    }
-
-    /**
-     * Handle the sent response.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Http\Response $response
-     * @return void
-     */
-    public function terminate($request, $response)
-    {
-        if (! $response->isServerError() && ! $response->isClientError()) {
-            $this->consumeSignature($request);
-        }
     }
 
     /**
@@ -114,7 +110,7 @@ class ValidateConsumableSignature
     }
 
     /**
-     * Return the cache Key to check
+     * Return the key to check in the cache for the request.
      *
      * @param  \Illuminate\Http\Request $request
      * @return string

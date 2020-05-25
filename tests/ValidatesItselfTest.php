@@ -9,7 +9,7 @@ use DarkGhostHunter\Laratraits\ValidatesItself;
 
 class ValidatesItselfTest extends TestCase
 {
-    public function testValidatesFromExternalData()
+    public function test_validates_from_external_data()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -29,7 +29,7 @@ class ValidatesItselfTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $validated);
     }
 
-    public function testValidatesFromInternalData()
+    public function test_validates_from_internal_data()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -54,7 +54,7 @@ class ValidatesItselfTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $validated);
     }
 
-    public function testValidatesExternalDataOverInternalData()
+    public function test_validates_external_data_over_internal_data()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -81,7 +81,7 @@ class ValidatesItselfTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $validated);
     }
 
-    public function testValidatesReturnTrueWhenValid()
+    public function test_validates_return_true_when_valid()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -98,7 +98,7 @@ class ValidatesItselfTest extends TestCase
         $this->assertFalse($validatable->validates(['foo' => 'not_bar']));
     }
 
-    public function testValidatedReturnsValidatedValues()
+    public function test_validated_returns_validated_values()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -116,7 +116,7 @@ class ValidatesItselfTest extends TestCase
         $this->assertEquals(['foo' => 'bar'], $validatable->validate(['foo' => 'bar']));
     }
 
-    public function testPassesValidationMessages()
+    public function test_passes_validation_messages()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -147,7 +147,7 @@ class ValidatesItselfTest extends TestCase
         }
     }
 
-    public function testPassesCustomAttributes()
+    public function test_passes_custom_attributes()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -178,7 +178,7 @@ class ValidatesItselfTest extends TestCase
         }
     }
 
-    public function testPassValidationAfterCallback()
+    public function test_pass_validation_after_callback()
     {
         $validatable = new class() {
             use ValidatesItself;
@@ -205,7 +205,7 @@ class ValidatesItselfTest extends TestCase
 
     }
 
-    public function testExceptionWhenNoDataToValidate()
+    public function test_exception_when_no_data_to_validate()
     {
         $this->expectException(\LogicException::class);
 

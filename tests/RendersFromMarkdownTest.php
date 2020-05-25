@@ -9,7 +9,7 @@ use DarkGhostHunter\Laratraits\RendersFromMarkdown;
 
 class RendersFromMarkdownTest extends TestCase
 {
-    public function testRenders()
+    public function test_renders()
     {
         $htmlable = new class() {
             use RendersFromMarkdown;
@@ -26,7 +26,7 @@ class RendersFromMarkdownTest extends TestCase
         $this->assertStringContainsString('<p><strong>foo</strong>, <em>bar</em></p>', $html);
     }
 
-    public function testRendersEmptyString()
+    public function test_renders_empty_string()
     {
         $htmlable = new class() {
             use RendersFromMarkdown;
@@ -43,7 +43,7 @@ class RendersFromMarkdownTest extends TestCase
         $this->assertStringContainsString('', $html);
     }
 
-    public function testRendersMultipleLinesFromArray()
+    public function test_renders_multiple_lines_from_array()
     {
         $htmlable = new class() {
             use RendersFromMarkdown;
@@ -61,7 +61,7 @@ class RendersFromMarkdownTest extends TestCase
         $this->assertStringContainsString('<em>bar</em>', $html);
     }
 
-    public function testRendersMultipleLinesFromCollection()
+    public function test_renders_multiple_lines_from_collection()
     {
         $htmlable = new class() {
             use RendersFromMarkdown;
@@ -79,7 +79,7 @@ class RendersFromMarkdownTest extends TestCase
         $this->assertStringContainsString('<em>bar</em>', $html);
     }
 
-    public function testRendersAsString()
+    public function test_renders_as_string()
     {
         $htmlable = new class() {
             use RendersFromMarkdown;
@@ -93,7 +93,7 @@ class RendersFromMarkdownTest extends TestCase
         $this->assertStringContainsString('<p><strong>foo</strong><em>bar</em></p>', (string)$htmlable);
     }
 
-    public function testRendersAsHtml()
+    public function test_renders_as_html()
     {
         $htmlable = new class() implements Htmlable {
             use RendersFromMarkdown;

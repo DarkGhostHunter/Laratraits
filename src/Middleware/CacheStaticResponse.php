@@ -4,6 +4,16 @@
  *
  * Caches a (hopefully static) Response for the given minutes, and other store apart of the default.
  *
+ *     Route::get('post', 'PostController@show')
+ *          ->middleware('DarkGhostHunter\Laratraits\Middleware\CacheStaticResponse');
+ *
+ * Alternatively, you can register an alias in your HTTP Kernel for this middleware, making it easy
+ * to add options like the time-to-live for the cached response, and which cache store to use.
+ *
+ *     Route::get('post', 'PostController@show')
+ *          ->middleware('cache.static:1440,redis');
+ *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera

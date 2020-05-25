@@ -15,7 +15,7 @@ use Illuminate\Contracts\Cache\Repository as RepositoryContract;
 
 class CacheStaticResponseTest extends TestCase
 {
-    public function testCachesStaticResponse()
+    public function test_caches_static_response()
     {
         $controller = new class {
 
@@ -44,7 +44,7 @@ class CacheStaticResponseTest extends TestCase
         $this->assertFalse($controller::$hits);
     }
 
-    public function testUsesDifferentTtlAndStore()
+    public function test_uses_different_ttl_and_store()
     {
         $controller = new class {
 

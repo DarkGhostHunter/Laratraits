@@ -5,7 +5,7 @@
  * This conveniently adds local scopes to handle UUIDs to the Eloquent Query Builder. These scopes are only
  * valid for the Builder instance itself, and doesn't interfere with other builders of other models. You
  * can register this Scope all by yourself, but it's better to use the UsesUuid trait in your models.
- *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -50,121 +50,126 @@ class UuidScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        // Nothing to add, really.
+        //
     }
 
     /**
      * Return a Closure that find a model by its UUID.
      *
-     * @return \Closure
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
+     * @param  string[]  $columns
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function macroFindUuid()
+    public static function macroFindUuid(Builder $builder, $uuid, $columns = ['*'])
     {
-        return function(Builder $builder, $uuid, $columns = ['*']) {
-            if (is_array($uuid) || $uuid instanceof Arrayable) {
-                return $builder->findManyUuid($uuid, $columns);
-            }
+        if (is_array($uuid) || $uuid instanceof Arrayable) {
+            return $builder->findManyUuid($uuid, $columns);
+        }
 
-            return $builder->whereUuid($uuid)->first($columns);
-        };
+        return $builder->whereUuid($uuid)->first($columns);
     }
 
     /**
      * Return a Closure that find multiple models by their UUID.
      *
-     * @return \Closure
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuids
+     * @param  string[]  $columns
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function macroFindManyUuid()
+    public static function macroFindManyUuid(Builder $builder, $uuids, $columns = ['*'])
     {
-        return function(Builder $builder, $uuids, $columns = ['*']) {
-            $uuids = $uuids instanceof Arrayable ? $uuids->toArray() : $uuids;
+        $uuids = $uuids instanceof Arrayable ? $uuids->toArray() : $uuids;
 
-            if (empty($uuids)) {
-                return $builder->getModel()->newCollection();
-            }
+        if (empty($uuids)) {
+            return $builder->getModel()->newCollection();
+        }
 
-            return $builder->whereUuid($uuids)->get($columns);
-        };
+        return $builder->whereUuid($uuids)->get($columns);
     }
 
     /**
      * Return a Closure that find a model by its UUID or throw an exception.
      *
-     * @return \Closure
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
+     * @param  string[]  $columns
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]
      */
-    protected function macroFindUuidOrFail()
+    public static function macroFindUuidOrFail(Builder $builder, $uuid, $columns = ['*'])
     {
-        return function(Builder $builder, $uuid, $columns = ['*']) {
-            $result = $builder->findUuid($uuid, $columns);
+        $result = $builder->findUuid($uuid, $columns);
 
-            if (is_array($uuid)) {
-                if (count($result) === count(array_unique($uuid))) {
-                    return $result;
-                }
-            } elseif ($result !== null) {
+        if (is_array($uuid)) {
+            if (count($result) === count(array_unique($uuid))) {
                 return $result;
             }
+        }
+        elseif ($result !== null) {
+            return $result;
+        }
 
-            throw (new ModelNotFoundException)->setModel(
-                get_class($builder->getModel()), $uuid
-            );
-        };
+        throw (new ModelNotFoundException)->setModel(
+            get_class($builder->getModel()), $uuid
+        );
     }
 
     /**
      * Return a Closure that find a model by its UUID or return fresh model instance.
      *
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  mixed  $uuid
+     * @param  string[]  $columns
      * @return \Closure
      */
-    protected function macroFindUuidOrNew()
+    public static function macroFindUuidOrNew(Builder $builder, $uuid, $columns = ['*'])
     {
-        return function(Builder $builder, $uuid, $columns = ['*']) {
-            if (($model = $builder->findUuid($uuid, $columns)) !== null) {
-                return $model;
-            }
+        if (($model = $builder->findUuid($uuid, $columns)) !== null) {
+            return $model;
+        }
 
-            return $builder->newModelInstance();
-        };
+        return $builder->newModelInstance();
     }
 
     /**
      * Return a Closure that adds a where clause on the UUID column to the query.
      *
-     * @return \Closure
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function macroWhereUuid()
+    public static function macroWhereUuid(Builder $builder, $uuid)
     {
-        return function(Builder $builder, $uuid) {
-            if (is_array($uuid) || $uuid instanceof Arrayable) {
-                $builder->getQuery()->whereIn(
-                    $builder->getModel()->getQualifiedUuidColumn(), $uuid
-                );
+        if (is_array($uuid) || $uuid instanceof Arrayable) {
+            $builder->getQuery()->whereIn(
+                $builder->getModel()->getUuidColumn(), $uuid
+            );
 
-                return $builder;
-            }
+            return $builder;
+        }
 
-            return $builder->where($builder->getModel()->getQualifiedUuidColumn(), '=', $uuid);
-        };
+        return $builder->where($builder->getModel()->getUuidColumn(), '=', $uuid);
     }
 
     /**
      * Return a Closure that add a where clause on the primary key to the query.
      *
-     * @return \Closure
+     * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     * @param  string|array|\Illuminate\Contracts\Support\Arrayable $uuid
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function macroWhereUuidNot()
+    public static function macroWhereUuidNot(Builder $builder, $uuid)
     {
-        return function (Builder $builder, $uuid) {
-            if (is_array($uuid) || $uuid instanceof Arrayable) {
-                $builder->getQuery()->whereNotIn(
-                    $builder->getModel()->getQualifiedUuidColumn(), $uuid
-                );
+        if (is_array($uuid) || $uuid instanceof Arrayable) {
+            $builder->getQuery()->whereNotIn(
+                $builder->getModel()->getUuidColumn(), $uuid
+            );
 
-                return $builder;
-            }
+            return $builder;
+        }
 
-            return $builder->where($builder->getModel()->getQualifiedUuidColumn(), '!=', $uuid);
-        };
+        return $builder->where($builder->getModel()->getUuidColumn(), '!=', $uuid);
     }
 
 }
