@@ -1,6 +1,6 @@
 <?php
 /**
- * Default Columns
+ * DefaultColumns
  *
  * This is a convenient way to make a Model only select certain columns by default. This may be handy to save
  * large chunks of memory when the retrieved record contains too much data that most of the time isn't used,

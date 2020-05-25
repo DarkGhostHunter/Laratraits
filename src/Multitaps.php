@@ -5,6 +5,15 @@
  * This is a hacky way to "tap" indefinitely the current class instance. To stop multitaping, you can use
  * the "$target" public property to access the underlying object, or append "AndUntap" to any method.
  * This also allows for an optional callable to be used when starting the multitaping in here.
+ *
+ *     $result = $class->multitap()->foo()->bar($qux)->quzAndUntap();
+ *
+ * You can also use a callable to call before starting the multitap.
+ *
+ *     $result = $class->multitap(function ($class) {
+ *         $class->doSomethingBeforeMultitap();
+ *     })->foo()->barAndUntap();
+ *
  * ---
  * MIT License
  *
@@ -42,7 +51,6 @@ trait Multitaps
      *
      * @param  callable|null  $callable
      * @return \DarkGhostHunter\Laratraits\InfiniteHigherOrderTapProxy
-     * @see \DarkGhostHunter\Laratraits\InfiniteHigherOrderTapProxy
      */
     public function multitap(callable $callable = null)
     {

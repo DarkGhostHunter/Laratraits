@@ -72,7 +72,7 @@ trait ValidatesItself
     }
 
     /**
-     * Run the validator's rules against its data and returns if it passes or not.
+     * Shorthand to validate this object and return if it passes.
      *
      * @param  null|array  $data
      * @param  null|callable|string  $after
@@ -92,7 +92,7 @@ trait ValidatesItself
     }
 
     /**
-     * Validates the class and returns the validated data, or throws an exception.
+     * Shorthand to validate this object and throw an exception if it doesn't pass.
      *
      * @param  null|array  $data
      * @param  null|callable|string  $after
@@ -114,25 +114,27 @@ trait ValidatesItself
     }
 
     /**
-     * Returns the data array to use against the Validator.
+     * Returns the default data to use against the Validator.
      *
      * @return array
      */
     public function validationData() : array
     {
-        throw new LogicException('The class ' . class_basename($this) . ' has no default data to validate.');
+        throw new LogicException('The class ' . static::class . ' has no default data to validate.');
     }
 
     /**
-     * The array of rules.
+     * Returns the default rules to use with the Validator.
      *
+     * @see https://laravel.com/docs/validation#available-validation-rules
      * @return array
      */
     abstract protected function validationRules() : array;
 
     /**
-     * The array of custom error messages.
+     * Return an array of custom error messages.
      *
+     * @see https://laravel.com/docs/validation#custom-error-messages
      * @return array
      */
     protected function validationMessages()
@@ -141,8 +143,9 @@ trait ValidatesItself
     }
 
     /**
-     * The array of custom attribute names.
+     * Return an array of custom attribute names.
      *
+     * @see https://laravel.com/docs/validation#customizing-the-validation-attributes
      * @return array
      */
     protected function customAttributes()

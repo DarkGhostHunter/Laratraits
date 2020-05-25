@@ -63,14 +63,14 @@ trait FillsAttributes
 
             try {
                 $result = $this->{'fill' . Str::studly($attribute) . 'Attribute'}();
-
-                if ($result && ! isset($this->attributes[$attribute])) {
-                    $this->setAttribute($attribute, $result);
-                }
             } catch (BadMethodCallException $exception) {
                 throw new BadMethodCallException(
                     "The attribute [$attribute] has no a filler method [fill".Str::studly($attribute)."Attribute]."
                 );
+            }
+
+            if ($result && ! isset($this->attributes[$attribute])) {
+                $this->setAttribute($attribute, $result);
             }
         }
     }

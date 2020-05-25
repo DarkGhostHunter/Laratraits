@@ -50,7 +50,7 @@ namespace DarkGhostHunter\Laratraits\ServiceProviders;
 trait RegisterObservers
 {
     /**
-     * Registers an array of handlers for a Eloquent event.
+     * Registers an array of Eloquent Model observers.
      *
      * @return void
      */

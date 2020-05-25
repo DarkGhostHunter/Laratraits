@@ -1,8 +1,8 @@
 <?php
 /**
- * Infinite Higher Order Tap Proxy
+ * InfiniteHigherOrderTapProxy
  *
- * This class extends the original "Tapable" class but changes the call to always return this object.
+ * This class extends the original "Tapable" class but now always return this object.
  * ---
  * MIT License
  *

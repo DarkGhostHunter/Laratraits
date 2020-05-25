@@ -23,7 +23,7 @@
  *         use ModelType;
  *     }
  *
- * When you save "Red" or "Blue", your table would look like this:
+ * When you save "Red" or "Blue" models, your table would look like this:
  *
  *     | colors                              |
  *     | id | type | created_at | updated_at |
@@ -70,6 +70,7 @@
 
 namespace DarkGhostHunter\Laratraits\Eloquent;
 
+use LogicException;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -96,6 +97,15 @@ trait ModelType
      */
     protected function initializeModelType()
     {
+        // Becase Eloquent will get the name of the table from the model name itself, we will have
+        // to bail out if the table name has not been explicitly set by the developer. Otherwise,
+        // when querying the child models, Eloquent will look for them by using missing tables.
+        if ($this->table === null) {
+            throw new LogicException(
+                'The ' . static::class . ' model must set a common table name for all extending models.'
+            );
+        }
+
         $this->attributes[$this->getModelTypeColumn()] = $this->getModelType();
     }
 

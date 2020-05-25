@@ -50,7 +50,7 @@ trait SavesToStorage
     }
 
     /**
-     * The Storage disk to use.
+     * Returns the Storage disk to use to save this object.
      *
      * @return \Illuminate\Contracts\Filesystem\Filesystem
      */
@@ -60,17 +60,17 @@ trait SavesToStorage
     }
 
     /**
-     * The key name to use in the session.
+     * The full storage path to save this object.
      *
      * @return string
      */
     protected function defaultStoragePath() : string
     {
-        throw new LogicException('The class ' . get_class($this) . ' has no default path to store.');
+        throw new LogicException('The class ' . static::class . ' has no default path to store.');
     }
 
     /**
-     * Get content that should be persisted into the Storage.
+     * Get the content that should be persisted into the storage.
      *
      * @return $this
      */

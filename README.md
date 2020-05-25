@@ -48,7 +48,6 @@ class Post extends Model
 }
 ```
 
-
 ## What it includes
 
 Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License. .

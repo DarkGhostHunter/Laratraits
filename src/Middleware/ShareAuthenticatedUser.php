@@ -1,6 +1,6 @@
 <?php
 /**
- * Share Authenticated User Middleware
+ * ShareAuthenticatedUser
  *
  * This allows to share in all your views the "authenticated" variable containing the
  * authenticated user, if any.
