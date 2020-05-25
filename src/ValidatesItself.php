@@ -6,6 +6,7 @@
  * issue your own data to be validated, but preferably you should let the class point the data
  * itself. You can use a Closure to execute an "after callback" in the Validator instance.
  *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -37,7 +38,6 @@
 namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
-use Illuminate\Contracts\Validation\Factory;
 
 trait ValidatesItself
 {
@@ -57,7 +57,7 @@ trait ValidatesItself
      */
     public function validator(array $data = null, $after = null)
     {
-        $validator = app(Factory::class)->make(
+        $validator = validator(
             $data ?? $this->validationData(),
             $this->validationRules(),
             $this->validationMessages(),
@@ -97,7 +97,6 @@ trait ValidatesItself
      * @param  null|array  $data
      * @param  null|callable|string  $after
      * @return array
-     * @throws \Illuminate\Validation\ValidationException
      */
     public function validate(array $data = null, $after = null)
     {
@@ -119,7 +118,7 @@ trait ValidatesItself
      *
      * @return array
      */
-    public function validationData()
+    public function validationData() : array
     {
         throw new LogicException('The class ' . class_basename($this) . ' has no default data to validate.');
     }

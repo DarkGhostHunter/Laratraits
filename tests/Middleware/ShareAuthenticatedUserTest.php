@@ -10,7 +10,7 @@ use DarkGhostHunter\Laratraits\Middleware\ShareAuthenticatedUser;
 
 class ShareAuthenticatedUserTest extends TestCase
 {
-    public function testSharesVerifiedUserInViews()
+    public function test_shares_verified_user_in_views()
     {
         $controller = new class {
 

@@ -5,7 +5,7 @@
  * This trait allows you to extend the Eloquent Builder instance using local macros, which are macros but
  * only valid for the instance itself instance of globally. This cycles through all the scope methods,
  * filters only those that starts with "macro", executes them receiving a Closure, and adds them.
- *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -35,6 +35,8 @@
 
 namespace DarkGhostHunter\Laratraits\Scopes;
 
+use ReflectionClass;
+use ReflectionMethod;
 use Illuminate\Database\Eloquent\Builder;
 
 trait MacrosEloquent
@@ -44,15 +46,20 @@ trait MacrosEloquent
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
+     * @throws \ReflectionException
      */
     public function extend(Builder $builder)
     {
-        // We will cycle through all the present methods in the present Scope instance and
-        // add macros for only the methods who start with "macro" that return a Closure.
-        // For example, the "macroAddOne()" method will be registered as "addOne()".
-        foreach (get_class_methods($this) as $method) {
-            if (strpos($method, 'macro') === 0) {
-                $builder->macro(lcfirst(substr($method, 5)), $this->{$method}($builder));
+        // We will cycle through all the public static methods in the present Scope instance
+        // and add macros to the Builder instance by filtering those starting with "macro".
+        // To say an example, the "macroAddOne()" method will be registered as "addOne()".
+        $methods = (new ReflectionClass($this))
+            ->getMethods(ReflectionMethod::IS_PUBLIC + ReflectionMethod::IS_STATIC);
+
+        foreach ($methods as $method) {
+
+            if (strpos($name = $method->getName(), 'macro') === 0) {
+                $builder->macro(lcfirst(substr($name, 5)), [static::class, $name]);
             }
         }
     }

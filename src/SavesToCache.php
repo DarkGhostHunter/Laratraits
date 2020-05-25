@@ -3,7 +3,7 @@
  * Saves to Cache
  *
  * This trait allows an object to be saved to the cache.
- *
+ * ---
  * MIT License
  *
  * Copyright (c) Italo Israel Baeza Cabrera
@@ -34,11 +34,7 @@
 namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
-use JsonSerializable;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Htmlable;
 
 trait SavesToCache
 {
@@ -61,7 +57,7 @@ trait SavesToCache
      */
     protected function defaultCache() : Repository
     {
-        return Cache::store();
+        return cache()->store();
     }
 
     /**
@@ -69,34 +65,18 @@ trait SavesToCache
      *
      * @return string
      */
-    protected function defaultCacheKey()
+    protected function defaultCacheKey() : string
     {
-        throw new LogicException('The class ' . class_basename($this) . ' has no default cache key.');
+        throw new LogicException('The class ' . get_class($this) . ' has no default cache key.');
     }
 
     /**
      * The value to insert into the cache.
      *
-     * @return string|$this
+     * @return $this
      */
     protected function toCache()
     {
-        if ($this instanceof Jsonable) {
-            return $this->toJson();
-        }
-
-        if ($this instanceof JsonSerializable) {
-            return json_encode($this);
-        }
-
-        if ($this instanceof Htmlable) {
-            return $this->toHtml();
-        }
-
-        if (method_exists($this, '__toString')) {
-            return $this->__toString();
-        }
-
         return $this;
     }
 }
