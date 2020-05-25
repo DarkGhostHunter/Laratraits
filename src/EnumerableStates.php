@@ -78,7 +78,7 @@ trait EnumerableStates
     /**
      * Returns the current Enumerable instance.
      *
-     * @return \DarkGhostHunter\Laratraits\Enumerable|mixed
+     * @return \DarkGhostHunter\Laratraits\Enumerable
      */
     public function getEnumerable()
     {
