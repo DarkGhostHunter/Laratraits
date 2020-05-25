@@ -14,6 +14,8 @@ Laratraits is a Laravel package containing useful traits and some classes to use
 * Laravel 7.
 * PHP 7.2.15 or later.
 
+## [Upgrade Guide from 1.x to 2.x](UPGRADE.md)
+
 ## Installation
 
 Fire up Composer and that's it.
@@ -64,7 +66,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
 * [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
 * [`SendsToHttp`](src/SendsToHttp.php): Sends the object (or part of it) through an HTTP Request.
-* [`ThrottleActions`](src/ThrottleMethods.php): Throttles a given method in a class easily.
+* [`ThrottleMethods`](src/ThrottleMethods.php): Throttles a given method in a class transparently.
 * [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
 
 ### Useful classes
@@ -73,7 +75,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Models
 
-* [`AutoFill`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
+* [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
 * [`HasSlug`](src/Eloquent/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
 * [`ModelType`](src/Eloquent/ModelType.php): Useful for Models that share a single table but have different "types", like Publications: Article, Post, Note, etc.
@@ -82,18 +84,18 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 #### Casts
 
-* [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows a custom Enumerable class to be [_castable_](https://laravel.com/docs/eloquent-mutators#custom-casts) in a model.
-* [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows an array property to be cased as a Repository.
+* [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows a string or integer column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as Enumerable inside a model.
+* [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows an json column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as a Repository (like a config tree).
 
 ### Global Scopes
 
-* [`MacrosEloquent`](src/Scopes/MacrosEloquent.php): Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append `macro` to a public static method and that's it.
+* [`MacrosEloquent`](src/Scopes/MacrosEloquent.php): Automatically adds selective Macros to the Eloquent Builder instance itself, instead of globally, when using a Global Scope. Append `macro` to a public static method and that's it, done.
 
 ### Middleware
 
 * [`CacheStaticResponse`](src/Middleware/CacheStaticResponse.php): Caches static responses, avoiding running the controller logic, for a given time.
 * [`ShareAuthenticatedUser`](src/Middleware/ShareAuthenticatedUser.php): Shares the authenticated user across all views.
-* [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes [signed routes](https://laravel.com/docs/urls#signed-urls) work only one time except on client or server errors.
+* [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes [signed routes](https://laravel.com/docs/urls#signed-urls) work only one time, except on client or server errors.
 
 ## Missing a trait?
 

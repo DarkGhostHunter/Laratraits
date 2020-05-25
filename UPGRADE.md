@@ -1,4 +1,4 @@
-Upgrading from v1.x to v2.x
+# Upgrading from v1.x to v2.x
 
 ## Removed
 
@@ -56,8 +56,6 @@ For `ThrottlesRequest`, migrate to [Laravel Rate Limiting](https://github.com/la
 ## MacrosEloquent changed
 
 * Now the trait will automatically re-route all Eloquent builder macros to the public static methods in the Scope. There is no longer need to return closures or what not.
-
-> This can have up to 100% more performance and makes the code more readable.
 
 ### ModelType changed
 
