@@ -61,7 +61,7 @@ abstract class CastEnumerable extends Enumerable implements CastsAttributes
      */
     public function get($model, string $key, $value, array $attributes)
     {
-        return static::as($value);
+        return $this->when($value, $value);
     }
 
     /**
@@ -69,6 +69,8 @@ abstract class CastEnumerable extends Enumerable implements CastsAttributes
      */
     public function set($model, string $key, $value, array $attributes)
     {
-        return (is_string($value) ? static::as($value) : $value)->current();
+        $this->when($value, $value);
+
+        return (string)$this->current();
     }
 }

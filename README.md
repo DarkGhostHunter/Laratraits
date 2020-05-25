@@ -56,6 +56,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 ### Traits for everything
 
 * [`EnumerableStates`](src/EnumerableStates.php): Allows a class instance to have a single allowed state.
+* [`FiresItself`](src/FiresItself.php): Allows an Event to be fired conveniently.
 * [`Multitaps`](src/Multitaps.php): Makes all class methods _chainable_, like using `tap()` but forever. You can exit the tap using `->target` or a method name appended with `AndUntap`.
 * [`PipesThrough`](src/PipesThrough.php): Allows a class to be piped through a pipeline immediately or to a queue.
 * [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
@@ -63,7 +64,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
 * [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
 * [`SendsToHttp`](src/SendsToHttp.php): Sends the object (or part of it) through an HTTP Request.
-* [`ThrottleActions`](src/ThrottleActions.php): Throttles a given method in a class easily.
+* [`ThrottleActions`](src/ThrottleMethods.php): Throttles a given method in a class easily.
 * [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
 
 ### Useful classes
@@ -72,18 +73,17 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Models
 
-* [`AutoFill`](src/Eloquent/AutoFill.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
+* [`AutoFill`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
 * [`HasSlug`](src/Eloquent/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
 * [`ModelType`](src/Eloquent/ModelType.php): Useful for Models that share a single table but have different "types", like Publications: Article, Post, Note, etc.
 * [`NeighbourRecords`](src/Eloquent/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
-* [`SoftCachesAccessors`](src/Eloquent/SoftCachesAccessors.php): Saves the result of an accessor to avoid running the accessor logic again. Overrides the `mutateAttribute()` method.
 * [`UsesUuid`](src/Eloquent/UsesUuid.php): Automatically fills the UUID on the Model. Comes with an optional Eloquent Query Builder local scopes. You can override the UUID generation.
 
 #### Casts
 
 * [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows a custom Enumerable class to be [_castable_](https://laravel.com/docs/eloquent-mutators#custom-casts) in a model.
-* [`CastsRepository`](src/Eloquent/Casts/CastsRepository.php): Allows an array property to be cased as a Repository.
+* [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows an array property to be cased as a Repository.
 
 ### Global Scopes
 

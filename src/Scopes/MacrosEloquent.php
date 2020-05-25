@@ -57,8 +57,9 @@ trait MacrosEloquent
             ->getMethods(ReflectionMethod::IS_PUBLIC + ReflectionMethod::IS_STATIC);
 
         foreach ($methods as $method) {
-            if (strpos($method->getName(), 'macro') === 0) {
-                $builder->macro(lcfirst(substr($method, 5)), static::class . '::' . $method);
+
+            if (strpos($name = $method->getName(), 'macro') === 0) {
+                $builder->macro(lcfirst(substr($name, 5)), [static::class, $name]);
             }
         }
     }

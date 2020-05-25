@@ -37,7 +37,7 @@
 namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
-use Illuminate\Http\Client\Factory;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\PendingRequest;
 
 trait SendsToHttp
@@ -51,7 +51,7 @@ trait SendsToHttp
     public function send(string $url = null)
     {
         return $this->performHttpRequest(
-            $this->createPendingRequest(), $url ?? $this->url()
+            $this->httpRequestFactory(), $url ?? $this->url()
         );
     }
 
@@ -65,7 +65,7 @@ trait SendsToHttp
      */
     protected function performHttpRequest(PendingRequest $request, string $url)
     {
-        return $request->asJson()->post($url, $this->toHttp());
+        return $request->post($url, $this->toHttp());
     }
 
     /**
@@ -73,9 +73,9 @@ trait SendsToHttp
      *
      * @return \Illuminate\Http\Client\PendingRequest
      */
-    protected function createPendingRequest()
+    protected function httpRequestFactory() : PendingRequest
     {
-        return new PendingRequest(new Factory);
+        return Http::getFacadeRoot()->asJson();
     }
 
     /**

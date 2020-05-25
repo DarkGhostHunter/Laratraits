@@ -70,7 +70,7 @@ trait DefaultColumns
      *
      * @return array
      */
-    protected static function getDefaultColumns()
+    protected static function getDefaultColumns() : array
     {
         return static::$defaultColumns ?? [];
     }

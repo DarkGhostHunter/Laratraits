@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Models;
+namespace Tests\Eloquent;
 
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UsesUuidTest extends TestCase
 {
-    public function testFillsUuid()
+    public function test_fills_uuid()
     {
         $model = new class extends Model
         {
@@ -25,7 +25,7 @@ class UsesUuidTest extends TestCase
         $this->assertInstanceOf(Uuid::class, $model->uuid);
     }
 
-    public function testUuidScope()
+    public function test_uuid_scope()
     {
         Schema::create('test_table', function (Blueprint $blueprint) {
             $blueprint->increments('id');

@@ -1,6 +1,6 @@
 <?php
 /**
- * AutoFill
+ * FillsAttributes
  *
  * This trait will automatically fill a list of attributes by executing a method for each of them. These
  * methods must follow the "fillValueAttribute". For example, to fill the `foo` attribute, the method
@@ -46,14 +46,14 @@ namespace DarkGhostHunter\Laratraits\Eloquent;
 use Illuminate\Support\Str;
 use BadMethodCallException;
 
-trait AutoFill
+trait FillsAttributes
 {
     /**
      * Initialize the AutoFill trait
      *
      * @return void
      */
-    protected function initializeAutoFill()
+    protected function initializeFillsAttributes()
     {
         foreach ($this->autoFillable() as $attribute) {
 
@@ -62,14 +62,16 @@ trait AutoFill
             }
 
             try {
-                $result = $this->{'fill' . Str::studly($attribute) . 'Attribute'}($attribute);
+                $result = $this->{'fill' . Str::studly($attribute) . 'Attribute'}();
+
+                if ($result && ! isset($this->attributes[$attribute])) {
+                    $this->setAttribute($attribute, $result);
+                }
             } catch (BadMethodCallException $exception) {
                 throw new BadMethodCallException(
                     "The attribute [$attribute] has no a filler method [fill".Str::studly($attribute)."Attribute]."
                 );
             }
-
-            $this->setAttribute($attribute, $result);
         }
     }
 

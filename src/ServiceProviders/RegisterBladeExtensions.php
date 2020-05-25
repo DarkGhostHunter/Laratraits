@@ -3,9 +3,11 @@
  * RegisterBladeExtensions
  *
  * This traits allows you to register multiple Blade extensions in just a few arrays.
+ * The Blade compiler uses **callables** for directives and the custom if statements
+ * so you will need to use public static methods and them as class@method notation.
  *
  *     protected $directives = [
- *         'package-alert' => 'App\Blade\Directives\AlertComponent',
+ *         'package-alert' => 'App\Blade\Directives\AlertComponent@alert',
  *         'status-now' => 'App\Blade\Directives\Status@now',
  *     ]
  *
@@ -58,6 +60,7 @@
 
 namespace DarkGhostHunter\Laratraits\ServiceProviders;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Blade;
 
 trait RegisterBladeExtensions
@@ -73,15 +76,15 @@ trait RegisterBladeExtensions
         $compiler = Blade::getFacadeRoot();
 
         foreach ($this->directives ?? [] as $name => $handler) {
-            $compiler->directive($name, $handler);
+            $compiler->directive($name, Str::parseCallback($handler));
         }
 
         foreach ($this->if ?? [] as $name => $handler) {
-            $compiler->if($name, $handler);
+            $compiler->if($name, Str::parseCallback($handler));
         }
 
-        foreach ($this->include ?? [] as $name => $handler) {
-            $compiler->include($name, $handler);
+        foreach ($this->include ?? [] as $name => $view) {
+            $compiler->include($name, $view);
         }
     }
 }

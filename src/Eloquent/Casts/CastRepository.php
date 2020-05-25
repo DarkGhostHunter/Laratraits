@@ -1,24 +1,17 @@
 <?php
 /**
- * ThrottleActions
+ * CastRepository
  *
- * This trait allows to rate limit a given action inside the object by a given key. It
- * returns the object instance instead of the result of the call.
+ * This Cast allows a column on the model with complex arrayable data to ve a Repository.
+ * This allows the property to be accessed like a config-style set of values.
  *
- *     $object->throttle(60, 1)->heavilyComputational($parameters);
+ *     protected $casts = [
+ *         'config' => CastRepository::class,
+ *     ];
  *
- * Alternatively, you can pass a callable to the limit that will be executed if there are
- * too many hits for the action. The callable receives the object as first as parameter
- * and the ActionRateLimiter as second parameter, where you can use the Rate Limiter.
+ * Then, in your code, you can use the Repository methods.
  *
- *     $object->throttle(60, 1, function ($object, $limiter) {
- *         $limiter->throttlerClear('heavilyComputational');
- *         $object->doSomethingElse();
- *     })->heavilyComputational($parameters);
- *
- * If you need granular control on the cache key, use the fourth parameter with name:
- *
- *     $object->throttler(60, 1, null, 'my_custom_key')->heavilyComputational($parameters);
+ *     $model->config->get('schedule.days');
  *
  * ---
  * MIT License
@@ -48,20 +41,47 @@
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
-namespace DarkGhostHunter\Laratraits;
+namespace DarkGhostHunter\Laratraits\Eloquent\Casts;
 
-trait ThrottleActions
+use Illuminate\Config\Repository;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+
+class CastRepository implements CastsAttributes
 {
     /**
-     * Limits the next method call by a given window of time.
-     *
-     * @param  int  $tries
-     * @param  int  $minutes
-     * @param  callable|null  $default
-     * @return \DarkGhostHunter\Laratraits\ActionRateLimiter
+     * @inheritDoc
      */
-    public function throttle($tries = 60, $minutes = 1, $default = null)
+    public function get($model, string $key, $value, array $attributes)
     {
-        return app(ActionRateLimiter::class)->throttle($this, $tries, $minutes, $default);
+        return new Repository(empty($value) ? [] : json_decode($value, true));
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function set($model, string $key, $value, array $attributes)
+    {
+        if ($this->isJson($value)) {
+            return $value;
+        }
+
+        return json_encode($value instanceof Repository ? $value->all() : (array)$value);
+    }
+
+    /**
+     * Check if the value is JSON.
+     *
+     * @param $string
+     * @return bool
+     */
+    protected function isJson($string)
+    {
+        if (is_string($string)) {
+            json_decode($string);
+
+            return (json_last_error() === JSON_ERROR_NONE);
+        }
+
+        return false;
     }
 }

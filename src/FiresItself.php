@@ -49,7 +49,7 @@ trait FiresItself
      */
     public static function fire(...$args)
     {
-        return app('events')->dispatch(static::class, new static(...$args));
+        return app('events')->dispatch(new static(...$args));
     }
 
     /**
@@ -60,6 +60,6 @@ trait FiresItself
      */
     public static function fireHalted(...$args)
     {
-        return app('events')->dispatch(static::class, new static(...$args), true);
+        return app('events')->dispatch(new static(...$args), [], true);
     }
 }

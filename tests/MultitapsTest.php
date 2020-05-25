@@ -7,7 +7,7 @@ use DarkGhostHunter\Laratraits\Multitaps;
 
 class MultitapsTest extends TestCase
 {
-    public function testMultitaps()
+    public function test_multitaps()
     {
         $multitapable = new class() {
             use Multitaps;
@@ -33,7 +33,7 @@ class MultitapsTest extends TestCase
         $this->assertEquals('qux', $multitapable->multitap()->bar()->quz()->qux()->target->foo);
     }
 
-    public function testMultitapsWithClosure()
+    public function test_multitaps_with_closure()
     {
         $multitapable = new class() {
             use Multitaps;
@@ -53,7 +53,7 @@ class MultitapsTest extends TestCase
         $this->assertEquals('qux', $result);
     }
 
-    public function testMultitapsAndUntaps()
+    public function test_multitaps_and_untaps()
     {
         $multitapable = new class() {
             use Multitaps;

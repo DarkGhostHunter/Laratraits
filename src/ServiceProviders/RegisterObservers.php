@@ -47,7 +47,7 @@
 
 namespace DarkGhostHunter\Laratraits\ServiceProviders;
 
-trait RegistersObservers
+trait RegisterObservers
 {
     /**
      * Registers an array of handlers for a Eloquent event.

@@ -74,31 +74,16 @@ trait NeighbourRecords
      * Returns the record list.
      *
      * @return array
-     * @throws \Exception
      */
     protected function getRecordsList()
     {
         return cache()
             ->remember("query|{$this->getQualifiedKeyName()}_{$this->getKey()}|neighbours", 60, function () {
                 return [
-                    'next' => $this->queryNextRecord(),
                     'prev' => $this->queryPrevRecord(),
+                    'next' => $this->queryNextRecord(),
                 ];
             });
-    }
-
-    /**
-     * Retrieves the next model.
-     *
-     * @return null|static
-     */
-    protected function queryNextRecord()
-    {
-        $builder = $this->latest()->where($this->getCreatedAtColumn(), '>', $this->{$this->getCreatedAtColumn()});
-
-        $this->filterNeighbourQuery($builder);
-
-        return $builder->first($this->queryColumns());
     }
 
     /**
@@ -108,7 +93,25 @@ trait NeighbourRecords
      */
     protected function queryPrevRecord()
     {
-        $builder = $this->oldest()->where($this->getCreatedAtColumn(), '<', $this->{$this->getCreatedAtColumn()});
+        $builder = $this->latest()
+            ->whereKeyNot($this->getKey())
+            ->where($this->getCreatedAtColumn(), '<=', $this->{$this->getCreatedAtColumn()});
+
+        $this->filterNeighbourQuery($builder);
+
+        return $builder->first($this->queryColumns());
+    }
+
+    /**
+     * Retrieves the next model.
+     *
+     * @return null|static
+     */
+    protected function queryNextRecord()
+    {
+        $builder = $this->oldest()
+            ->whereKeyNot($this->getKey())
+            ->where($this->getCreatedAtColumn(), '>=', $this->{$this->getCreatedAtColumn()});
 
         $this->filterNeighbourQuery($builder);
 

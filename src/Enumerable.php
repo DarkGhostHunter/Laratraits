@@ -154,10 +154,10 @@ class Enumerable implements Countable
      * Sets an state when a given condition evaluates to true.
      *
      * @param  bool|\Closure  $condition
-     * @param  string  $state
+     * @param  string|null  $state
      * @return $this
      */
-    public function when($condition, string $state)
+    public function when($condition, $state)
     {
         if (value($condition)) {
             return $this->assign($state);
@@ -265,8 +265,8 @@ class Enumerable implements Countable
      * @param  string|null  $initial
      * @return mixed
      */
-    public static function as(string $initial) : self
+    public static function as(string $initial = null) : self
     {
-        return (new static)->assign($initial);
+        return (new static)->when($initial, $initial);
     }
 }

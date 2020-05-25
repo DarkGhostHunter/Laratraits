@@ -52,7 +52,7 @@ class EnumerableTest extends TestCase
             protected $states = ['foo', 'bar', 'quz'];
         };
 
-        $bar = $enum::as('foo');
+        $bar = call_user_func([$enum, 'as'], 'foo');
 
         $this->assertEquals('foo', $bar->current());
 
@@ -80,20 +80,6 @@ class EnumerableTest extends TestCase
         $enum = new Enumerable(new ArrayIterator(['foo', 'bar', 'quz']));
 
         $this->assertEquals(['foo', 'bar', 'quz'], $enum->states());
-    }
-
-    public function test_checks_one_or_many_states_possible()
-    {
-        $states = ['foo', 'bar', 'quz'];
-
-        $enum = new Enumerable($states);
-
-        $this->assertTrue($enum->has('foo'));
-        $this->assertTrue($enum->has('foo,bar'));
-        $this->assertTrue($enum->has(['foo', 'bar']));
-        $this->assertFalse($enum->has('qux'));
-        $this->assertFalse($enum->has('foo,qux'));
-        $this->assertFalse($enum->has(['foo,qux']));
     }
 
     public function test_returns_current_state()
@@ -128,7 +114,7 @@ class EnumerableTest extends TestCase
     public function test_exception_when_sets_invalid_state()
     {
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('The state [qux] doesn\'t exists in this Enumerate instance.');
+        $this->expectExceptionMessage('The state \'qux\' doesn\'t exists in this Enumerate instance.');
 
         $enum = new Enumerable(['foo', 'bar', 'quz']);
 

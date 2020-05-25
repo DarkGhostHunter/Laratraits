@@ -8,11 +8,12 @@ The following traits and classes has been removed:
 *  `DiscoverClasses`,
 *  `DispatchesItself`,
 *  `HasFile`.
+*  `SoftCachesAccessors`,
 *  `ThrottlesRequest`,
 
 For `HasFile`, migrate to [Spatie's Laravel Medialibrary](https://github.com/spatie/laravel-medialibrary) package instead.
 
-For `ThrottlesRequest`, migrate to [Laravel Rate Limiting](https://github.com/laravel/framework/pull/32726).
+For `ThrottlesRequest`, migrate to [Laravel Rate Limiting](https://github.com/laravel/framework/pull/32726) once it becomes available.
 
 ## Changed 
 
@@ -21,6 +22,8 @@ For `ThrottlesRequest`, migrate to [Laravel Rate Limiting](https://github.com/la
 * The `Laratraits\Models` namespace has been changed to `Laratraits\Eloquent`.
 
 ## AutoFill trait changed
+
+* The trait has been renamed to `FillsAttributes`
 
 * The trait will now call Mutators when filling automatically a property.
 
@@ -73,14 +76,6 @@ For `ThrottlesRequest`, migrate to [Laravel Rate Limiting](https://github.com/la
 ## ValidateConsumableSignature changed
 
 * The middleware no longer uses `terminate`, but rather, evaluates the response before sending it to the browser. This shrinks the window where a user can make two times the same request.
-
-## SoftCachesAccessors changed
-
-* The `$cachedAccessorsValues` is now `$cachedMutators`.
-
-* The `withoutAccessorCache()` is now `withoutMutatorCache()`.
-
-* The `cachedAccessors()` is now `cachedMutators()`.
 
 ## UsesUuid changed
 

@@ -1,22 +1,26 @@
 <?php
 
-namespace Tests\Models;
+namespace Tests\Eloquent;
 
 use BadMethodCallException;
 use Orchestra\Testbench\TestCase;
 use Illuminate\Database\Eloquent\Model;
-use DarkGhostHunter\Laratraits\Eloquent\AutoFill;
+use DarkGhostHunter\Laratraits\Eloquent\FillsAttributes;
 
-class AutoFillTest extends TestCase
+class FillsAttributesTest extends TestCase
 {
-    public function testAutofillModel()
+    public function test_autofill_model()
     {
         $model = new class extends Model {
-            use AutoFill;
+            use FillsAttributes;
+
+            protected $attributes = [
+                'quux' => 'ok',
+            ];
 
             protected function autoFillable()
             {
-                return ['foo', 'quz'];
+                return ['foo', 'quz', 'quux'];
             }
 
             protected function fillFooAttribute()
@@ -36,14 +40,14 @@ class AutoFillTest extends TestCase
         };
 
         $this->assertEquals([
-            'foo' => 'bar', 'quz' => 'qux'
+            'foo' => 'bar', 'quz' => 'qux', 'quux' => 'ok'
         ], $model->getAttributes());
     }
 
-    public function testAutofillModelWithProperty()
+    public function test_autofill_model_with_property()
     {
         $model = new class extends Model {
-            use AutoFill;
+            use FillsAttributes;
 
             protected $autoFillable = ['foo', 'quz'];
 
@@ -68,12 +72,12 @@ class AutoFillTest extends TestCase
         ], $model->getAttributes());
     }
 
-    public function testAutofillFailsIfNoFillerIsSet()
+    public function test_autofill_fails_if_no_filler_is_set()
     {
         $this->expectException(BadMethodCallException::class);
 
         $model = new class extends Model {
-            use AutoFill;
+            use FillsAttributes;
 
             protected $autoFillable = ['bar', 'quz'];
 

@@ -57,7 +57,9 @@ trait HasSlug
     protected static function bootHasSlug()
     {
         static::saving(function ($model) {
-            if ($model->isDirty($model->attributeToSlug())) {
+            $sluggable = $model->sluggableAttribute();
+
+            if (! $model->getAttribute($sluggable) || $model->isDirty($sluggable)) {
                 $model->setSlug();
             }
         });

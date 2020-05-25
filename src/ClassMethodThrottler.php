@@ -1,6 +1,6 @@
 <?php
 /**
- * ActionRateLimiter
+ * ClassMethodThrottler
  *
  * This class conveniently catches an object and routes the method call to it only
  * when the method is not throttled. If a default callable is issued, it will be
@@ -38,7 +38,7 @@ namespace DarkGhostHunter\Laratraits;
 
 use Illuminate\Cache\RateLimiter;
 
-class ActionRateLimiter
+class ClassMethodThrottler
 {
     /**
      * Target to rate limit.
@@ -88,15 +88,13 @@ class ActionRateLimiter
     /**
      * Sets the limits to use with the Rate Limiter.
      *
-     * @param  object  $target
      * @param  int  $tries
      * @param  int  $minutes
      * @param  callable|null  $default
-     * @return \DarkGhostHunter\Laratraits\ActionRateLimiter
+     * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    public function throttle(object $target, int $tries, int $minutes, callable $default = null)
+    public function throttle(int $tries, int $minutes, callable $default = null)
     {
-        $this->target = $target;
         $this->maxAttempts = $tries;
         $this->decaySeconds = $minutes * 60;
         $this->default = $default;
@@ -105,14 +103,16 @@ class ActionRateLimiter
     }
 
     /**
-     * Checks if there are too many attempts for the method.
+     * Sets the target object to throttle its methods.
      *
-     * @param  string  $method
-     * @return bool
+     * @param  object  $target
+     * @return $this
      */
-    public function throttlerTooManyAttempts(string $method)
+    public function setTarget(object $target)
     {
-        return $this->limiter->tooManyAttempts($this->actionRateLimiterKey($method), $this->maxAttempts);
+        $this->target = $target;
+
+        return $this;
     }
 
     /**
@@ -127,14 +127,14 @@ class ActionRateLimiter
     }
 
     /**
-     * Resets the number of tries to the method.
+     * Checks if there are too many attempts for the method.
      *
      * @param  string  $method
-     * @return mixed
+     * @return bool
      */
-    public function throttlerReset(string $method)
+    public function throttlerTooManyAttempts(string $method)
     {
-        return $this->limiter->resetAttempts($this->actionRateLimiterKey($method));
+        return $this->limiter->tooManyAttempts($this->actionRateLimiterKey($method), $this->maxAttempts);
     }
 
     /**
@@ -172,8 +172,8 @@ class ActionRateLimiter
             $this->target->{$name}(...$arguments);
             $this->throttlerHit($name);
         }
-        elseif ($this->default) {
-            call_user_func($this->default, $this->target, $this);
+        else {
+            with($this->target, $this->default);
         }
 
         return $this->target;

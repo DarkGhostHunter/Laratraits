@@ -13,7 +13,7 @@ use DarkGhostHunter\Laratraits\Middleware\ValidateConsumableSignature;
 
 class ValidateConsumableSignatureTest extends TestCase
 {
-    public function testSignatureOnlyUsedOnce()
+    public function test_signature_only_used_once()
     {
         $controller = new class {
 

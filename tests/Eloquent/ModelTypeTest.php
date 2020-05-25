@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Models;
+namespace Tests\Eloquent;
 
 use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Schema;
@@ -31,7 +31,7 @@ class ModelTypeTest extends TestCase
         parent::setUp();
     }
 
-    public function testExtendedModelFiltersType()
+    public function test_extended_model_filters_type()
     {
         ExtendedTypeTestModel::make()->forceFill([
             'name' => 'foo',
@@ -41,10 +41,10 @@ class ModelTypeTest extends TestCase
 
         $this->assertCount(1, $models);
         $this->assertEquals('foo', $models->first()->name);
-        $this->assertEquals('extended-type-test-model', $models->first()->type);
+        $this->assertEquals('extended_type_test_model', $models->first()->type);
     }
 
-    public function testExtendedModelOverridesDefaults()
+    public function test_extended_model_overrides_defaults()
     {
         CustomTypeTestModel::make()->forceFill([
             'name' => 'foo'
