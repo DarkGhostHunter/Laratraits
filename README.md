@@ -22,7 +22,7 @@ Fire up Composer and that's it.
 
     composer require darkghosthunter/laratraits
 
-This package doesn't uses a Service Provider.
+This package doesn't use any Service Provider.
 
 ## Usage
 
@@ -50,7 +50,7 @@ class Post extends Model
 
 ## What it includes
 
-Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License. .
+Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License.
 
 Just remember to **change the namespace** if you're copy-pasting them!
 
@@ -98,7 +98,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ## Missing a trait?
 
-You can make an issue with your proposal. Consider the logic must be contained inside a trait. PRs are preferred with tests.
+You can make an issue with your proposal. Consider the logic must be contained inside a trait, or use an auxiliar class to avoid polluting the class with multiple methods. PRs are preferred with tests.
 
 ## License
 
