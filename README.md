@@ -74,8 +74,9 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Models
 
-* [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
+* [`EncryptsJson`](src/Eloquent/EncryptsJson.php): Encrypts and decrypts the JSON representation of a Model.
+* [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`HasSlug`](src/Eloquent/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
 * [`ModelType`](src/Eloquent/ModelType.php): Useful for Models that share a single table but have different "types", like Publications: Article, Post, Note, etc.
 * [`NeighbourRecords`](src/Eloquent/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
