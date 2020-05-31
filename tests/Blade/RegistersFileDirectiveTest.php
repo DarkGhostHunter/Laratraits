@@ -41,20 +41,18 @@ return strtolower(\$quz);
 
         $this->assertSame("foo <?php
 
-return strtolower('FOO');
-?> bar", $foo);
+return strtolower('FOO'); ?> bar", $foo);
         $this->assertSame("foo <?php
 
-return strtolower('BAR');
-?> bar", $bar);
+return strtolower('BAR'); ?> bar", $bar);
     }
 
     public function test_exception_when_file_doesnt_exists()
     {
         $this->expectException(FileNotFoundException::class);
-        $this->expectExceptionMessage('The class Tests\Blade\TestBladeDirective has no file [test_blade_directive.php] to register as directive.');
+        $this->expectExceptionMessage('The class Tests\Blade\TestBladeDirectiveMissing has no file [test_blade_directive_missing.php] to register as directive');
 
-        Blade::directive('foo', [TestBladeDirective::class, 'register']);
+        Blade::directive('foo', [TestBladeDirectiveMissing::class, 'register']);
         Blade::compileString("foo @foo('FOO') bar");
     }
 
@@ -66,8 +64,7 @@ return strtolower('BAR');
 
         $this->assertSame("foo <?php
 
-return 'sample';
-?> bar", $foo);
+return 'sample'; ?> bar", $foo);
     }
 }
 
