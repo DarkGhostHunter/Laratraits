@@ -22,7 +22,7 @@ Fire up Composer and that's it.
 
     composer require darkghosthunter/laratraits
 
-This package doesn't uses a Service Provider.
+This package doesn't use any Service Provider.
 
 ## Usage
 
@@ -50,7 +50,7 @@ class Post extends Model
 
 ## What it includes
 
-Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License. .
+Before installing, take a look into the list. If you're only using one, just copy and paste it in your project, no problem, as each trait and file includes a copy of the MIT License.
 
 Just remember to **change the namespace** if you're copy-pasting them!
 
@@ -74,8 +74,9 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Models
 
-* [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
+* [`EncryptsJson`](src/Eloquent/EncryptsJson.php): Encrypts and decrypts the JSON representation of a Model.
+* [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`HasSlug`](src/Eloquent/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Requires a new column in the table.
 * [`ModelType`](src/Eloquent/ModelType.php): Useful for Models that share a single table but have different "types", like Publications: Article, Post, Note, etc.
 * [`NeighbourRecords`](src/Eloquent/NeighbourRecords.php): Allows to easily get the "next" and "previous" record from a given model.
@@ -96,9 +97,13 @@ Just remember to **change the namespace** if you're copy-pasting them!
 * [`ShareAuthenticatedUser`](src/Middleware/ShareAuthenticatedUser.php): Shares the authenticated user across all views.
 * [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes [signed routes](https://laravel.com/docs/urls#signed-urls) work only one time, except on client or server errors.
 
+### Blade
+
+* [`RegistersFileDirective`](src/Blade/RegistersFileDirective.php): Easily register a directive using a PHP file contents.
+
 ## Missing a trait?
 
-You can make an issue with your proposal. Consider the logic must be contained inside a trait. PRs are preferred with tests.
+You can make an issue with your proposal. Consider the logic must be contained inside a trait, or use an auxiliar class to avoid polluting the class with multiple methods. PRs are preferred with tests.
 
 ## License
 
