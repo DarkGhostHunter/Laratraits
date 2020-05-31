@@ -79,7 +79,7 @@ trait RegistersFileDirective
      */
     public static function register($expression = null, string $filename = null)
     {
-        $contents = Str::finish(stripcslashes(static::getDirectiveContents($filename)), '?>');
+        $contents = Str::finish(stripcslashes(static::getDirectiveContents($filename)), ' ?>');
 
         if ($expression) {
             return str_replace('$expression', $expression, $contents);
