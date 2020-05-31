@@ -20,15 +20,15 @@ class RegistersFileDirectiveTest extends TestCase
         $this->assertSame("foo <?php
 
 return strtolower('FOO');
-?> bar", $foo);
+ ?> bar", $foo);
         $this->assertSame("foo <?php
 
 return strtolower('BAR');
-?> bar", $bar);
+ ?> bar", $bar);
         $this->assertSame("foo <?php
 
 return strtolower(\$quz);
-?> bar", $quz);
+ ?> bar", $quz);
     }
 
     public function test_register_multiple_files()
