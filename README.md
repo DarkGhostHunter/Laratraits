@@ -97,6 +97,10 @@ Just remember to **change the namespace** if you're copy-pasting them!
 * [`ShareAuthenticatedUser`](src/Middleware/ShareAuthenticatedUser.php): Shares the authenticated user across all views.
 * [`ValidateConsumableSignature`](src/Middleware/ValidateConsumableSignature.php): Makes [signed routes](https://laravel.com/docs/urls#signed-urls) work only one time, except on client or server errors.
 
+### Blade
+
+* [`RegistersFileDirective`](src/Blade/RegistersFileDirective.php): Easily register a directive using a PHP file contents.
+
 ## Missing a trait?
 
 You can make an issue with your proposal. Consider the logic must be contained inside a trait, or use an auxiliar class to avoid polluting the class with multiple methods. PRs are preferred with tests.
