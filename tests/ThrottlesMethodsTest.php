@@ -99,16 +99,18 @@ class ThrottlesMethodsTest extends TestCase
 
         $class->throttle(1, 1)->shouldThrottle();
 
+        $this->assertCount(2, $class::$executed);
+
         $class->for('foo')->throttle(1, 1)->shouldThrottle();
 
         $this->assertCount(2, $class::$executed);
 
         $class->for('foo')->throttlerClear('shouldThrottle')->shouldThrottle();
 
-        $this->assertCount(2, $class::$executed);
+        $this->assertCount(3, $class::$executed);
 
         $class->for('foo')->throttle(1, 1)->shouldThrottle();
 
-        $this->assertCount(2, $class::$executed);
+        $this->assertCount(3, $class::$executed);
     }
 }
