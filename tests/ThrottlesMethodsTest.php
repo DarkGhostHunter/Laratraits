@@ -79,4 +79,36 @@ class ThrottlesMethodsTest extends TestCase
 
         $this->assertCount(2, $class::$executed);
     }
+
+    public function test_throttles_for_given_key()
+    {
+        $class = new class {
+            use ThrottleMethods;
+
+            public static $executed = [];
+
+            public function shouldThrottle()
+            {
+                static::$executed[] = true;
+            }
+        };
+
+        $class->for('foo')->throttle(1, 1)->shouldThrottle();
+
+        $this->assertCount(1, $class::$executed);
+
+        $class->throttle(1, 1)->shouldThrottle();
+
+        $class->for('foo')->throttle(1, 1)->shouldThrottle();
+
+        $this->assertCount(2, $class::$executed);
+
+        $class->for('foo')->throttlerClear('shouldThrottle')->shouldThrottle();
+
+        $this->assertCount(2, $class::$executed);
+
+        $class->for('foo')->throttle(1, 1)->shouldThrottle();
+
+        $this->assertCount(2, $class::$executed);
+    }
 }
