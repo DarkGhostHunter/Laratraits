@@ -16,9 +16,9 @@
  *         $object->doSomethingElse();
  *     })->heavilyComputational($parameters);
  *
- * If you need granular control on the cache key, use the fourth parameter with name:
+ * If you need granular control on the cache key, use the "for()" method with the key:
  *
- *     $object->throttler(60, 1, null, 'my_custom_key')->heavilyComputational($parameters);
+ *     $object->for($request->ip())->throttle(60, 1)->heavilyComputational($parameters);
  *
  * If this trait collides with another method in your class, you can import the trait and
  * change method name to another:
@@ -28,10 +28,10 @@
  *         use ThrottleMethods {
  *             for as throttleFor;
  *         };
+ *         
+ *         // ...
+ *     }
  *
- * You can also use keys to throttle a given user or request IP.
- *
- *     $class->for($request->ip)->throttle(1,60)->something();
  * ---
  * MIT License
  *
