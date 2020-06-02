@@ -20,6 +20,18 @@
  *
  *     $object->throttler(60, 1, null, 'my_custom_key')->heavilyComputational($parameters);
  *
+ * If this trait collides with another method in your class, you can import the trait and
+ * change method name to another:
+ *
+ *     class Collides
+ *     {
+ *         use ThrottleMethods {
+ *             for as throttleFor;
+ *         };
+ *
+ * You can also use keys to throttle a given user or request IP.
+ *
+ *     $class->for($request->ip)->throttle(1,60)->something();
  * ---
  * MIT License
  *
@@ -53,7 +65,7 @@ namespace DarkGhostHunter\Laratraits;
 trait ThrottleMethods
 {
     /**
-     * Limits the next method call by a tries inside a window of minutes.
+     * Limits the next method call by tries inside a window of minutes.
      *
      * @param  int  $tries
      * @param  int  $minutes
@@ -63,6 +75,17 @@ trait ThrottleMethods
     public function throttle($tries = 60, $minutes = 1, $default = null)
     {
         return $this->getActionThrottler()->throttle($tries, $minutes, $default);
+    }
+
+    /**
+     * Limits the next method call for a given identifier.
+     *
+     * @param  string  $for
+     * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
+     */
+    public function for(string $for)
+    {
+        return $this->getActionThrottler()->setKey($for);
     }
 
     /**

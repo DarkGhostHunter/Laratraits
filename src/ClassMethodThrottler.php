@@ -76,6 +76,13 @@ class ClassMethodThrottler
     protected $default;
 
     /**
+     * Custom Key to use.
+     *
+     * @var string
+     */
+    protected $key;
+
+    /**
      * Create a new ActionRateLimiter instance.
      *
      * @param  \Illuminate\Cache\RateLimiter  $limiter
@@ -103,6 +110,19 @@ class ClassMethodThrottler
     }
 
     /**
+     * Use a custom Key instead of the default one.
+     *
+     * @param  string  $key
+     * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
+     */
+    public function setKey(string $key)
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    /**
      * Sets the target object to throttle its methods.
      *
      * @param  object  $target
@@ -119,11 +139,13 @@ class ClassMethodThrottler
      * Clear the throttler for a given method.
      *
      * @param  string  $method
-     * @return void
+     * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
     public function throttlerClear(string $method)
     {
         $this->limiter->clear($this->actionRateLimiterKey($method));
+
+        return $this;
     }
 
     /**
@@ -145,7 +167,9 @@ class ClassMethodThrottler
      */
     public function throttlerHit(string $method)
     {
-        return $this->limiter->hit($this->actionRateLimiterKey($method), $this->decaySeconds);
+        $this->limiter->hit($this->actionRateLimiterKey($method), $this->decaySeconds);
+
+        return $this;
     }
 
     /**
@@ -156,7 +180,9 @@ class ClassMethodThrottler
      */
     protected function actionRateLimiterKey(string $name)
     {
-        return 'class_method_throttler|' . get_class($this->target) . '@' . $name;
+        return implode('|' , array_filter([
+            'class_method_throttler', $this->key, get_class($this->target) . '@' . $name
+        ]));
     }
 
     /**
