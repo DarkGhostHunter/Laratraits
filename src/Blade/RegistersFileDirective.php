@@ -101,7 +101,7 @@ trait RegistersFileDirective
         // Otherwise, we will just cycle between a list of predefined paths where the
         // directive should be, and throw an exception if we can't find anything.
         if ($path) {
-            return File::get(base_path($path));
+            return File::get($path);
         }
 
         $file = Str::finish($path ?? Str::snake(class_basename(static::class)), '.php');

@@ -6,6 +6,7 @@ use Orchestra\Testbench\TestCase;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use DarkGhostHunter\Laratraits\Blade\RegistersFileDirective;
+use const DIRECTORY_SEPARATOR as DS;
 
 class RegistersFileDirectiveTest extends TestCase
 {
@@ -79,12 +80,12 @@ class TestBladeDirectiveMultipleFiles
 
     public static function foo($foo)
     {
-        return static::register($foo, 'foo_directive.php');
+        return static::register($foo, __DIR__ . DS . 'foo_directive.php');
     }
 
     public static function bar($bar)
     {
-        return static::register($bar, 'bar_directive.php');
+        return static::register($bar, __DIR__ . DS . 'bar_directive.php');
     }
 }
 
@@ -99,6 +100,6 @@ class TestEmptyDirective
 
     public static function quz()
     {
-        return static::register(null, 'quz_directive.php');
+        return static::register(null, __DIR__ . DS . 'quz_directive.php');
     }
 }
