@@ -49,8 +49,6 @@
 
 namespace DarkGhostHunter\Laratraits\Eloquent;
 
-use Illuminate\Support\Facades\Crypt;
-
 trait EncryptsJson
 {
     /**
@@ -63,7 +61,7 @@ trait EncryptsJson
      */
     public function toJson($options = 0)
     {
-        return Crypt::encrypt(parent::toJson($options), false);
+        return encrypt(parent::toJson($options), false);
     }
 
     /**
@@ -85,7 +83,7 @@ trait EncryptsJson
      */
     public static function fromEncryptedJson(string $encrypted, $options = 0)
     {
-        $array = json_decode(Crypt::decrypt($encrypted, false), true, 512, $options);
+        $array = json_decode(decrypt($encrypted, false), true, 512, $options);
 
         $instance = new static($array ?? []);
 
