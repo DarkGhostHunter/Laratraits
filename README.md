@@ -56,6 +56,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Traits for everything
 
+* [`ConditionCalls`](src/ConditionCalls.php): Allows an object instance to execute `when` and `unless` logic.
 * [`EnumerableStates`](src/EnumerableStates.php): Allows a class instance to have a single allowed state.
 * [`FiresItself`](src/FiresItself.php): Allows an Event to be fired conveniently.
 * [`Multitaps`](src/Multitaps.php): Makes all class methods _chainable_, like using `tap()` but forever. You can exit the tap using `->target` or a method name appended with `AndUntap`.

@@ -24,12 +24,12 @@
  *
  *     public static function simpleFormat($expression)
  *     {
- *         return static::register($expression, 'simple_format.php');
+ *         return static::register($expression, 'app/blade/directives/simple_format.php');
  *     }
  *
  *     public static function isoFormat($expression)
  *     {
- *         return static::register($expression, 'iso_format.php');
+ *         return static::register($expression, 'resources/views/directives/iso_format.php');
  *     }
  *
  * ---
@@ -73,13 +73,13 @@ trait RegistersFileDirective
      * Registers the directive.
      *
      * @param  mixed  $expression
-     * @param  string|null  $filename
+     * @param  string|null  $path
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public static function register($expression = null, string $filename = null)
+    public static function register($expression = null, string $path = null)
     {
-        $contents = Str::finish(stripcslashes(static::getDirectiveContents($filename)), ' ?>');
+        $contents = Str::finish(stripcslashes(static::getDirectiveContents($path)), ' ?>');
 
         if ($expression) {
             return str_replace('$expression', $expression, $contents);
@@ -91,13 +91,20 @@ trait RegistersFileDirective
     /**
      * Returns the file directive contents.
      *
-     * @param  string|null  $filename
+     * @param  string|null  $path
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected static function getDirectiveContents(?string $filename = null)
+    protected static function getDirectiveContents(?string $path = null)
     {
-        $file = Str::finish($filename ?? Str::snake(class_basename(static::class)), '.php');
+        // If the developer has returned a path for the directive, we will use just that.
+        // Otherwise, we will just cycle between a list of predefined paths where the
+        // directive should be, and throw an exception if we can't find anything.
+        if ($path) {
+            return File::get($path);
+        }
+
+        $file = Str::finish($path ?? Str::snake(class_basename(static::class)), '.php');
 
         $dir = dirname((new \ReflectionClass(static::class))->getFileName());
 
@@ -109,9 +116,9 @@ trait RegistersFileDirective
             $dir . DS . 'Directive' . DS . $file,
         ];
 
-        foreach ($paths as $path) {
-            if (File::exists($path)) {
-                return File::get($path);
+        foreach ($paths as $automaticPath) {
+            if (File::exists($automaticPath)) {
+                return File::get($automaticPath);
             }
         }
 
