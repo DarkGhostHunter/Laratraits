@@ -75,7 +75,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Models
 
-* [`ConditionFill'](src/Eloquent/ConditionFill.php): Fills an attribute if a given condition is truthy or falsy.
+* [`ConditionFill`](src/Eloquent/ConditionFill.php): Fills an attribute if a given condition is truthy or falsy.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
 * [`EncryptsJson`](src/Eloquent/EncryptsJson.php): Encrypts and decrypts the JSON representation of a Model.
 * [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
