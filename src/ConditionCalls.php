@@ -78,9 +78,7 @@ trait ConditionCalls
     {
         if ($result = value($value)) {
             $callback($this, $result);
-        }
-
-        if ($default) {
+        } elseif ($default) {
             $default($this, $result);
         }
 
@@ -99,9 +97,7 @@ trait ConditionCalls
     {
         if (! $result = value($value)) {
             $callback($this, $result);
-        }
-
-        if ($default) {
+        } elseif ($default) {
             $default($this, $result);
         }
 
