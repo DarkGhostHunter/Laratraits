@@ -26,7 +26,7 @@ This package doesn't use any Service Provider.
 
 ## Usage
 
-Just check any of these traits. Each one and other classes contains an brief explanation on how to use in the first lines.
+Just check any of these traits. Each one and other classes contains a brief explanation on how to use in the first lines.
 
 If you want to use one, [just do it](https://www.php.net/manual/en/language.oop5.traits.php).
 
