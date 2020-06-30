@@ -56,6 +56,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Traits for everything
 
+* [`Comparable`](src/Comparable.php): Allows a class or its properties to be compared to a list of values.
 * [`ConditionCalls`](src/ConditionCalls.php): Allows an object instance to execute `when` and `unless` logic.
 * [`EnumerableStates`](src/EnumerableStates.php): Allows a class instance to have a single allowed state.
 * [`FiresItself`](src/FiresItself.php): Allows an Event to be fired conveniently.
