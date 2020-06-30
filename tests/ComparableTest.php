@@ -44,7 +44,7 @@ class ComparableTest extends TestCase
             return $compared->foo === $comparable ? $comparable : null;
         });
 
-        $this->assertNull($result);
+        $this->assertFalse($result);
     }
 
     public function test_returns_key()
