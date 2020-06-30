@@ -51,6 +51,17 @@ class ConditionCallTest extends TestCase
         $this->assertSame('bar', $this->object->foo);
     }
 
+    public function test_doesnt_calls_default_when_thrughy()
+    {
+        $this->object->when('qux', function ($instance, $value) {
+            $instance->foo = $value;
+        }, function ($instance, $value) {
+            $instance->foo = $value . ' quz';
+        });
+
+        $this->assertSame('qux', $this->object->foo);
+    }
+
     public function test_calls_default_when_falsy()
     {
         $this->object->when('', function ($instance, $value) {
@@ -78,6 +89,17 @@ class ConditionCallTest extends TestCase
         });
 
         $this->assertSame('bar', $this->object->foo);
+    }
+
+    public function test_doesnt_calls_default_when_falsy()
+    {
+        $this->object->unless(false, function ($instance, $value) {
+            $instance->foo = $value;
+        }, function ($instance, $value) {
+            $instance->foo = $value . ' qux';
+        });
+
+        $this->assertFalse($this->object->foo);
     }
 
     public function test_calls_default_unless_truthy()

@@ -26,7 +26,7 @@ This package doesn't use any Service Provider.
 
 ## Usage
 
-Just check any of these traits. Each one and other classes contains an brief explanation on how to use in the first lines.
+Just check any of these traits. Each one and other classes contains a brief explanation on how to use in the first lines.
 
 If you want to use one, [just do it](https://www.php.net/manual/en/language.oop5.traits.php).
 
@@ -56,6 +56,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Traits for everything
 
+* [`Comparable`](src/Comparable.php): Allows a class or its properties to be compared to a list of values.
 * [`ConditionCalls`](src/ConditionCalls.php): Allows an object instance to execute `when` and `unless` logic.
 * [`EnumerableStates`](src/EnumerableStates.php): Allows a class instance to have a single allowed state.
 * [`FiresItself`](src/FiresItself.php): Allows an Event to be fired conveniently.
@@ -75,7 +76,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Models
 
-* [`ConditionFill'](src/Eloquent/ConditionFill.php): Fills an attribute if a given condition is truthy or falsy.
+* [`ConditionFill`](src/Eloquent/ConditionFill.php): Fills an attribute if a given condition is truthy or falsy.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
 * [`EncryptsJson`](src/Eloquent/EncryptsJson.php): Encrypts and decrypts the JSON representation of a Model.
 * [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
