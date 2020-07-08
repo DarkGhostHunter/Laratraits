@@ -39,7 +39,9 @@ class SecurelySerializableTest extends TestCase
 
     public function test_serialization_includes_signature()
     {
-        $hasher = $this->mock(Hasher::class);
+        $hasher = Mockery::mock(Hasher::class);
+
+        $this->swap('hash', $hasher);
 
         $hasher->shouldReceive('make')
             ->with(json_encode([
@@ -68,11 +70,6 @@ class SecurelySerializableTest extends TestCase
         $this->assertInstanceOf(TestSerializableClass::class, $instance);
         $this->assertSame('bar', $this->class->foo);
         $this->assertSame('qux', $this->class->quz);
-    }
-
-    public function test_checks_signature_returns_data_without_signature()
-    {
-
     }
 
     public function test_unserialization_throws_exception_if_values_different()
