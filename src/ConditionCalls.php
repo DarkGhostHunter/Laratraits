@@ -34,6 +34,11 @@
  *
  *     }
  *
+ * Alternatively, if you don't supply a callback, it will catch the next method and call it
+ * only when the value is true, or unless is false.
+ *
+ *     $object->when(true)->callThis()->thisWillBeCalledAnyway();
+ *
  * ---
  * MIT License
  *
@@ -70,13 +75,19 @@ trait ConditionCalls
      * Execute the given callable when a value is truthy.
      *
      * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  callable $default
+     * @param  callable|null  $callback
+     * @param  callable|null $default
      * @return $this
      */
-    public function when($value, callable $callback, callable $default = null)
+    public function when($value, callable $callback = null, callable $default = null)
     {
-        if ($result = value($value)) {
+        $result = value($value);
+
+        if (! $callback) {
+            return new ConditionCallContainer($this, (bool) $result);
+        }
+
+        if ($result) {
             $callback($this, $result);
         } elseif ($default) {
             $default($this, $result);
@@ -89,13 +100,19 @@ trait ConditionCalls
      * Execute the given callable when a value is falsy.
      *
      * @param  mixed  $value
-     * @param  callable  $callback
-     * @param  callable $default
+     * @param  callable|null  $callback
+     * @param  callable|null $default
      * @return $this
      */
-    public function unless($value, callable $callback, callable $default = null)
+    public function unless($value, callable $callback = null, callable $default = null)
     {
-        if (! $result = value($value)) {
+        $result = value($value);
+
+        if (! $callback) {
+            return new ConditionCallContainer($this, ! $result);
+        }
+
+        if (! $result) {
             $callback($this, $result);
         } elseif ($default) {
             $default($this, $result);
