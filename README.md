@@ -66,6 +66,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 * [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache.
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
 * [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
+* [`SecurelyJsonable`](src/SecurelyJsonable.php): Adds a signature to the Jsonable object that is checked to at unserialization to avoid tampering.
 * [`SendsToHttp`](src/SendsToHttp.php): Sends the object (or part of it) through an HTTP Request.
 * [`ThrottleMethods`](src/ThrottleMethods.php): Throttles a given method in a class transparently.
 * [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
