@@ -1,33 +1,38 @@
 <?php
 /**
- * SecurelySerializable
+ * SecurelyJsonable
  *
- * This trait allows any serializable object to have a "signature" that is created on serialization,
- * and later checked before unserialization. Since this trait is optional to the process, you must
- * use the `addSignature` when serializing the object, and `checkSignature` to check the data.
+ * This trait allows any Jsonable object to contain a signature that avoids tampering the
+ * contents. You can use any key, like a secret key contained in your database, or the
+ * application key. On unserialization, check if the key is valid before proceeding.
+ *
+ * For example, you can add the signature for the JSON serialization:
  *
  *     class Foo
  *     {
- *         use SecurelySerializable;
+ *         use SecurelyJsonable;
  *
  *         protected $foo;
  *
- *         public function __serialize() : array
+ *         public function toJson() : array
  *         {
  *             return $this->addSignature(['foo' => 'bar']);
  *         }
  *
- *         public function __unserialize(array $data) : void
+ *         public static function fromJson(array $data) : void
  *         {
  *             $this->checkSignature($data);
  *
  *             $this->foo = $data['foo'];
  *         }
+ *
+ *         protected static function hashKey()
+ *         {
+ *             return config('app.key');
+ *         }
  *     }
  *
- * If the unserialized data has been tampered with, an `InvalidArgumentException` is thrown.
- *
- * As a side note, the `checkSignature` always returns the data without the signature.
+ * **WARNING**. If you're using PHP 7.2 or below, avoid using native serialization.
  *
  * ---
  * MIT License
@@ -61,10 +66,8 @@ namespace DarkGhostHunter\Laratraits;
 
 use Illuminate\Support\Arr;
 use InvalidArgumentException;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Hashing\Hasher;
 
-trait SecurelySerializable
+trait SecurelyJsonable
 {
     /**
      * Securely serialize the object.
@@ -75,11 +78,25 @@ trait SecurelySerializable
      */
     protected function addSignature(array $data, $options = null) : array
     {
+        $original = $data;
+
         ksort($data);
 
-        return $data + [
-                $this->signatureKey() => $this->signatureChecker()->make(json_encode($data, $options)),
-            ];
+        return $original + [
+            static::signatureKey() => static::makeSignature($data, $options),
+        ];
+    }
+
+    /**
+     * Makes the signature for the serialized class.
+     *
+     * @param  array  $data
+     * @param  null  $options
+     * @return string
+     */
+    protected static function makeSignature(array $data, $options = null)
+    {
+        return hash_hmac('sha256', json_encode($data, $options), static::hashKey());
     }
 
     /**
@@ -89,17 +106,19 @@ trait SecurelySerializable
      * @param  null|mixed  $options
      * @return array
      */
-    protected function checkSignature(array $data, $options = null) : array
+    protected static function checkSignature(array $data, $options = null) : array
     {
-        $key = $this->signatureKey();
+        $key = static::signatureKey();
 
-        if (isset($data[$key]) && is_string($data['signature'])) {
+        if (isset($data[$key]) && is_string($data[$key])) {
             $signature = Arr::pull($data, $key);
+
+            $original = $data;
 
             ksort($data);
 
-            if ($this->signatureChecker()->check(json_encode($data, $options), $signature)) {
-                return $data;
+            if ($signature === static::makeSignature($data, $options)) {
+                return $original;
             }
         }
 
@@ -111,18 +130,15 @@ trait SecurelySerializable
      *
      * @return string
      */
-    protected function signatureKey()
+    protected static function signatureKey()
     {
         return defined('static::SIGNATURE_KEY') ? static::SIGNATURE_KEY : 'signature';
     }
 
     /**
-     * The hasher instance to check the signature against the data.
+     * Returns the key to use for the signature hash.
      *
-     * @return \Illuminate\Contracts\Hashing\Hasher
+     * @return string
      */
-    protected function signatureChecker() : Hasher
-    {
-        return Hash::driver(defined('static::SIGNATURE_CHECKER') ? static::SIGNATURE_CHECKER : null);
-    }
+    abstract protected static function hashKey() : string;
 }
