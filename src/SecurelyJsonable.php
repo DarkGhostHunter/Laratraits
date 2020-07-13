@@ -117,7 +117,7 @@ trait SecurelyJsonable
 
             ksort($data);
 
-            if ($signature === static::makeSignature($data, $options)) {
+            if (hash_equals(static::makeSignature($data, $options), $signature)) {
                 return $original;
             }
         }
