@@ -64,7 +64,7 @@
 
 namespace DarkGhostHunter\Laratraits;
 
-use Illuminate\Support\Arr;
+use LogicException;
 use InvalidArgumentException;
 
 trait SecurelyJsonable
@@ -78,13 +78,18 @@ trait SecurelyJsonable
      */
     protected function addSignature(array $data, $options = null) : array
     {
+        $key = static::signatureKey();
+
+        // If the signature key was set, we will fail because the hash will overwrite it.
+        if (isset($data[$key])) {
+            throw new LogicException("The key [{$key}] is reserved to store the object signature.");
+        }
+
         $original = $data;
 
         ksort($data);
 
-        return $original + [
-            static::signatureKey() => static::makeSignature($data, $options),
-        ];
+        return $original + [$key => static::makeSignature($data, $options)];
     }
 
     /**
@@ -104,14 +109,16 @@ trait SecurelyJsonable
      *
      * @param  array  $data
      * @param  null|mixed  $options
-     * @return array
+     * @return array  The original array with the signature attached.
      */
     protected static function checkSignature(array $data, $options = null) : array
     {
         $key = static::signatureKey();
 
         if (isset($data[$key]) && is_string($data[$key])) {
-            $signature = Arr::pull($data, $key);
+            $signature = $data[$key];
+
+            unset($data[$key]);
 
             $original = $data;
 

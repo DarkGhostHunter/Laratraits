@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use LogicException;
 use InvalidArgumentException;
 use Illuminate\Support\Fluent;
 use Orchestra\Testbench\TestCase;
@@ -54,6 +55,15 @@ class SecurelyJsonableTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $this->class::fromJson('{"foo":"bar","quz":"qux"}');
+    }
+
+    public function test_serialization_fails_if_key_already_present()
+    {
+        $this->expectException(LogicException::class);
+
+        $this->class->signature = 'foo';
+
+        json_encode($this->class);
     }
 }
 
