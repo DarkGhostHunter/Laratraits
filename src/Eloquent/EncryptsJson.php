@@ -49,6 +49,8 @@
 
 namespace DarkGhostHunter\Laratraits\Eloquent;
 
+use RuntimeException;
+
 trait EncryptsJson
 {
     /**
@@ -85,10 +87,10 @@ trait EncryptsJson
     {
         $array = json_decode(decrypt($encrypted, false), true, 512, $options);
 
-        $instance = new static($array ?? []);
+        if (empty($array)) {
+            throw new RuntimeException('The data for ' . static::class . ' is not correctly encrypted.');
+        }
 
-        $instance->afterJsonDecryption();
-
-        return $instance;
+        return tap(new static($array))->afterJsonDecryption();
     }
 }
