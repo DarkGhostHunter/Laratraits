@@ -11,8 +11,8 @@ Laratraits is a Laravel package containing useful traits and some classes to use
 
 ## Requirements
 
-* Laravel 7.
-* PHP 7.2.15 or later.
+* Laravel 7.x, Laravel 8.0.
+* PHP 7.3, PHP 8.0 or later.
 
 ## [Upgrade Guide from 1.x to 2.x](UPGRADE.md)
 
