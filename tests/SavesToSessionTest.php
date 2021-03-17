@@ -2,11 +2,11 @@
 
 namespace DarkGhostHunter\Laratraits\Tests;
 
-use LogicException;
-use Orchestra\Testbench\TestCase;
-use Illuminate\Support\Facades\Session;
 use DarkGhostHunter\Laratraits\SavesToSession;
 use Illuminate\Contracts\Session\Session as SessionContract;
+use Illuminate\Support\Facades\Session;
+use LogicException;
+use Orchestra\Testbench\TestCase;
 
 class SavesToSessionTest extends TestCase
 {
@@ -69,6 +69,11 @@ class SavesToSessionTest extends TestCase
             public function getHandler(){}
             public function handlerNeedsRequest(){}
             public function setRequestOnHandler($request){}
+            public function setName($name){}
+            public function pull($key, $default = null){}
+            public function regenerateToken(){}
+            public function invalidate(){}
+            public function regenerate($destroy = false){}
         };
 
         $session = $this->app->instance('session', $session);
