@@ -2,16 +2,16 @@
 
 namespace Tests\Eloquent;
 
-use Ramsey\Uuid\Uuid;
-use Illuminate\Support\Str;
-use Orchestra\Testbench\TestCase;
+use DarkGhostHunter\Laratraits\Eloquent\UsesUuid;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Eloquent\Collection;
-use DarkGhostHunter\Laratraits\Eloquent\UsesUuid;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Str;
+use Orchestra\Testbench\TestCase;
+use Ramsey\Uuid\UuidInterface;
 
 class UsesUuidTest extends TestCase
 {
@@ -22,7 +22,7 @@ class UsesUuidTest extends TestCase
             use UsesUuid;
         };
 
-        $this->assertInstanceOf(Uuid::class, $model->uuid);
+        $this->assertInstanceOf(UuidInterface::class, $model->uuid);
     }
 
     public function test_uuid_scope()

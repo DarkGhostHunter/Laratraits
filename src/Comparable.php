@@ -80,8 +80,6 @@ trait Comparable
             return $compared instanceof $comparable;
         };
 
-        $comparables = is_iterable($comparables) ? $comparables : [$comparables];
-
         foreach ($comparables as $key => $comparable) {
             if ($result = $callback($this, $comparable, $key)) {
                 return $returnKey ? $key : $result;
