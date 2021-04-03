@@ -79,7 +79,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 * [`ConditionFill`](src/Eloquent/ConditionFill.php): Fills an attribute if a given condition is truthy or falsy.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
-* [`EncryptsJson`](src/Eloquent/EncryptsJson.php): Encrypts and decrypts the JSON representation of a Model.
+* ~~[`EncryptsJson`](src/Eloquent/EncryptsJson.php): Encrypts and decrypts the JSON representation of a Model.~~
 * [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`HasSlug`](src/Eloquent/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Must use an exclusive slug column in the model table.
 * [`ModelType`](src/Eloquent/ModelType.php): Useful for Models that share a single table but have different "types", like Publications: Article, Post, Note, etc.
