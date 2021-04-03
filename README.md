@@ -88,8 +88,8 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 #### Casts
 
-* [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows a string or integer column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as Enumerable inside a model.
-* [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows an json column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as a Repository (like a config tree).
+* [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows a string or integer column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as [`Enumerable`](src/Enumerable.php) inside a model.
+* [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows a JSON column to be [_casted_](https://laravel.com/docs/eloquent-mutators#custom-casts) as a Config tree.
 
 ### Global Scopes
 
