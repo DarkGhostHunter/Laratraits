@@ -1,6 +1,6 @@
 <?php
 /**
- * CastBase64
+ * CastsBase64
  *
  * This handy cast class will automatically encode any (hopefully) binary string into BASE64 so
  * it can be saved into the database, and restore the binary string from the database. This is
@@ -40,7 +40,7 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Support\Str;
 use RuntimeException;
 
-class CastBase64 implements CastsAttributes
+class CastsBase64 implements CastsAttributes
 {
     /**
      * Transform the attribute from the underlying model values.

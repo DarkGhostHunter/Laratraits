@@ -90,7 +90,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 * [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows an [`Enumerable`](src/Enumerable.php) to be saved as an integer o string, and retrieved back to an `Enumerable` instance.
 * [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows a Config Repository string to be saved a JSON, and retrieved back as Config Repository.
-* [`CastBase64`](src/Eloquent/Casts/CastBase64.php): Allows a binary value to be saved as BASE64 in the database, and retrieved back as binary.
+* [`CastsBase64`](src/Eloquent/Casts/CastsBase64.php): Allows a binary value to be saved as BASE64 in the database, and retrieved back as binary.
 
 ### Global Scopes
 
