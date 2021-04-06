@@ -2,7 +2,7 @@
 
 namespace Tests\Eloquent\Casts;
 
-use DarkGhostHunter\Laratraits\Eloquent\Casts\CastBase64;
+use DarkGhostHunter\Laratraits\Eloquent\Casts\CastsBase64;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase;
 use RuntimeException;
 
-class CastBase64Test extends TestCase
+class CastsBase64Test extends TestCase
 {
     /** @var \Illuminate\Database\Eloquent\Model */
     protected $model;
@@ -29,7 +29,7 @@ class CastBase64Test extends TestCase
             protected $table = 'test';
 
             protected $casts = [
-                'castable' => CastBase64::class,
+                'castable' => CastsBase64::class,
             ];
         };
 
