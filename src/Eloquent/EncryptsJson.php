@@ -51,6 +51,10 @@ namespace DarkGhostHunter\Laratraits\Eloquent;
 
 use RuntimeException;
 
+/**
+ * @deprecated  Laravel 8.12+ offers automatic encryption for Eloquent models.
+ * @see https://laravel-news.com/eloquent-encrypted-casting
+ */
 trait EncryptsJson
 {
     /**
