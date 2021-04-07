@@ -1,9 +1,6 @@
 ![Paul Felberbauer - Unsplash #tM16SjCYy84](https://images.unsplash.com/photo-1526814895543-b5be7268dd1e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1200&h=400&q=80)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/darkghosthunter/laratraits.svg?style=flat-square)](https://packagist.org/packages/darkghosthunter/laratraits) [![License](https://poser.pugx.org/darkghosthunter/laratraits/license)](https://packagist.org/packages/darkghosthunter/laratraits)
-![](https://img.shields.io/packagist/php-v/darkghosthunter/laratraits.svg)
- ![](https://github.com/DarkGhostHunter/Laratraits/workflows/PHP%20Composer/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/DarkGhostHunter/Laratraits/badge.svg?branch=master)](https://coveralls.io/github/DarkGhostHunter/Laratraits?branch=master)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/darkghosthunter/laratraits.svg?style=flat-square)](https://packagist.org/packages/darkghosthunter/laratraits) [![License](https://poser.pugx.org/darkghosthunter/laratraits/license)](https://packagist.org/packages/darkghosthunter/laratraits) ![](https://img.shields.io/packagist/php-v/darkghosthunter/laratraits.svg) ![](https://github.com/DarkGhostHunter/Laratraits/workflows/PHP%20Composer/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/DarkGhostHunter/Laratraits/badge.svg?branch=master)](https://coveralls.io/github/DarkGhostHunter/Laratraits?branch=master) [![Laravel Octane Compatible](https://img.shields.io/badge/Laravel%20Octane-Compatible-success?style=flat&logo=laravel)](https://github.com/laravel/octane)
 
 # Laratraits
 
