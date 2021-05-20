@@ -29,15 +29,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2020 Laravel LLC.
+ * Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2021 Laravel LLC.
  *
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
 namespace DarkGhostHunter\Laratraits\Eloquent;
 
-use Illuminate\Support\Str;
 use DarkGhostHunter\Laratraits\Scopes\UuidScope;
+use Illuminate\Support\Str;
 
 /**
  * @method \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|static[]|static|null findUuid($uuid, $columns = ['*'])

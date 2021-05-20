@@ -39,7 +39,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2020 Laravel LLC.
+ * Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2021 Laravel LLC.
  *
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
@@ -47,8 +47,8 @@
 namespace DarkGhostHunter\Laratraits\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Cache\Factory;
+use Illuminate\Http\Request;
 
 class CacheStaticResponse
 {
