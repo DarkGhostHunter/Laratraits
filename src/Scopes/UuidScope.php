@@ -28,18 +28,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- * Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2020 Laravel LLC.
+ * Laravel is a Trademark of Taylor Otwell. Copyright © 2011-2021 Laravel LLC.
  *
  * @link https://github.com/DarkGhostHunter/Laratraits
  */
 
 namespace DarkGhostHunter\Laratraits\Scopes;
 
-use Illuminate\Database\Eloquent\Scope;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Scope;
 
 class UuidScope implements Scope
 {
