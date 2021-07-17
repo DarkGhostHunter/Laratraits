@@ -76,9 +76,7 @@ trait Comparable
      */
     public function isAnyOf(iterable $comparables, callable $callback = null, bool $returnKey = false)
     {
-        $callback = $callback ?? static function ($compared, $comparable) {
-            return $compared instanceof $comparable;
-        };
+        $callback ??= static fn ($compared, $comparable): bool => $compared instanceof $comparable;
 
         foreach ($comparables as $key => $comparable) {
             if ($result = $callback($this, $comparable, $key)) {
