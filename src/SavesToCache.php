@@ -45,7 +45,7 @@ trait SavesToCache
      * @param  \DateTimeInterface|\DateInterval|int|null  $ttl
      * @return bool
      */
-    public function saveToCache(string $key = null, $ttl = 60)
+    public function saveToCache(string $key = null, $ttl = 60): bool
     {
         return $this->defaultCache()->put($key ?? $this->defaultCacheKey(), $this->toCache(), $ttl);
     }

@@ -55,6 +55,7 @@ namespace DarkGhostHunter\Laratraits\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\Request;
 
 class ShareAuthenticatedUser
 {
@@ -63,14 +64,14 @@ class ShareAuthenticatedUser
      *
      * @var \Illuminate\Contracts\View\Factory
      */
-    protected $factory;
+    protected Factory $factory;
 
     /**
      * The Authenticated user, if any.
      *
      * @var \Illuminate\Contracts\Auth\Authenticatable|null
      */
-    protected $user;
+    protected ?Authenticatable $user;
 
     /**
      * Create a new Share Authenticated User instance.
@@ -92,7 +93,7 @@ class ShareAuthenticatedUser
      * @param  string  $name
      * @return mixed
      */
-    public function handle($request, Closure $next, string $name = 'authenticated')
+    public function handle(Request $request, Closure $next, string $name = 'authenticated')
     {
         $this->factory->share($name, $this->user);
 

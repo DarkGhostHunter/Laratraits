@@ -51,7 +51,7 @@ class DispatchablePipeline implements ShouldQueue
      *
      * @var \Illuminate\Contracts\Pipeline\Pipeline
      */
-    protected $pipeline;
+    protected Pipeline $pipeline;
 
     /**
      * Thing to send.
@@ -78,7 +78,7 @@ class DispatchablePipeline implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->pipeline->send($this->passable)->then(function ($passable) {
             return $passable;

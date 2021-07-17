@@ -54,7 +54,7 @@ trait UsesUuid
      *
      * @return void
      */
-    protected static function bootUsesUuid()
+    protected static function bootUsesUuid(): void
     {
         if (static::addUuidGlobalScope()) {
             static::addGlobalScope(new UuidScope);
@@ -66,7 +66,7 @@ trait UsesUuid
      *
      * @return bool
      */
-    protected static function addUuidGlobalScope()
+    protected static function addUuidGlobalScope(): bool
     {
         return true;
     }
@@ -76,7 +76,7 @@ trait UsesUuid
      *
      * @return void
      */
-    protected function initializeUsesUuid()
+    protected function initializeUsesUuid(): void
     {
         $this->setAttribute($this->getUuidColumn(), $this->generateUuid());
     }
@@ -86,7 +86,7 @@ trait UsesUuid
      *
      * @return string
      */
-    public function getUuidColumn()
+    public function getUuidColumn(): string
     {
         return 'uuid';
     }

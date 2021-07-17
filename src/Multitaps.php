@@ -52,7 +52,7 @@ trait Multitaps
      * @param  callable|null  $callable
      * @return \DarkGhostHunter\Laratraits\InfiniteHigherOrderTapProxy
      */
-    public function multitap(callable $callable = null)
+    public function multitap(callable $callable = null): InfiniteHigherOrderTapProxy
     {
         $multitap = new InfiniteHigherOrderTapProxy($this);
 

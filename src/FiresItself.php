@@ -47,7 +47,7 @@ trait FiresItself
      * @param  mixed  ...$args
      * @return null|array
      */
-    public static function fire(...$args)
+    public static function fire(...$args): ?array
     {
         return app('events')->dispatch(new static(...$args));
     }
@@ -58,7 +58,7 @@ trait FiresItself
      * @param  mixed  ...$args
      * @return null|array
      */
-    public static function fireHalted(...$args)
+    public static function fireHalted(...$args): ?array
     {
         return app('events')->dispatch(new static(...$args), [], true);
     }

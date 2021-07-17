@@ -37,6 +37,7 @@ namespace DarkGhostHunter\Laratraits\Scopes;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Scope;
@@ -48,7 +49,7 @@ class UuidScope implements Scope
     /**
      * @inheritDoc
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         //
     }
@@ -59,9 +60,10 @@ class UuidScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
      * @param  string[]  $columns
-     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
      */
-    public static function macroFindUuid(Builder $builder, $uuid, $columns = ['*'])
+    public static function macroFindUuid(Builder $builder, $uuid, array $columns = ['*'])
     {
         if (is_array($uuid) || $uuid instanceof Arrayable) {
             return $builder->findManyUuid($uuid, $columns);
@@ -76,9 +78,10 @@ class UuidScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuids
      * @param  string[]  $columns
-     * @return \Illuminate\Database\Eloquent\Builder
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function macroFindManyUuid(Builder $builder, $uuids, $columns = ['*'])
+    public static function macroFindManyUuid(Builder $builder, $uuids, array $columns = ['*']): Collection
     {
         $uuids = $uuids instanceof Arrayable ? $uuids->toArray() : $uuids;
 
@@ -95,9 +98,10 @@ class UuidScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
      * @param  string[]  $columns
+     *
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]
      */
-    public static function macroFindUuidOrFail(Builder $builder, $uuid, $columns = ['*'])
+    public static function macroFindUuidOrFail(Builder $builder, $uuid, array $columns = ['*'])
     {
         $result = $builder->findUuid($uuid, $columns);
 
@@ -121,9 +125,10 @@ class UuidScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  mixed  $uuid
      * @param  string[]  $columns
-     * @return \Closure
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function macroFindUuidOrNew(Builder $builder, $uuid, $columns = ['*'])
+    public static function macroFindUuidOrNew(Builder $builder, $uuid, array $columns = ['*']): Model
     {
         if (($model = $builder->findUuid($uuid, $columns)) !== null) {
             return $model;
@@ -139,7 +144,7 @@ class UuidScope implements Scope
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable  $uuid
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function macroWhereUuid(Builder $builder, $uuid)
+    public static function macroWhereUuid(Builder $builder, $uuid): Builder
     {
         if (is_array($uuid) || $uuid instanceof Arrayable) {
             $builder->getQuery()->whereIn(
@@ -159,7 +164,7 @@ class UuidScope implements Scope
      * @param  string|array|\Illuminate\Contracts\Support\Arrayable $uuid
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public static function macroWhereUuidNot(Builder $builder, $uuid)
+    public static function macroWhereUuidNot(Builder $builder, $uuid): Builder
     {
         if (is_array($uuid) || $uuid instanceof Arrayable) {
             $builder->getQuery()->whereNotIn(

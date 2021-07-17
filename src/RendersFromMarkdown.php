@@ -39,6 +39,7 @@ namespace DarkGhostHunter\Laratraits;
 
 use Illuminate\Mail\Markdown;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 
 use const PHP_EOL;
 
@@ -49,7 +50,7 @@ trait RendersFromMarkdown
      *
      * @return string
      */
-    public function toHtml()
+    public function toHtml(): string
     {
         return $this->parseMarkdown()->toHtml();
     }
@@ -76,7 +77,7 @@ trait RendersFromMarkdown
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function parseMarkdown()
+    public function parseMarkdown(): HtmlString
     {
         $text = $this->getMarkdown();
 

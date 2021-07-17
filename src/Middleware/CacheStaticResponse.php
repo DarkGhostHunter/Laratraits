@@ -49,15 +49,16 @@ namespace DarkGhostHunter\Laratraits\Middleware;
 use Closure;
 use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CacheStaticResponse
 {
     /**
      * Cache manager instance.
      *
-     * @var \Illuminate\Cache\CacheManager
+     * @var \Illuminate\Contracts\Cache\Factory
      */
-    protected $cache;
+    protected Factory $cache;
 
     /**
      * Create a new middleware instance.
@@ -79,7 +80,7 @@ class CacheStaticResponse
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function handle($request, Closure $next, int $ttl = 1, string $store = null)
+    public function handle(Request $request, Closure $next, int $ttl = 1, string $store = null)
     {
         if ($response = $this->hasResponseInCache($request, $store)) {
             return $response;
@@ -92,12 +93,13 @@ class CacheStaticResponse
      * Puts the Response in the cache.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
+     * @param  \Illuminate\Http\Response|\Illuminate\Http\JsonResponse  $response
      * @param  \DateTimeInterface|\DateInterval|int|null  $ttl
      * @param  string|null  $store
+     *
      * @return \Illuminate\Http\Response
      */
-    public function cacheResponse($request, $response, $ttl, string $store = null)
+    public function cacheResponse(Request $request, $response, $ttl, string $store = null): Response
     {
         $this->cache->store($store)->put($this->cacheKey($request), $response, $ttl);
 
@@ -109,7 +111,7 @@ class CacheStaticResponse
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string|null  $store
-     * @return \Illuminate\Contracts\Cache\Repository|mixed
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|null
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     protected function hasResponseInCache(Request $request, string $store = null)
@@ -123,7 +125,7 @@ class CacheStaticResponse
      * @param  \Illuminate\Http\Request  $request
      * @return string
      */
-    protected function cacheKey(Request $request)
+    protected function cacheKey(Request $request): string
     {
         return 'response|cache_static|' . $request->fingerprint();
     }

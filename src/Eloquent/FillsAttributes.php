@@ -53,7 +53,7 @@ trait FillsAttributes
      *
      * @return void
      */
-    protected function initializeFillsAttributes()
+    protected function initializeFillsAttributes(): void
     {
         foreach ($this->autoFillable() as $attribute) {
 
@@ -80,7 +80,7 @@ trait FillsAttributes
      *
      * @return array
      */
-    protected function autoFillable()
+    protected function autoFillable(): array
     {
         return $this->autoFillable ?? [];
     }

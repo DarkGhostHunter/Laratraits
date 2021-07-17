@@ -46,7 +46,7 @@ trait FromRequest
      * @param  \Illuminate\Http\Request|array $request
      * @param  array|null  $rules
      *
-     * @return $this
+     * @return static
      */
     public function createFrom($request, array $rules = null)
     {
@@ -61,7 +61,7 @@ trait FromRequest
      * @param  \Illuminate\Http\Request|array $request
      * @param  array|null  $rules
      *
-     * @return $this
+     * @return static
      */
     public function makeFrom($request, array $rules = null)
     {
@@ -76,7 +76,7 @@ trait FromRequest
      * @param  \Illuminate\Http\Request|array $request
      * @param  array|null  $rules
      *
-     * @return $this
+     * @return static
      */
     public function fillFrom($request, array $rules = null)
     {
@@ -91,7 +91,7 @@ trait FromRequest
      * @param  \Illuminate\Http\Request|array $request
      * @param  array|null  $rules
      *
-     * @return $this
+     * @return static
      */
     public function updateFrom($request, array $rules = null)
     {

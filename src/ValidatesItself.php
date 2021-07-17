@@ -37,6 +37,7 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+use Illuminate\Contracts\Validation\Validator;
 use LogicException;
 
 trait ValidatesItself
@@ -46,16 +47,16 @@ trait ValidatesItself
      *
      * @var array
      */
-    protected $validated = [];
+    protected array $validated = [];
 
     /**
      * Creates a validator instance.
      *
      * @param  null|array  $data
-     * @param  null|callable|string  $after
+     * @param  null|string|callable  $after
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function validator(array $data = null, $after = null)
+    public function validator(array $data = null, $after = null): Validator
     {
         $validator = validator(
             $data ?? $this->validationData(),
@@ -75,10 +76,12 @@ trait ValidatesItself
      * Shorthand to validate this object and return if it passes.
      *
      * @param  null|array  $data
-     * @param  null|callable|string  $after
+     * @param  null|string|callable  $after
+     *
      * @return bool
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function validates(array $data = null, $after = null)
+    public function validates(array $data = null, $after = null): bool
     {
         $validator = $this->validator($data, $after);
 
@@ -95,10 +98,12 @@ trait ValidatesItself
      * Shorthand to validate this object and throw an exception if it doesn't pass.
      *
      * @param  null|array  $data
-     * @param  null|callable|string  $after
+     * @param  null|string|callable  $after
+     *
      * @return array
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function validate(array $data = null, $after = null)
+    public function validate(array $data = null, $after = null): array
     {
         return $this->validated = $this->validator($data, $after)->validate();
     }
@@ -108,7 +113,7 @@ trait ValidatesItself
      *
      * @return null|array
      */
-    public function validated()
+    public function validated(): ?array
     {
         return $this->validated;
     }
@@ -137,7 +142,7 @@ trait ValidatesItself
      * @see https://laravel.com/docs/validation#custom-error-messages
      * @return array
      */
-    protected function validationMessages()
+    protected function validationMessages(): array
     {
         return [];
     }
@@ -148,7 +153,7 @@ trait ValidatesItself
      * @see https://laravel.com/docs/validation#customizing-the-validation-attributes
      * @return array
      */
-    protected function customAttributes()
+    protected function customAttributes(): array
     {
         return [];
     }

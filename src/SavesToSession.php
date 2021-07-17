@@ -44,7 +44,7 @@ trait SavesToSession
      * @param  string|null  $key
      * @return void
      */
-    public function saveToSession(string $key = null)
+    public function saveToSession(string $key = null): void
     {
         session()->put($key ?? $this->defaultSessionKey(), $this->toSession());
     }

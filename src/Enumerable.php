@@ -56,6 +56,10 @@ use Countable;
 use LogicException;
 use Traversable;
 
+/**
+ * @deprecated Use PHP native enums instead
+ * @link https://wiki.php.net/rfc/enumerations
+ */
 class Enumerable implements Countable
 {
     /**

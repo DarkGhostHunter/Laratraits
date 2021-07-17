@@ -46,9 +46,8 @@ trait MacrosEloquent
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
-     * @throws \ReflectionException
      */
-    public function extend(Builder $builder)
+    public function extend(Builder $builder): void
     {
         // We will cycle through all the public static methods in the present Scope instance
         // and add macros to the Builder instance by filtering those starting with "macro".

@@ -48,6 +48,7 @@ namespace DarkGhostHunter\Laratraits;
 use Closure;
 use DarkGhostHunter\Laratraits\Jobs\DispatchablePipeline;
 use Illuminate\Contracts\Pipeline\Pipeline as PipelineContract;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Pipeline\Pipeline;
 
 trait PipesThrough
@@ -80,7 +81,7 @@ trait PipesThrough
      *
      * @return \Illuminate\Contracts\Pipeline\Pipeline
      */
-    protected function makePipeline() : PipelineContract
+    protected function makePipeline(): PipelineContract
     {
         // By default we create the default Pipeline class, but if your pipes don't depend
         // on a Service Container, you can just instance the pipeline with an empty one.
@@ -98,7 +99,7 @@ trait PipesThrough
      * @param  string[] ...$pipes
      * @return \Illuminate\Foundation\Bus\PendingDispatch
      */
-    public function dispatchPipeline(...$pipes)
+    public function dispatchPipeline(...$pipes): PendingDispatch
     {
         $pipeline = $this->makePipeline();
 

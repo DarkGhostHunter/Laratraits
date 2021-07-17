@@ -70,7 +70,7 @@ trait RegisterBladeExtensions
      *
      * @return void
      */
-    protected function registerBladeExtensions()
+    protected function registerBladeExtensions(): void
     {
         $compiler = Blade::getFacadeRoot();
 
