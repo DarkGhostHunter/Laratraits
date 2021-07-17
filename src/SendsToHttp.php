@@ -76,7 +76,7 @@ trait SendsToHttp
      */
     protected function httpRequestFactory(): PendingRequest
     {
-        return Http::getFacadeRoot()->asJson();
+        return Http::asJson();
     }
 
     /**

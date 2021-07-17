@@ -37,7 +37,8 @@
 
 namespace DarkGhostHunter\Laratraits;
 
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
+use Illuminate\Support\Facades\Validator;
 use LogicException;
 
 trait ValidatesItself
@@ -56,9 +57,9 @@ trait ValidatesItself
      * @param  null|string|callable  $after
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function validator(array $data = null, $after = null): Validator
+    public function validator(array $data = null, $after = null): ValidatorContract
     {
-        $validator = validator(
+        $validator = Validator::make(
             $data ?? $this->validationData(),
             $this->validationRules(),
             $this->validationMessages(),

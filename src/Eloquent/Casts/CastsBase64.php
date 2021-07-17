@@ -55,7 +55,6 @@ class CastsBase64 implements CastsAttributes
     public function get($model, string $key, $value, array $attributes)
     {
         if (filled($value)) {
-
             if (Str::startsWith($value, ['base64:', 'BASE64:'])) {
                 $value = substr($value, 7);
             }
@@ -64,7 +63,6 @@ class CastsBase64 implements CastsAttributes
                 $name = get_class($model);
                 throw new RuntimeException("Failed decoding BASE64 column [{$key}] in model [{$name}].");
             }
-
         }
 
         return $value;
