@@ -34,6 +34,7 @@
 namespace DarkGhostHunter\Laratraits;
 
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Cache;
 use LogicException;
 
 trait SavesToCache
@@ -57,7 +58,7 @@ trait SavesToCache
      */
     protected function defaultCache() : Repository
     {
-        return cache()->store();
+        return Cache::store();
     }
 
     /**

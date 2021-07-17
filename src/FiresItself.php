@@ -39,6 +39,8 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+use Illuminate\Support\Facades\Event;
+
 trait FiresItself
 {
     /**
@@ -49,7 +51,7 @@ trait FiresItself
      */
     public static function fire(...$args): ?array
     {
-        return app('events')->dispatch(new static(...$args));
+        return Event::dispatch(new static(...$args));
     }
 
     /**
@@ -60,6 +62,6 @@ trait FiresItself
      */
     public static function fireHalted(...$args): ?array
     {
-        return app('events')->dispatch(new static(...$args), [], true);
+        return Event::dispatch(new static(...$args), [], true);
     }
 }

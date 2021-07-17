@@ -63,7 +63,7 @@ class DefaultColumns implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        if ($this->defaultColumns && empty($builder->getQuery()->columns)) {
+        if ($this->defaultColumns && !$builder->getQuery()->columns) {
             $builder->select($this->defaultColumns);
         }
     }

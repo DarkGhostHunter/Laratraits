@@ -65,6 +65,7 @@ namespace DarkGhostHunter\Laratraits\Blade;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 use const DIRECTORY_SEPARATOR as DS;
 
@@ -107,7 +108,7 @@ trait RegistersFileDirective
 
         $file = Str::finish(Str::snake(class_basename(static::class)), '.php');
 
-        $dir = dirname((new \ReflectionClass(static::class))->getFileName());
+        $dir = dirname((new ReflectionClass(static::class))->getFileName());
 
         $paths = [
             resource_path('views' . DS . 'directives' . DS . $file),
