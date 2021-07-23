@@ -57,6 +57,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 * [`FiresItself`](src/FiresItself.php): Allows an Event to be fired conveniently.
 * [`Multitaps`](src/Multitaps.php): Makes all class methods _chainable_, like using `tap()` but forever. You can exit the tap using `->target` or a method name appended with `AndUntap`.
 * [`PipesThrough`](src/PipesThrough.php): Allows a class to be piped through a pipeline immediately or to a queue.
+* [`RegeneratesCache`](src/RegeneratesCache.php): Stores a copy of an object (or part of it) avoiding data-races among other processes.
 * [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
 * [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache.
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
@@ -100,6 +101,10 @@ Just remember to **change the namespace** if you're copy-pasting them!
 ### Blade
 
 * [`RegistersFileDirective`](src/Blade/RegistersFileDirective.php): Easily register a directive using a PHP file contents.
+
+### Migrations:
+
+* [`PublishesMigrations`](src/ServiceProviders/PublishesMigrations.php): Allows a package to register migrations automatically as publishable assets.
 
 ## Missing a trait?
 
