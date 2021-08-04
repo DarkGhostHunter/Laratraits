@@ -56,22 +56,23 @@
 namespace DarkGhostHunter\Laratraits\Eloquent;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 trait NeighbourRecords
 {
     /**
      * The chained records.
      *
-     * @var array
+     * @var array|null
      */
-    protected $neighbors;
+    protected ?array $neighbors = null;
 
     /**
      * Gets the chained records to this model.
      *
      * @return array
      */
-    protected function getNeighbourRecords()
+    protected function getNeighbourRecords(): array
     {
         return $this->neighbors ?? $this->neighbors = $this->getRecordsList();
     }
@@ -81,15 +82,13 @@ trait NeighbourRecords
      *
      * @return array
      */
-    protected function getRecordsList()
+    protected function getRecordsList(): array
     {
-        return cache()
-            ->remember("query|{$this->getQualifiedKeyName()}_{$this->getKey()}|neighbours", 60, function () {
-                return [
-                    'prev' => $this->queryPrevRecord(),
-                    'next' => $this->queryNextRecord(),
-                ];
-            });
+        return Cache::remember(
+            "query|{$this->getQualifiedKeyName()}_{$this->getKey()}|neighbours",
+            60,
+            fn(): array => ['prev' => $this->queryPrevRecord(), 'next' => $this->queryNextRecord()]
+        );
     }
 
     /**
@@ -128,9 +127,9 @@ trait NeighbourRecords
      * Filter the query.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @return void|\Illuminate\Database\Eloquent\Builder
+     * @return void
      */
-    protected function filterNeighbourQuery(Builder $builder)
+    protected function filterNeighbourQuery(Builder $builder): void
     {
         //
     }
@@ -140,7 +139,7 @@ trait NeighbourRecords
      *
      * @return array|string[]
      */
-    protected function queryColumns()
+    protected function queryColumns(): array
     {
         return [$this->getRouteKeyName()];
     }

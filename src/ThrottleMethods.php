@@ -70,9 +70,10 @@ trait ThrottleMethods
      * @param  int  $tries
      * @param  int  $minutes
      * @param  callable|null  $default
+     *
      * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    public function throttle($tries = 60, $minutes = 1, $default = null)
+    public function throttle(int $tries = 60, int $minutes = 1, callable $default = null): ClassMethodThrottler
     {
         return $this->getActionThrottler()->throttle($tries, $minutes, $default);
     }
@@ -83,7 +84,7 @@ trait ThrottleMethods
      * @param  string  $for
      * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    public function for(string $for)
+    public function for(string $for): ClassMethodThrottler
     {
         return $this->getActionThrottler()->setKey($for);
     }
@@ -92,7 +93,7 @@ trait ThrottleMethods
      * Clears the rate limiter for the method being throttled.
      *
      * @param  string  $method
-     * @return \DarkGhostHunter\Laratraits\ThrottleMethods
+     * @return $this
      */
     public function throttleClear(string $method)
     {
@@ -106,8 +107,8 @@ trait ThrottleMethods
      *
      * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    protected function getActionThrottler()
+    protected function getActionThrottler(): ClassMethodThrottler
     {
-        return app(ClassMethodThrottler::class)->setTarget($this);
+        return ClassMethodThrottler::make()->setTarget($this);
     }
 }

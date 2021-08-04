@@ -69,6 +69,10 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+/**
+ * @deprecated Use Conditionable trait instead.
+ * @see \Illuminate\Support\Traits\Conditionable
+ */
 trait ConditionCalls
 {
     /**

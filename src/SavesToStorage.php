@@ -34,6 +34,7 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use LogicException;
 
@@ -43,10 +44,11 @@ trait SavesToStorage
      * Persists the current object data to the storage.
      *
      * @param  string|null  $path
+     * @return bool
      */
-    public function saveToStore(string $path = null)
+    public function saveToStore(string $path = null): bool
     {
-        $this->defaultStorage()->put($path ?? $this->defaultStoragePath(), $this->toStore());
+        return $this->defaultStorage()->put($path ?? $this->defaultStoragePath(), $this->toStore());
     }
 
     /**
@@ -54,7 +56,7 @@ trait SavesToStorage
      *
      * @return \Illuminate\Contracts\Filesystem\Filesystem
      */
-    protected function defaultStorage()
+    protected function defaultStorage(): Filesystem
     {
         return Storage::disk();
     }
@@ -64,7 +66,7 @@ trait SavesToStorage
      *
      * @return string
      */
-    protected function defaultStoragePath() : string
+    protected function defaultStoragePath(): string
     {
         throw new LogicException('The class ' . static::class . ' has no default path to store.');
     }

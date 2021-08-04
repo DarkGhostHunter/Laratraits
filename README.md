@@ -8,10 +8,8 @@ Laratraits is a Laravel package containing useful traits and some classes to use
 
 ## Requirements
 
-* Laravel 7.x, Laravel 8.0.
-* PHP 7.3, PHP 8.0 or later.
-
-## [Upgrade Guide from 1.x to 2.x](UPGRADE.md)
+* Laravel 8.0.
+* PHP 7.4, PHP 8.0 or later.
 
 ## Installation
 
@@ -54,11 +52,12 @@ Just remember to **change the namespace** if you're copy-pasting them!
 ### Traits for everything
 
 * [`Comparable`](src/Comparable.php): Allows a class or its properties to be compared to a list of values.
-* [`ConditionCalls`](src/ConditionCalls.php): Allows an object instance to execute `when` and `unless` logic.
-* [`EnumerableStates`](src/EnumerableStates.php): Allows a class instance to have a single allowed state.
+* ~~[`ConditionCalls`](src/ConditionCalls.php): Allows an object instance to execute `when` and `unless` logic.~~
+* ~~[`EnumerableStates`](src/EnumerableStates.php): Allows a class instance to have a single allowed state.~~
 * [`FiresItself`](src/FiresItself.php): Allows an Event to be fired conveniently.
 * [`Multitaps`](src/Multitaps.php): Makes all class methods _chainable_, like using `tap()` but forever. You can exit the tap using `->target` or a method name appended with `AndUntap`.
 * [`PipesThrough`](src/PipesThrough.php): Allows a class to be piped through a pipeline immediately or to a queue.
+* [`RegeneratesCache`](src/RegeneratesCache.php): Stores a copy of an object (or part of it) avoiding data-races among other processes.
 * [`RendersFromMarkdown`](src/RendersFromMarkdown.php): Takes a given class property to parse Markdown text and return HTML. Compatible with `Htmlable` interface.
 * [`SavesToCache`](src/SavesToCache.php): Saves the object (or part of it) to the cache.
 * [`SavesToSession`](src/SavesToSession.php): Saves the object (or part of it) to the session.
@@ -70,13 +69,12 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 ### Useful classes
 
-* [`Enumerable`](src/Enumerable.php): Lists and controls a state from a list. Useful for [casting enums](https://laravel.com/docs/eloquent-mutators#custom-casts).
+* ~~[`Enumerable`](src/Enumerable.php): Lists and controls a state from a list. Useful for [casting enums](https://laravel.com/docs/eloquent-mutators#custom-casts).~~
 
 ### Models
 
 * [`ConditionFill`](src/Eloquent/ConditionFill.php): Fills an attribute if a given condition is truthy or falsy.
 * [`DefaultColumns`](src/Eloquent/DefaultColumns.php): Adds a `DefaultColumns` Global Scope to the Model selecting only given default columns, unless overrun manually in the query.
-* ~~[`EncryptsJson`](src/Eloquent/EncryptsJson.php): Encrypts and decrypts the JSON representation of a Model.~~
 * [`FillsAttributes`](src/Eloquent/FillsAttributes.php): Automatically fills the Model with values by each method name, like `fillFooAttribute()`.
 * [`FromRequest`](src/Eloquent/FromRequest.php): One-liners to make, create, or update models from the HTTP Request.
 * [`HasSlug`](src/Eloquent/HasSlug.php): Allows a Model to be bound to routes using the slug like `this-is-the-model`. Must use an exclusive slug column in the model table.
@@ -86,7 +84,7 @@ Just remember to **change the namespace** if you're copy-pasting them!
 
 #### Casts
 
-* [`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows an [`Enumerable`](src/Enumerable.php) to be saved as an integer o string, and retrieved back to an `Enumerable` instance.
+* ~~[`CastEnumerable`](src/Eloquent/Casts/CastEnumerable.php): Allows an [`Enumerable`](src/Enumerable.php) to be saved as an integer o string, and retrieved back to an `Enumerable` instance.~~
 * [`CastsRepository`](src/Eloquent/Casts/CastRepository.php): Allows a Config Repository string to be saved a JSON, and retrieved back as Config Repository.
 * [`CastsBase64`](src/Eloquent/Casts/CastsBase64.php): Allows a binary value to be saved as BASE64 in the database, and retrieved back as binary.
 
@@ -103,6 +101,10 @@ Just remember to **change the namespace** if you're copy-pasting them!
 ### Blade
 
 * [`RegistersFileDirective`](src/Blade/RegistersFileDirective.php): Easily register a directive using a PHP file contents.
+
+### Migrations:
+
+* [`PublishesMigrations`](src/ServiceProviders/PublishesMigrations.php): Allows a package to register migrations automatically as publishable assets.
 
 ## Missing a trait?
 

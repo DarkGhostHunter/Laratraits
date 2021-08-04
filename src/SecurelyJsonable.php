@@ -76,7 +76,7 @@ trait SecurelyJsonable
      * @param  null|mixed  $options
      * @return array
      */
-    protected function addSignature(array $data, $options = null) : array
+    protected function addSignature(array $data, $options = null): array
     {
         $key = static::signatureKey();
 
@@ -99,7 +99,7 @@ trait SecurelyJsonable
      * @param  null  $options
      * @return string
      */
-    protected static function makeSignature(array $data, $options = null)
+    protected static function makeSignature(array $data, $options = null): string
     {
         return hash_hmac('sha256', json_encode($data, $options), static::hashKey());
     }
@@ -111,7 +111,7 @@ trait SecurelyJsonable
      * @param  null|mixed  $options
      * @return array  The original array with the signature attached.
      */
-    protected static function checkSignature(array $data, $options = null) : array
+    protected static function checkSignature(array $data, $options = null): array
     {
         $key = static::signatureKey();
 
@@ -137,7 +137,7 @@ trait SecurelyJsonable
      *
      * @return string
      */
-    protected static function signatureKey()
+    protected static function signatureKey(): string
     {
         return defined('static::SIGNATURE_KEY') ? static::SIGNATURE_KEY : 'signature';
     }
@@ -147,5 +147,5 @@ trait SecurelyJsonable
      *
      * @return string
      */
-    abstract protected static function hashKey() : string;
+    abstract protected static function hashKey(): string;
 }

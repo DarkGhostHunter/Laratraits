@@ -51,7 +51,7 @@ use DarkGhostHunter\Laratraits\Scopes\DefaultColumns as DefaultColumnsScope;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * @method $this|static|\Illuminate\Database\Eloquent\Builder withoutDefaultColumns()
+ * @method static|\Illuminate\Database\Eloquent\Builder withoutDefaultColumns()
  */
 trait DefaultColumns
 {
@@ -60,7 +60,7 @@ trait DefaultColumns
      *
      * @return void
      */
-    protected static function bootDefaultColumns()
+    protected static function bootDefaultColumns(): void
     {
         static::addGlobalScope(new DefaultColumnsScope(static::getDefaultColumns()));
     }
@@ -81,7 +81,7 @@ trait DefaultColumns
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithoutDefaultColumns(Builder $builder)
+    public function scopeWithoutDefaultColumns(Builder $builder): Builder
     {
         return $builder->withoutGlobalScope(DefaultColumnsScope::class);
     }

@@ -2,13 +2,13 @@
 
 namespace Tests;
 
-use Mockery;
-use LogicException;
-use Illuminate\Cache\Repository;
-use Orchestra\Testbench\TestCase;
-use Illuminate\Support\Facades\Cache;
 use DarkGhostHunter\Laratraits\SavesToCache;
+use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Cache\Repository as RepositoryContract;
+use Illuminate\Support\Facades\Cache;
+use LogicException;
+use Mockery;
+use Orchestra\Testbench\TestCase;
 
 class SavesToCacheTest extends TestCase
 {
@@ -103,7 +103,7 @@ class SavesToCacheTest extends TestCase
 
         $store->shouldReceive('put')
             ->with('foo', $cacheable, 60)
-            ->andReturnUndefined();
+            ->andReturnTrue();
 
         $cacheable->saveToCache('foo');
     }

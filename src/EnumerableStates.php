@@ -43,6 +43,10 @@ namespace DarkGhostHunter\Laratraits;
 
 use LogicException;
 
+/**
+ * @deprecated Use PHP native enums instead
+ * @link https://wiki.php.net/rfc/enumerations
+ */
 trait EnumerableStates
 {
     /**

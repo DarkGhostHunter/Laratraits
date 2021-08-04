@@ -65,6 +65,7 @@ namespace DarkGhostHunter\Laratraits\Blade;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use ReflectionClass;
 
 use const DIRECTORY_SEPARATOR as DS;
 
@@ -73,12 +74,12 @@ trait RegistersFileDirective
     /**
      * Registers the directive.
      *
-     * @param  mixed  $expression
+     * @param  string|null  $expression
      * @param  string|null  $path
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public static function register($expression = null, string $path = null)
+    public static function register(string $expression = null, string $path = null): string
     {
         $contents = Str::finish(stripcslashes(static::getDirectiveContents($path)), ' ?>');
 
@@ -96,7 +97,7 @@ trait RegistersFileDirective
      * @return string
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected static function getDirectiveContents(?string $path = null)
+    protected static function getDirectiveContents(string $path = null): string
     {
         // If the developer has returned a path for the directive, we will use just that.
         // Otherwise, we will just cycle between a list of predefined paths where the
@@ -105,9 +106,9 @@ trait RegistersFileDirective
             return File::get($path);
         }
 
-        $file = Str::finish($path ?? Str::snake(class_basename(static::class)), '.php');
+        $file = Str::finish(Str::snake(class_basename(static::class)), '.php');
 
-        $dir = dirname((new \ReflectionClass(static::class))->getFileName());
+        $dir = dirname((new ReflectionClass(static::class))->getFileName());
 
         $paths = [
             resource_path('views' . DS . 'directives' . DS . $file),

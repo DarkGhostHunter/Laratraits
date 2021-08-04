@@ -2,6 +2,10 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+/**
+ * @deprecated Use Conditionable trait instead.
+ * @see \Illuminate\Support\Traits\Conditionable
+ */
 class ConditionCallContainer
 {
     /**
@@ -9,14 +13,14 @@ class ConditionCallContainer
      *
      * @var object
      */
-    protected $target;
+    protected object $target;
 
     /**
      * If the call should be passed through the target.
      *
      * @var bool
      */
-    protected $pass = true;
+    protected bool $pass = true;
 
     /**
      * Create a new Condition Call Container instance.
@@ -35,9 +39,10 @@ class ConditionCallContainer
      *
      * @param  string  $name
      * @param  array  $arguments
+     *
      * @return object
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         if ($this->pass) {
             $this->target->{$name}(...$arguments);

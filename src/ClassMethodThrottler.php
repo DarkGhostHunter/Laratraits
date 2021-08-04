@@ -36,6 +36,7 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+use Closure;
 use Illuminate\Cache\RateLimiter;
 
 class ClassMethodThrottler
@@ -45,42 +46,42 @@ class ClassMethodThrottler
      *
      * @var object
      */
-    protected $target;
+    protected object $target;
 
     /**
      * Rate Limiter instance.
      *
      * @var \Illuminate\Cache\RateLimiter
      */
-    protected $limiter;
+    protected RateLimiter $limiter;
 
     /**
      * Maximum tries inside the decay window.
      *
-     * @var int
+     * @var int|null
      */
-    protected $maxAttempts;
+    protected ?int $maxAttempts = null;
 
     /**
      * Window of seconds to make tries.
      *
-     * @var int
+     * @var int|null
      */
-    protected $decaySeconds;
+    protected ?int $decaySeconds = null;
 
     /**
      * Default callable to call when hitting the limit.
      *
-     * @var callable|null
+     * @var \Closure|null
      */
-    protected $default;
+    protected ?Closure $default = null;
 
     /**
      * Custom Key to use.
      *
-     * @var string
+     * @var string|null
      */
-    protected $key;
+    protected ?string $key = null;
 
     /**
      * Create a new ActionRateLimiter instance.
@@ -100,11 +101,14 @@ class ClassMethodThrottler
      * @param  callable|null  $default
      * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    public function throttle(int $tries, int $minutes, callable $default = null)
+    public function throttle(int $tries, int $minutes, callable $default = null): ClassMethodThrottler
     {
         $this->maxAttempts = $tries;
         $this->decaySeconds = $minutes * 60;
-        $this->default = $default;
+
+        if ($default) {
+            $this->default = Closure::fromCallable($default);
+        }
 
         return $this;
     }
@@ -115,7 +119,7 @@ class ClassMethodThrottler
      * @param  string  $key
      * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    public function setKey(string $key)
+    public function setKey(string $key): ClassMethodThrottler
     {
         $this->key = $key;
 
@@ -128,7 +132,7 @@ class ClassMethodThrottler
      * @param  object  $target
      * @return $this
      */
-    public function setTarget(object $target)
+    public function setTarget(object $target): ClassMethodThrottler
     {
         $this->target = $target;
 
@@ -141,7 +145,7 @@ class ClassMethodThrottler
      * @param  string  $method
      * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    public function throttlerClear(string $method)
+    public function throttlerClear(string $method): ClassMethodThrottler
     {
         $this->limiter->clear($this->actionRateLimiterKey($method));
 
@@ -154,7 +158,7 @@ class ClassMethodThrottler
      * @param  string  $method
      * @return bool
      */
-    public function throttlerTooManyAttempts(string $method)
+    public function throttlerTooManyAttempts(string $method): bool
     {
         return $this->limiter->tooManyAttempts($this->actionRateLimiterKey($method), $this->maxAttempts);
     }
@@ -163,9 +167,9 @@ class ClassMethodThrottler
      * Hits the throttler for the given method.
      *
      * @param  string  $method
-     * @return mixed
+     * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
      */
-    public function throttlerHit(string $method)
+    public function throttlerHit(string $method): ClassMethodThrottler
     {
         $this->limiter->hit($this->actionRateLimiterKey($method), $this->decaySeconds);
 
@@ -178,7 +182,7 @@ class ClassMethodThrottler
      * @param string|null $name
      * @return string
      */
-    protected function actionRateLimiterKey(string $name)
+    protected function actionRateLimiterKey(string $name): string
     {
         return implode('|' , array_filter([
             'class_method_throttler', $this->key, get_class($this->target) . '@' . $name
@@ -190,9 +194,10 @@ class ClassMethodThrottler
      *
      * @param  string  $name
      * @param  mixed  $arguments
+     *
      * @return object
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, $arguments): object
     {
         if (! $this->throttlerTooManyAttempts($name)) {
             $this->target->{$name}(...$arguments);
@@ -203,5 +208,15 @@ class ClassMethodThrottler
         }
 
         return $this->target;
+    }
+
+    /**
+     * Creates a new instance.
+     *
+     * @return \DarkGhostHunter\Laratraits\ClassMethodThrottler
+     */
+    public static function make(): ClassMethodThrottler
+    {
+        return new static(app(RateLimiter::class));
     }
 }

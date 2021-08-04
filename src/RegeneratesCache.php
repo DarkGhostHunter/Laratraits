@@ -1,8 +1,23 @@
 <?php
 /**
- * Saves to Cache
+ * RegeneratesCache
  *
- * This trait allows an object to be saved to the cache.
+ * This trait allows an object to be saved to the cache but avoiding data-races.
+ *
+ * The usage is simple: use `cache()->invalidate()` from the object to mark the
+ * moment the object is no longer equal to the cache. Once ready to store, use
+ * `cache()->regenerate()` to put a copy into the cache only if it's fresher.
+ *
+ *     $object->foo = bar;
+ *     $object->cache()->invalidate();
+ *
+ *     // ...
+ *
+ *     $object->cache()->regenerate(); // Store a copy in the cache.
+ *
+ * If the object was not marked as invalid, or the data is not fresh, it won't
+ * be stored into the cache, unless you force the regeneration.
+ *
  * ---
  * MIT License
  *
@@ -34,21 +49,28 @@
 namespace DarkGhostHunter\Laratraits;
 
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Support\Facades\Cache;
-use LogicException;
 
-trait SavesToCache
+trait RegeneratesCache
 {
     /**
-     * Saves the current object to the cache.
+     * Cache Regenerator instance.
      *
-     * @param  string|null  $key
-     * @param  \DateTimeInterface|\DateInterval|int|null  $ttl
-     * @return bool
+     * @var \DarkGhostHunter\Laratraits\CacheRegenerator|null
      */
-    public function saveToCache(string $key = null, $ttl = 60): bool
+    protected ?CacheRegenerator $regenerator = null;
+
+    /**
+     * Returns a cache regenerator.
+     *
+     * @return \DarkGhostHunter\Laratraits\CacheRegenerator
+     */
+    public function cache(): CacheRegenerator
     {
-        return $this->defaultCache()->put($key ?? $this->defaultCacheKey(), $this->toCache(), $ttl);
+        return $this->regenerator ??= app(CacheRegenerator::class, [
+            'object' => $this,
+            'store' => $this->defaultCache(),
+            'key' => $this->defaultCacheKey(),
+        ]);
     }
 
     /**
@@ -56,28 +78,12 @@ trait SavesToCache
      *
      * @return \Illuminate\Contracts\Cache\Repository
      */
-    protected function defaultCache() : Repository
-    {
-        return Cache::store();
-    }
+    abstract protected function defaultCache() : Repository;
 
     /**
      * The cache key name to use by default.
      *
      * @return string
      */
-    protected function defaultCacheKey() : string
-    {
-        throw new LogicException('The class ' . static::class . ' has no default cache key.');
-    }
-
-    /**
-     * The data to insert into the cache.
-     *
-     * @return $this
-     */
-    protected function toCache()
-    {
-        return $this;
-    }
+    abstract protected function defaultCacheKey() : string;
 }

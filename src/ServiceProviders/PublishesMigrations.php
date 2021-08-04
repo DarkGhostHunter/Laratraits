@@ -1,34 +1,27 @@
 <?php
 /**
- * RegisterBladeExtensions
+ * PublishesMigrations
  *
- * This traits allows you to register multiple Blade extensions in just a few arrays.
- * The Blade compiler uses **callables** for directives and the custom if statements
- * so you will need to use public static methods and them as class@method notation.
+ * The following traits is intended for package developers. This will will find
+ * all migrations properly named located in the default `database/migrations`
+ * directory, and it will proceed to register each of them as publishable.
  *
- *     protected $directives = [
- *         'package-alert' => 'App\Blade\Directives\AlertComponent@alert',
- *         'status-now' => 'App\Blade\Directives\Status@now',
- *     ]
- *
- *     protected $if = [
- *         'cloud' => 'App\Blade\Conditions\Cloud',
- *         'local' => 'App\Blade\Conditions\Local@condition',
- *     ]
- *
- *     protected $include = [
- *         'input' => 'includes.input'
- *         'authavatar' => 'includes.auth_avatar'
- *     ]
- *
- *     public function boot()
+ *     public function boot(): void
  *     {
- *         $this->registerBladeExtensions();
+ *         $this->publishMigrations();
  *
  *         // ...
  *     }
  *
- * @see https://laravel.com/docs/blade#extending-blade
+ * The developer will be able to publish these files using the "migration" tag.
+ *
+ * Migrations names must follow this naming convention:
+ *
+ *     0000_00_00_000000_{snake_case_class_name}.php
+ *
+ * For example:
+ *
+ *     0000_00_00_000000_create_foo_table.php
  *
  * ---
  * MIT License
@@ -60,30 +53,32 @@
 
 namespace DarkGhostHunter\Laratraits\ServiceProviders;
 
-use Illuminate\Support\Facades\Blade;
+use Generator;
 use Illuminate\Support\Str;
 
-trait RegisterBladeExtensions
+trait PublishesMigrations
 {
     /**
-     * Register directives, includes and if statements in Blade.
+     * Publishes migrations as assets.
      *
      * @return void
      */
-    protected function registerBladeExtensions(): void
+    protected function publishMigrations(): void
     {
-        $compiler = Blade::getFacadeRoot();
+        if ($this->app->runningInConsole()) {
+            $generator = function(): Generator {
+                foreach ($this->app->make('files')->allFiles(__DIR__ . '/../database/migrations') as $file) {
+                    if ($file->getExtension() === 'php' && Str::startsWith($file->getFilename(), '0000_00_00_000000')) {
+                        yield $file->getPathname() => $this->app->databasePath(
+                            'migrations/' .
+                            now()->format('Y_m_d_His') .
+                            Str::after($file->getFilename(), '0000_00_00_000000')
+                        );
+                    }
+                }
+            };
 
-        foreach ($this->directives ?? [] as $name => $handler) {
-            $compiler->directive($name, Str::parseCallback($handler));
-        }
-
-        foreach ($this->if ?? [] as $name => $handler) {
-            $compiler->if($name, Str::parseCallback($handler));
-        }
-
-        foreach ($this->include ?? [] as $name => $view) {
-            $compiler->include($name, $view);
+            $this->publishes(iterator_to_array($generator()), 'migrations');
         }
     }
 }

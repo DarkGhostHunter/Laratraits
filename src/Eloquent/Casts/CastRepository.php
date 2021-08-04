@@ -74,7 +74,7 @@ class CastRepository implements CastsAttributes
      * @param $string
      * @return bool
      */
-    protected function isJson($string)
+    protected function isJson($string): bool
     {
         if (is_string($string)) {
             json_decode($string);

@@ -54,6 +54,10 @@ namespace DarkGhostHunter\Laratraits\Eloquent\Casts;
 use DarkGhostHunter\Laratraits\Enumerable;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
+/**
+ * @deprecated Use PHP native enums instead
+ * @link https://wiki.php.net/rfc/enumerations
+ */
 abstract class CastEnumerable extends Enumerable implements CastsAttributes
 {
     /**

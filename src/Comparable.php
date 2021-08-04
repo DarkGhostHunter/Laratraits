@@ -72,13 +72,11 @@ trait Comparable
      * @param  iterable  $comparables
      * @param  null|callable  $callback
      * @param  bool  $returnKey
-     * @return bool
+     * @return bool|string
      */
     public function isAnyOf(iterable $comparables, callable $callback = null, bool $returnKey = false)
     {
-        $callback = $callback ?? static function ($compared, $comparable) {
-            return $compared instanceof $comparable;
-        };
+        $callback ??= static fn ($compared, $comparable): bool => $compared instanceof $comparable;
 
         foreach ($comparables as $key => $comparable) {
             if ($result = $callback($this, $comparable, $key)) {
@@ -96,7 +94,7 @@ trait Comparable
      * @param  null|callable  $callback
      * @return bool
      */
-    public function isNoneOf($comparables, callable $callback = null)
+    public function isNoneOf($comparables, callable $callback = null): bool
     {
         return $this->isAnyOf($comparables, $callback) === false;
     }

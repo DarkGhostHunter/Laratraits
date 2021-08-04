@@ -48,9 +48,9 @@ class ValidateConsumableSignature
     /**
      * Cache manager
      *
-     * @var \Illuminate\Cache\CacheManager
+     * @var \Illuminate\Contracts\Cache\Repository
      */
-    protected $cache;
+    protected Repository $cache;
 
     /**
      * Create a new ValidateSignature instance.
@@ -67,10 +67,11 @@ class ValidateConsumableSignature
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     *
      * @return mixed
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         if ($this->signatureNotConsumed($request) && $request->hasValidSignature()) {
 
@@ -93,7 +94,7 @@ class ValidateConsumableSignature
      * @return bool
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function signatureNotConsumed(Request $request)
+    protected function signatureNotConsumed(Request $request): bool
     {
         return ! $this->cache->has($this->cacheKey($request));
     }
@@ -104,7 +105,7 @@ class ValidateConsumableSignature
      * @param  \Illuminate\Http\Request $request
      * @return void
      */
-    protected function consumeSignature(Request $request)
+    protected function consumeSignature(Request $request): void
     {
         $this->cache->put($this->cacheKey($request), null, Carbon::createFromTimestamp($request->query('expires')));
     }
@@ -115,7 +116,7 @@ class ValidateConsumableSignature
      * @param  \Illuminate\Http\Request $request
      * @return string
      */
-    protected function cacheKey(Request $request)
+    protected function cacheKey(Request $request): string
     {
         return 'request|signature|' . $request->query('signature');
     }

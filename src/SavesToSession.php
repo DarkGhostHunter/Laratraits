@@ -34,6 +34,7 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+use Illuminate\Support\Facades\Session;
 use LogicException;
 
 trait SavesToSession
@@ -44,9 +45,9 @@ trait SavesToSession
      * @param  string|null  $key
      * @return void
      */
-    public function saveToSession(string $key = null)
+    public function saveToSession(string $key = null): void
     {
-        session()->put($key ?? $this->defaultSessionKey(), $this->toSession());
+        Session::put($key ?? $this->defaultSessionKey(), $this->toSession());
     }
 
     /**

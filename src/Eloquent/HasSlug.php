@@ -45,6 +45,7 @@
 
 namespace DarkGhostHunter\Laratraits\Eloquent;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 trait HasSlug
@@ -54,9 +55,9 @@ trait HasSlug
      *
      * @return void
      */
-    protected static function bootHasSlug()
+    protected static function bootHasSlug(): void
     {
-        static::saving(function ($model) {
+        static::saving(static function (Model $model): void {
             // Set the slug if the model has not set it previously or the base been changed.
             if (! $model->getAttributeValue($model->getSlugKey()) || $model->isDirty($model->sluggableAttribute())) {
                 $model->setSlug();
@@ -69,7 +70,7 @@ trait HasSlug
      *
      * @return void
      */
-    public function setSlug()
+    public function setSlug(): void
     {
         $value = $this->getAttribute($this->sluggableAttribute());
 
@@ -82,7 +83,7 @@ trait HasSlug
      * @param  string  $value
      * @return string
      */
-    protected function slugValue(string $value)
+    protected function slugValue(string $value): string
     {
         return Str::slug($value);
     }
@@ -92,7 +93,7 @@ trait HasSlug
      *
      * @return string
      */
-    public function sluggableAttribute()
+    public function sluggableAttribute(): string
     {
         return 'title';
     }
@@ -102,7 +103,7 @@ trait HasSlug
      *
      * @return string
      */
-    protected function getSlugKey()
+    protected function getSlugKey(): string
     {
         return 'slug';
     }
@@ -112,8 +113,8 @@ trait HasSlug
      *
      * @return string
      */
-    public function getRouteKeyName()
+    public function getRouteKeyName(): string
     {
-        return $this->routeBySlug ?? true ? $this->getSlugKey() : parent::getRouteKeyName();
+        return $this->routeBySlug ?? $this->getSlugKey();
     }
 }

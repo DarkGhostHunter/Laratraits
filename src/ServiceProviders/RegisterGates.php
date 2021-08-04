@@ -57,7 +57,7 @@ trait RegisterGates
      *
      * @return void
      */
-    public function registerGates()
+    public function registerGates(): void
     {
         $gate = Gate::getFacadeRoot();
 

@@ -46,14 +46,14 @@ class DefaultColumns implements Scope
      *
      * @var array
      */
-    protected $defaultColumns;
+    protected array $defaultColumns = [];
 
     /**
      * Create a new DefaultColumns instance.
      *
      * @param  array  $defaultColumns
      */
-    public function __construct(array $defaultColumns)
+    public function __construct(array $defaultColumns = [])
     {
         $this->defaultColumns = $defaultColumns;
     }
@@ -61,12 +61,10 @@ class DefaultColumns implements Scope
     /**
      * @inheritDoc
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
-        if ($this->defaultColumns !== [] && empty($builder->getQuery()->columns)) {
-            return $builder->select($this->defaultColumns);
+        if ($this->defaultColumns && !$builder->getQuery()->columns) {
+            $builder->select($this->defaultColumns);
         }
-
-        return $builder;
     }
 }

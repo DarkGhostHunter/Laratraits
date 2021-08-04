@@ -81,12 +81,12 @@ trait ModelType
      *
      * @return void
      */
-    protected static function bootModelType()
+    protected static function bootModelType(): void
     {
-        static::addGlobalScope(function (Builder $builder) {
+        static::addGlobalScope('type', static function (Builder $builder): void {
             $model = $builder->getModel();
 
-            return $builder->where($model->getModelTypeColumn(), $model->getModelType());
+            $builder->where($model->getModelTypeColumn(), $model->getModelType());
         });
     }
 
@@ -95,7 +95,7 @@ trait ModelType
      *
      * @return void
      */
-    protected function initializeModelType()
+    protected function initializeModelType(): void
     {
         // Becase Eloquent will get the name of the table from the model name itself, we will have
         // to bail out if the table name has not been explicitly set by the developer. Otherwise,
@@ -114,7 +114,7 @@ trait ModelType
      *
      * @return string
      */
-    public function getModelTypeColumn()
+    public function getModelTypeColumn(): string
     {
         return 'type';
     }
@@ -124,7 +124,7 @@ trait ModelType
      *
      * @return string
      */
-    public function getModelType()
+    public function getModelType(): string
     {
         return Str::snake(class_basename(static::class));
     }
