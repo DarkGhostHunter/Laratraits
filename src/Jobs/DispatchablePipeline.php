@@ -80,7 +80,7 @@ class DispatchablePipeline implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->pipeline->send($this->passable)->then(function ($passable) {
+        $this->pipeline->send($this->passable)->then(static function ($passable) {
             return $passable;
         });
     }

@@ -45,6 +45,7 @@
 
 namespace DarkGhostHunter\Laratraits\Eloquent;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 trait HasSlug
@@ -56,7 +57,7 @@ trait HasSlug
      */
     protected static function bootHasSlug(): void
     {
-        static::saving(function ($model) {
+        static::saving(static function (Model $model): void {
             // Set the slug if the model has not set it previously or the base been changed.
             if (! $model->getAttributeValue($model->getSlugKey()) || $model->isDirty($model->sluggableAttribute())) {
                 $model->setSlug();

@@ -83,10 +83,10 @@ trait ModelType
      */
     protected static function bootModelType(): void
     {
-        static::addGlobalScope(function (Builder $builder) {
+        static::addGlobalScope('type', static function (Builder $builder): void {
             $model = $builder->getModel();
 
-            return $builder->where($model->getModelTypeColumn(), $model->getModelType());
+            $builder->where($model->getModelTypeColumn(), $model->getModelType());
         });
     }
 
