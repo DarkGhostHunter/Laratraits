@@ -78,7 +78,9 @@ trait UsesUuid
      */
     protected function initializeUsesUuid(): void
     {
-        $this->setAttribute($this->getUuidColumn(), $this->generateUuid());
+        if (! $this->{$this->getUuidColumn()}) {
+            $this->setAttribute($this->getUuidColumn(), $this->generateUuid());
+        }
     }
 
     /**
