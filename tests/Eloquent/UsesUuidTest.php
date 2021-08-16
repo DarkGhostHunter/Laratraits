@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class UsesUuidTest extends TestCase
@@ -23,6 +24,32 @@ class UsesUuidTest extends TestCase
         };
 
         $this->assertInstanceOf(UuidInterface::class, $model->uuid);
+    }
+
+    public function test_doesnt_replaces_uuid()
+    {
+        Schema::create('test_table', function (Blueprint $blueprint) {
+            $blueprint->increments('id');
+            $blueprint->uuid('uuid');
+            $blueprint->timestamps();
+        });
+
+        $model = new class extends Model {
+            protected $table = 'test_table';
+        };
+
+        $uuid = Uuid::uuid4()->toString();
+
+        $now = now();
+
+        DB::table('test_table')->insert([
+            'id' => 1,
+            'uuid' => $uuid,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ]);
+
+        static::assertSame($uuid, $model->find(1)->uuid);
     }
 
     public function test_uuid_scope()
