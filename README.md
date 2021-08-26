@@ -64,7 +64,9 @@ Just remember to **change the namespace** if you're copy-pasting them!
 * [`SavesToStorage`](src/SavesToStorage.php): Saves the object (or part of it) to the storage.
 * [`SecurelyJsonable`](src/SecurelyJsonable.php): Adds a signature to the Jsonable object that is checked to at unserialization to avoid tampering.
 * [`SendsToHttp`](src/SendsToHttp.php): Sends the object (or part of it) through an HTTP Request.
+* [`ShadowCall`](src/ShadowCall.php): Allows the next method to be called depending on a condition.
 * [`ThrottleMethods`](src/ThrottleMethods.php): Throttles a given method in a class transparently.
+* [`Throws`](src/Throws.php): Allows a Throwable to throw itself if a given condition is truthy or falsy.
 * [`ValidatesItself`](src/ValidatesItself.php): Validates an incoming data using self-contained rules.
 
 ### Useful classes
