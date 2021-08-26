@@ -36,7 +36,7 @@ class Test extends TestCase
         Route::get('post/{post}', fn(Post $post) => 'ok')
             ->middleware('web', 'can:see,post');
 
-        $this->get('post/1')->dump()->assertOk();
+        $this->get('post/1')->assertOk();
     }
 }
 

@@ -2,6 +2,7 @@
 
 namespace DarkGhostHunter\Laratraits;
 
+use Closure;
 use Illuminate\Support\Traits\ForwardsCalls;
 
 class ShadowProxy
@@ -55,7 +56,9 @@ class ShadowProxy
      */
     public function __call(string $name, array $arguments): object
     {
-        if ($this->when === (bool) value($this->condition, ...$arguments)) {
+        $condition = $this->condition instanceof Closure ? ($this->condition)(...$arguments) : $this->condition;
+
+        if ($this->when === (bool) $condition) {
             $this->forwardCallTo($this->target, $name, $arguments);
         }
 
